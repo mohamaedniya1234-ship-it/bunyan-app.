@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "uplifting-green-milkshake",
-    "slug": "snack-14fe66aa-1e7c-4876-9467-20ba1e88bc88",
+    "name": "Bunyan",
+    "slug": "bunyan-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,7 +17,6 @@
     },
     "android": {
       "package": "com.mohamaedniya.bunyan",
-      
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
