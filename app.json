@@ -6,12 +6,17 @@
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "icon": "./icon.png",
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "package": "com.mohamaedniya.bunyan",
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "adaptiveIcon": {
+        "foregroundImage": "./icon.png",
+        "backgroundColor": "#0F172A"
+      }
     },
     "extra": {
       "eas": {
