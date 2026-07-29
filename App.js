@@ -7,14 +7,16 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
-  Alert,
+  Modal,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedFeature, setSelectedFeature] = useState(null);
+  const [isAiConnecting, setIsAiConnecting] = useState(false); // حالة نافذة المحاكي الصوتي
 
   const handleCardPress = (title, desc) => {
     setSelectedFeature({ title, desc });
@@ -55,7 +57,7 @@ export default function App() {
             <TouchableOpacity
               style={styles.aiBanner}
               activeOpacity={0.8}
-              onPress={() => setActiveTab('ai')}
+              onPress={() => setIsAiConnecting(true)}
             >
               <View style={styles.aiBannerContent}>
                 <View style={styles.badge}>
@@ -82,7 +84,7 @@ export default function App() {
                 onPress={() =>
                   handleCardPress(
                     'التحدث والنطق',
-                    'تحليل النطق حرفاً بحرف وتقييم الطلاقة...'
+                    'تحليل النطق حرفاً بحرف وتقييم الطلاقة بالتفاعل الفوري.'
                   )
                 }
               >
@@ -99,7 +101,7 @@ export default function App() {
                 onPress={() =>
                   handleCardPress(
                     'محاكاة المواقف',
-                    'قصص تفاعلية ومحاكاة مواقف السفر والعمل...'
+                    'قصص تفاعلية ومحاكاة مواقف السفر والعمل اليومية.'
                   )
                 }
               >
@@ -116,7 +118,7 @@ export default function App() {
                 onPress={() =>
                   handleCardPress(
                     'الكلمات والقواعد',
-                    'بطاقات Flashcards وتكرار متباعد...'
+                    'بطاقات Flashcards ونظام تكرار متباعد لحفظ الكلمات.'
                   )
                 }
               >
@@ -133,7 +135,7 @@ export default function App() {
                 onPress={() =>
                   handleCardPress(
                     'Ultra Elite 💎',
-                    'تعلم بالكاميرا والترجمة الفورية...'
+                    'تعلم بالكاميرا والترجمة الفورية للأجسام المحيطة بك.'
                   )
                 }
               >
@@ -152,7 +154,7 @@ export default function App() {
               onPress={() =>
                 handleCardPress(
                   'التحدي اليومي 🎮',
-                  'متبقي لك 2 دقائق لتأكيد إنجاز اليوم!'
+                  'متبقي لك دقيقتان لتأكيد إنجاز اليوم واستلام المكافأة!'
                 )
               }
             >
@@ -181,7 +183,7 @@ export default function App() {
             </Text>
             <TouchableOpacity
               style={styles.micCircle}
-              onPress={() => Alert.alert('المحاكي الصوتي', 'جاري الاتصال بـ AI Tutor...')}
+              onPress={() => setIsAiConnecting(true)}
             >
               <Ionicons name="mic" size={32} color="#FFF" />
             </TouchableOpacity>
@@ -210,20 +212,54 @@ export default function App() {
           </View>
         )}
 
-        {/* النافذة المنبثقة */}
-        {selectedFeature && (
+        {/* نافذة المحاكي الصوتي المخصصة (Custom AI Tutor Connection Modal) */}
+        <Modal
+          visible={isAiConnecting}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setIsAiConnecting(false)}
+        >
           <View style={styles.modalOverlay}>
-            <View style={styles.modalBox}>
-              <Text style={styles.modalTitle}>{selectedFeature.title}</Text>
-              <Text style={styles.modalDesc}>{selectedFeature.desc}</Text>
+            <View style={styles.customDialogBox}>
+              <View style={styles.dialogIconCircle}>
+                <Ionicons name="mic" size={28} color="#06B6D4" />
+              </View>
+              <Text style={styles.dialogTitle}>المحاكي الصوتي</Text>
+              <Text style={styles.dialogSub}>جاري الاتصال بـ AI Tutor...</Text>
+              
+              <ActivityIndicator size="small" color="#06B6D4" style={{ marginVertical: 12 }} />
+
               <TouchableOpacity
-                style={styles.modalButton}
-                onPress={() => setSelectedFeature(null)}
+                style={styles.dialogButton}
+                onPress={() => setIsAiConnecting(false)}
               >
-                <Text style={styles.modalButtonText}>إغلاق</Text>
+                <Text style={styles.dialogButtonText}>حسناً (OK)</Text>
               </TouchableOpacity>
             </View>
           </View>
+        </Modal>
+
+        {/* النافذة المنبثقة العامة */}
+        {selectedFeature && (
+          <Modal
+            visible={!!selectedFeature}
+            transparent={true}
+            animationType="fade"
+            onRequestClose={() => setSelectedFeature(null)}
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.customDialogBox}>
+                <Text style={styles.dialogTitle}>{selectedFeature.title}</Text>
+                <Text style={styles.dialogSub}>{selectedFeature.desc}</Text>
+                <TouchableOpacity
+                  style={[styles.dialogButton, { marginTop: 15 }]}
+                  onPress={() => setSelectedFeature(null)}
+                >
+                  <Text style={styles.dialogButtonText}>إغلاق</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
         )}
 
         {/* شريط التنقل السفلي */}
@@ -377,7 +413,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 12,
-    justify.content: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 12,
   },
@@ -462,51 +498,61 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   modalOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    flex: 1,
+    backgroundColor: 'rgba(15, 23, 42, 0.85)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
-  modalBox: {
+  customDialogBox: {
     backgroundColor: '#1E293B',
-    width: '90%',
-    borderRadius: 20,
-    padding: 25,
+    width: '85%',
+    borderRadius: 24,
+    padding: 24,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#334155',
   },
-  modalTitle: {
+  dialogIconCircle: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#06B6D415',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  dialogTitle: {
     color: '#F8FAFC',
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 6,
   },
-  modalDesc: {
+  dialogSub: {
     color: '#94A3B8',
     fontSize: 14,
     textAlign: 'center',
-    marginBottom: 20,
   },
-  modalButton: {
+  dialogButton: {
     backgroundColor: '#6366F1',
-    paddingHorizontal: 25,
-    paddingVertical: 10,
-    borderRadius: 12,
+    paddingHorizontal: 30,
+    paddingVertical: 12,
+    borderRadius: 14,
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 10,
   },
-  modalButtonText: {
-    color: '#FFF',
+  dialogButtonText: {
+    color: '#FFFFFF',
     fontWeight: 'bold',
+    fontSize: 15,
   },
   bottomNav: {
     backgroundColor: '#1E293B',
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingTop: 12,
-    paddingBottom: Platform.OS === 'android' ? 30 : 20, // رفع الأيقونات فوق شريط إيماءات النظام
+    paddingBottom: Platform.OS === 'android' ? 30 : 20,
     borderTopWidth: 1,
     borderTopColor: '#334155',
   },
@@ -523,4 +569,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-          
+                  
