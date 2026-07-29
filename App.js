@@ -22,7 +22,6 @@ export default function App() {
 
   return (
     <View style={styles.fullScreenContainer}>
-      {/* جعل شريط الحالة شفافاً ليمتد التطبيق للشاشة الكاملة */}
       <StatusBar
         translucent
         backgroundColor="transparent"
@@ -303,7 +302,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 20,
-    paddingBottom: 90,
+    paddingBottom: 20,
   },
   aiBanner: {
     backgroundColor: '#6366F1',
@@ -378,7 +377,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 12,
-    justifyContent: 'center',
+    justify.content: 'center',
     alignItems: 'center',
     marginBottom: 12,
   },
@@ -506,7 +505,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E293B',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingVertical: 14,
+    paddingTop: 12,
+    paddingBottom: Platform.OS === 'android' ? 30 : 20, // رفع الأيقونات فوق شريط إيماءات النظام
     borderTopWidth: 1,
     borderTopColor: '#334155',
   },
@@ -523,4 +523,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-                
+          
