@@ -1,566 +1,169 @@
-import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
-  StatusBar,
-  Modal,
-  Platform,
-  Animated,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-
-// بيانات تجريبية للبطاقات التعليمية (Flashcards)
 const FLASHCARDS = [
-  { id: 1, word: 'Resilience', translation: 'المرونة / القدرة على التكيف', type: 'اسم (Noun)', example: 'His resilience helped him overcome challenges.' },
-  { id: 2, word: 'Ambiguous', translation: 'غامض / غير واضح', type: 'صفة (Adjective)', example: 'The sentence has an ambiguous meaning.' },
-  { id: 3, word: 'Fluency', translation: 'الطلاقة اللغوية', type: 'اسم (Noun)', example: 'Practice daily to reach high fluency.' },
-];
-
-// بيانات تجريبية سيناريوهات محاكاة المواقف
-const SCENARIOS = [
-  { id: 1, title: '💼 مقابلة عمل (Job Interview)', desc: 'تدرب على أسئلة المقابلة الأكثر شيوعاً وكيفية التعريف بنفسك بطلاقة.' },
-  { id: 2, title: '✈️ في المطار (At the Airport)', desc: 'تعلم كيفية إنهاء إجراءات السفر والرد على ضابط الجوازات.' },
-  { id: 3, title: '☕ طلب القهوة (Coffee Shop)', desc: 'محادثة سريعة لطلب المشروبات والتعديل على المكونات.' },
-];
-
-export default function App() {
-  const [activeTab, setActiveTab] = useState('home');
-  const [dailyProgressMinutes, setDailyProgressMinutes] = useState(3);
-
-  // شاشات ومودالات الأقسام التفاعلية
-  const [isCallActive, setIsCallActive] = useState(false);
-  const [callDuration, setCallDuration] = useState(0);
-  const [aiResponseText, setAiResponseText] = useState('');
-
-  // حالة Flashcards
-  const [showFlashcards, setShowFlashcards] = useState(false);
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  // حالة محاكاة المواقف
-  const [showScenarios, setShowScenarios] = useState(false);
-  const [selectedScenario, setSelectedScenario] = useState(null);
-
-  // حالة التحدث والنطق (Shadowing)
-  const [showShadowing, setShowShadowing] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
-  const [pronunciationScore, setPronunciationScore] = useState(null);
-
-  // حالة الكاميرا المباشرة (Ultra Elite)
-  const [showCameraMode, setShowCameraMode] = useState(false);
-
-  // أنيميشن النبض
-  const pulseAnim = React.useRef(new Animated.Value(1)).current;
-
-  // مؤقت المكالمة
-  useEffect(() => {
-    let interval = null;
-    if (isCallActive) {
-      interval = setInterval(() => {
-        setCallDuration((prev) => prev + 1);
-      }, 1000);
-
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(pulseAnim, { toValue: 1.25, duration: 800, useNativeDriver: true }),
-          Animated.timing(pulseAnim, { toValue: 1, duration: 800, useNativeDriver: true }),
-        ])
-      ).start();
-    } else {
-      clearInterval(interval);
-      pulseAnim.setValue(1);
+  {
+    id: 1,
+    base: {
+      pronunciation: 'مان',
+      english: 'Man',
+      arabic: 'رجل',
+      badgeColor: '#00897B' // أخضر
+    },
+    phrasal: {
+      pronunciation: 'مان أَب',
+      english: 'Man up',
+      arabic: 'استرجل / تشجع',
+      badgeColor: '#E53935' // أحمر
     }
-    return () => clearInterval(interval);
-  }, [isCallActive]);
-
-  // إدارة الاتصال الصوتي
-  const startAiCall = () => {
-    setCallDuration(0);
-    setAiResponseText('مرحباً بك! أنا معلمك الذكي، أهلاً بك في تطبيق بنيان. كيف يمكنني مساعدتك اليوم؟');
-    setIsCallActive(true);
-  };
-
-  const endAiCall = () => {
-    setIsCallActive(false);
-    const addedMinutes = Math.max(1, Math.round(callDuration / 60));
-    setDailyProgressMinutes((prev) => Math.min(5, prev + addedMinutes));
-  };
-
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
-  };
-
-  // وظائف التناقل بين الكروت
-  const handleNextCard = () => {
-    setIsFlipped(false);
-    setCurrentCardIndex((prev) => (prev + 1) % FLASHCARDS.length);
-  };
-
-  // التظاهر بالتسجيل وتقييم النطق
-  const handleToggleRecording = () => {
-    if (isRecording) {
-      setIsRecording(false);
-      setPronunciationScore(Math.floor(Math.random() * 15) + 85); 
-    } else {
-      setPronunciationScore(null);
-      setIsRecording(true);
+  },
+  {
+    id: 2,
+    base: {
+      pronunciation: 'باك',
+      english: 'Back',
+      arabic: 'ظهر / خلف',
+      badgeColor: '#00897B'
+    },
+    phrasal: {
+      pronunciation: 'باك أَب',
+      english: 'Back up',
+      arabic: 'يدعم / يدعم بالنسخ الاحتياطي',
+      badgeColor: '#E53935'
     }
-  };
+  },
+  {
+    id: 3,
+    base: {
+      pronunciation: 'شات',
+      english: 'Shut',
+      arabic: 'يغلق',
+      badgeColor: '#00897B'
+    },
+    phrasal: {
+      pronunciation: 'شات أَب',
+      english: 'Shut up',
+      arabic: 'اخرس / اصمت',
+      badgeColor: '#E53935'
+    }
+  }
+];
+{/* ===== مودال البطاقات التعليمية بنفس تصميم الصورة ===== */}
+<Modal visible={showFlashcards} animationType="slide">
+  <View style={styles.modalContainer}>
+    {/* هيدر المودال */}
+    <View style={styles.topModalHeader}>
+      <TouchableOpacity onPress={() => setShowFlashcards(false)}>
+        <Ionicons name="close" size={28} color="#FFF" />
+      </TouchableOpacity>
+      <Text style={styles.modalHeaderTitle}>تعلم المفردات والتعابير</Text>
+      <Text style={styles.cardCounterText}>
+        {currentCardIndex + 1} / {FLASHCARDS.length}
+      </Text>
+    </View>
 
-  return (
-    <View style={styles.fullScreenContainer}>
-      <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
+    {/* جسم البطاقة */}
+    <ScrollView contentContainerStyle={styles.cardVisualContainer}>
+      {/* القسم الأول: الكلمة الأساسية */}
+      <View style={styles.phraseCard}>
+        {/* النص المنطوق باللغة العربية */}
+        <Text style={styles.arabicPronunciationText}>
+          {FLASHCARDS[currentCardIndex].base.pronunciation}
+        </Text>
 
-      <SafeAreaView style={styles.safeArea}>
-        {/* الهيدر العلوي */}
-        <View style={styles.header}>
-          <View style={styles.userInfo}>
-            <Text style={styles.appName}>بنيان | Bunyan</Text>
-            <Text style={styles.welcomeText}>مرحباً بك 👋</Text>
-          </View>
-          <View style={styles.statsContainer}>
-            <View style={styles.statBadge}>
-              <Text style={styles.statText}>🔥 7</Text>
-            </View>
-            <View style={styles.statBadge}>
-              <Text style={styles.statText}>⚡ 1,250</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* الشاشة الرئيسية */}
-        {activeTab === 'home' && (
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-            {/* بنر الذكاء الاصطناعي */}
-            <TouchableOpacity style={styles.aiBanner} activeOpacity={0.85} onPress={startAiCall}>
-              <View style={styles.aiBannerContent}>
-                <View style={styles.badge}>
-                  <Text style={styles.badgeText}>الذكاء الاصطناعي 🧠</Text>
-                </View>
-                <Text style={styles.aiTitle}>مدرس AI الشخصي</Text>
-                <Text style={styles.aiSub}>
-                  محادثات صوتية طبيعية، تصحيح فوري، وشرح القواعد بالسياق.
-                </Text>
-                <View style={styles.aiButton}>
-                  <Ionicons name="mic-sharp" size={18} color="#0F172A" />
-                  <Text style={styles.aiButtonText}>ابدأ المحادثة الصوتية الآن</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-
-            {/* مسارات التعلم التفاعلية */}
-            <Text style={styles.sectionTitle}>مسارات التعلم 📚</Text>
-
-            <View style={styles.gridContainer}>
-              {/* 1. التحدث والنطق */}
-              <TouchableOpacity
-                style={styles.card}
-                activeOpacity={0.7}
-                onPress={() => setShowShadowing(true)}
-              >
-                <View style={[styles.iconBox, { backgroundColor: '#3B82F620' }]}>
-                  <Ionicons name="mic" size={26} color="#3B82F6" />
-                </View>
-                <Text style={styles.cardTitle}>التحدث والنطق</Text>
-                <Text style={styles.cardSub}>تحليل النطق وتمارين Shadowing</Text>
-              </TouchableOpacity>
-
-              {/* 2. محاكاة المواقف */}
-              <TouchableOpacity
-                style={styles.card}
-                activeOpacity={0.7}
-                onPress={() => setShowScenarios(true)}
-              >
-                <View style={[styles.iconBox, { backgroundColor: '#10B98120' }]}>
-                  <Ionicons name="compass" size={26} color="#10B981" />
-                </View>
-                <Text style={styles.cardTitle}>محاكاة المواقف</Text>
-                <Text style={styles.cardSub}>قصص تفاعلية ومقابلات عمل</Text>
-              </TouchableOpacity>
-
-              {/* 3. الكلمات والقواعد */}
-              <TouchableOpacity
-                style={styles.card}
-                activeOpacity={0.7}
-                onPress={() => setShowFlashcards(true)}
-              >
-                <View style={[styles.iconBox, { backgroundColor: '#8B5CF620' }]}>
-                  <Ionicons name="book" size={26} color="#8B5CF6" />
-                </View>
-                <Text style={styles.cardTitle}>الكلمات والقواعد</Text>
-                <Text style={styles.cardSub}>بطاقات Flashcards وتكرار متباعد</Text>
-              </TouchableOpacity>
-
-              {/* 4. Ultra Elite */}
-              <TouchableOpacity
-                style={styles.card}
-                activeOpacity={0.7}
-                onPress={() => setShowCameraMode(true)}
-              >
-                <View style={[styles.iconBox, { backgroundColor: '#F59E0B20' }]}>
-                  <Ionicons name="star" size={26} color="#F59E0B" />
-                </View>
-                <Text style={styles.cardTitle}>Ultra Elite 💎</Text>
-                <Text style={styles.cardSub}>تعلم بالكاميرا وترجمة فورية</Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* بطاقة التحدي اليومي */}
-            <View style={styles.challengeCard}>
-              <View style={styles.challengeHeader}>
-                <Ionicons name="trophy" size={22} color="#F59E0B" />
-                <Text style={styles.challengeTitle}>التحدي اليومي 🎮</Text>
-              </View>
-              <Text style={styles.challengeDesc}>تحدث لمدة 5 دقائق مع معلم الذكاء الاصطناعي</Text>
-              <View style={styles.progressBarBg}>
-                <View
-                  style={[
-                    styles.progressBarFill,
-                    { width: `${(dailyProgressMinutes / 5) * 100}%` },
-                  ]}
-                />
-              </View>
-              <Text style={styles.progressText}>
-                {dailyProgressMinutes} / 5 دقائق ({Math.round((dailyProgressMinutes / 5) * 100)}%)
-              </Text>
-            </View>
-          </ScrollView>
-        )}
-
-        {/* بقية الشاشات الرئيسية */}
-        {activeTab === 'ai' && (
-          <View style={styles.centerScreen}>
-            <Ionicons name="hardware-chip" size={60} color="#6366F1" />
-            <Text style={styles.screenTitle}>معلم الذكاء الاصطناعي 🧠</Text>
-            <Text style={styles.screenSub}>اضغط على الميكروفون لبدء المحادثة الصوتية المباشرة.</Text>
-            <TouchableOpacity style={styles.micCircle} onPress={startAiCall}>
-              <Ionicons name="mic" size={32} color="#FFF" />
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {activeTab === 'community' && (
-          <View style={styles.centerScreen}>
-            <Ionicons name="people" size={60} color="#10B981" />
-            <Text style={styles.screenTitle}>مجتمع بنيان 👥</Text>
-            <Text style={styles.screenSub}>غرف التبادل اللغوي والدردشة المباشرة مع زملائك المتعلمين.</Text>
-          </View>
-        )}
-
-        {activeTab === 'stats' && (
-          <View style={styles.centerScreen}>
-            <Ionicons name="stats-chart" size={60} color="#F59E0B" />
-            <Text style={styles.screenTitle}>إحصائيات التعلم 📊</Text>
-            <Text style={styles.screenSub}>
-              الكلمات المتقنة: 142 | دقائق التحدث: {dailyProgressMinutes} دقيقة
-            </Text>
-          </View>
-        )}
-
-        {/* شريط التنقل السفلي */}
-        <View style={styles.bottomNav}>
-          <TouchableOpacity onPress={() => setActiveTab('home')} style={styles.navItem}>
-            <Ionicons name="home" size={22} color={activeTab === 'home' ? '#6366F1' : '#64748B'} />
-            <Text style={[styles.navText, activeTab === 'home' && styles.navTextActive]}>الرئيسية</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => setActiveTab('ai')} style={styles.navItem}>
-            <Ionicons name="hardware-chip" size={22} color={activeTab === 'ai' ? '#6366F1' : '#64748B'} />
-            <Text style={[styles.navText, activeTab === 'ai' && styles.navTextActive]}>AI Tutor</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => setActiveTab('community')} style={styles.navItem}>
-            <Ionicons name="people" size={22} color={activeTab === 'community' ? '#6366F1' : '#64748B'} />
-            <Text style={[styles.navText, activeTab === 'community' && styles.navTextActive]}>المجتمع</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => setActiveTab('stats')} style={styles.navItem}>
-            <Ionicons name="stats-chart" size={22} color={activeTab === 'stats' ? '#6366F1' : '#64748B'} />
-            <Text style={[styles.navText, activeTab === 'stats' && styles.navTextActive]}>الإحصائيات</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-
-      {/* ===== 1. مودال المكالمة الصوتية المباشرة (تم وضعه خارج SafeAreaView) ===== */}
-      <Modal visible={isCallActive} animationType="slide">
-        <View style={styles.callScreenContainer}>
-          <View style={styles.callHeader}>
-            <Text style={styles.callStatusText}>متصل الان 🟢</Text>
-            <Text style={styles.callTimerText}>{formatTime(callDuration)}</Text>
-          </View>
-
-          <View style={styles.callBody}>
-            <Animated.View style={[styles.pulseCircleBackground, { transform: [{ scale: pulseAnim }] }]}>
-              <View style={styles.mainCallAvatar}>
-                <Ionicons name="hardware-chip" size={54} color="#6366F1" />
-              </View>
-            </Animated.View>
-            <Text style={styles.callAITitle}>Bunyan AI Tutor</Text>
-
-            <View style={styles.transcriptBox}>
-              <Ionicons name="chatbubbles-outline" size={18} color="#06B6D4" style={{ marginBottom: 6 }} />
-              <Text style={styles.transcriptText}>"{aiResponseText}"</Text>
-            </View>
-          </View>
-
-          <View style={styles.callControls}>
-            <TouchableOpacity
-              style={styles.controlBtnSecondary}
-              onPress={() => setAiResponseText('ممتاز! حاول أن تنطق عبارة "Practice makes perfect" بصوت واثق.')}
-            >
-              <Ionicons name="volume-high" size={24} color="#FFF" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.endCallBtn} onPress={endAiCall}>
-              <Ionicons name="call" size={28} color="#FFF" style={{ transform: [{ rotate: '135deg' }] }} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.controlBtnSecondary}>
-              <Ionicons name="mic-off" size={24} color="#FFF" />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      {/* ===== 2. مودال البطاقات التعليمية (Flashcards) ===== */}
-      <Modal visible={showFlashcards} animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.topModalHeader}>
-            <TouchableOpacity onPress={() => setShowFlashcards(false)}>
-              <Ionicons name="close" size={28} color="#FFF" />
-            </TouchableOpacity>
-            <Text style={styles.modalHeaderTitle}>بطاقات المفردات (Flashcards)</Text>
-            <Text style={styles.cardCounterText}>
-              {currentCardIndex + 1} / {FLASHCARDS.length}
-            </Text>
-          </View>
-
-          <View style={styles.flashcardBody}>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              style={styles.flashcardBox}
-              onPress={() => setIsFlipped(!isFlipped)}
-            >
-              <Text style={styles.cardTypeBadge}>{FLASHCARDS[currentCardIndex].type}</Text>
-              
-              {!isFlipped ? (
-                <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.flashcardWord}>{FLASHCARDS[currentCardIndex].word}</Text>
-                  <Text style={styles.flipHintText}>اضغط على البطاقة لكشف المعنى 🔄</Text>
-                </View>
-              ) : (
-                <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.flashcardTranslation}>{FLASHCARDS[currentCardIndex].translation}</Text>
-                  <Text style={styles.flashcardExample}>"{FLASHCARDS[currentCardIndex].example}"</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.flashcardControls}>
-            <TouchableOpacity style={[styles.flashBtn, { backgroundColor: '#EF444420' }]} onPress={handleNextCard}>
-              <Text style={{ color: '#EF4444', fontWeight: 'bold' }}>أحتاج مراجعة ❌</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.flashBtn, { backgroundColor: '#10B98120' }]} onPress={handleNextCard}>
-              <Text style={{ color: '#10B981', fontWeight: 'bold' }}>حفظتها بنجاح ✅</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      {/* ===== 3. مودال محاكاة المواقف (Scenarios) ===== */}
-      <Modal visible={showScenarios} animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.topModalHeader}>
-            <TouchableOpacity onPress={() => { setShowScenarios(false); setSelectedScenario(null); }}>
-              <Ionicons name="close" size={28} color="#FFF" />
-            </TouchableOpacity>
-            <Text style={styles.modalHeaderTitle}>محاكاة المواقف الواقعية</Text>
-            <View style={{ width: 28 }} />
-          </View>
-
-          {!selectedScenario ? (
-            <ScrollView style={{ padding: 20 }}>
-              <Text style={{ color: '#94A3B8', textAlign: 'right', marginBottom: 15 }}>اختر الموقف للبدء بالحوار التفاعلي:</Text>
-              {SCENARIOS.map((sc) => (
-                <TouchableOpacity key={sc.id} style={styles.scenarioCard} onPress={() => setSelectedScenario(sc)}>
-                  <Text style={styles.scenarioTitle}>{sc.title}</Text>
-                  <Text style={styles.scenarioDesc}>{sc.desc}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          ) : (
-            <View style={{ flex: 1, padding: 20, justifyContent: 'space-between' }}>
-              <View>
-                <Text style={styles.scenarioTitle}>{selectedScenario.title}</Text>
-                <View style={styles.chatBubbleAI}>
-                  <Text style={styles.chatText}>"Welcome to the interview! Can you tell me a little bit about yourself?"</Text>
-                </View>
-              </View>
-
-              <TouchableOpacity style={styles.primaryActionButton} onPress={startAiCall}>
-                <Ionicons name="mic" size={20} color="#FFF" />
-                <Text style={styles.primaryActionText}>ابدأ الإجابة بصوتك الآن</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
-      </Modal>
-
-      {/* ===== 4. مودال تحليل النطق (Shadowing) ===== */}
-      <Modal visible={showShadowing} animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.topModalHeader}>
-            <TouchableOpacity onPress={() => setShowShadowing(false)}>
-              <Ionicons name="close" size={28} color="#FFF" />
-            </TouchableOpacity>
-            <Text style={styles.modalHeaderTitle}>تمارين Shadowing والنطق</Text>
-            <View style={{ width: 28 }} />
-          </View>
-
-          <View style={styles.shadowingBody}>
-            <Text style={{ color: '#94A3B8', fontSize: 14, marginBottom: 10 }}>استمع للعبارة ثم أعد تسجيلها بصوتك:</Text>
-            <Text style={styles.targetSentence}>"Consistency is the key to mastering any language."</Text>
-
-            {pronunciationScore && (
-              <View style={styles.scoreBadgeBox}>
-                <Text style={styles.scoreNumber}>{pronunciationScore}%</Text>
-                <Text style={{ color: '#10B981', fontWeight: 'bold' }}>نطق ممتاز! واصل التقدم</Text>
-              </View>
-            )}
-
-            <TouchableOpacity
-              style={[styles.bigMicRecordBtn, isRecording && { backgroundColor: '#EF4444' }]}
-              onPress={handleToggleRecording}
-            >
-              <Ionicons name={isRecording ? 'stop' : 'mic'} size={40} color="#FFF" />
-            </TouchableOpacity>
-            <Text style={{ color: '#64748B', marginTop: 15 }}>
-              {isRecording ? 'جاري التسجيل والتحليل...' : 'اضغط للبدء بالتسجيل'}
-            </Text>
-          </View>
-        </View>
-      </Modal>
-
-      {/* ===== 5. مودال الكاميرا الذكية (Ultra Elite 💎) ===== */}
-      <Modal visible={showCameraMode} animationType="fade">
-        <View style={styles.cameraOverlayContainer}>
-          <View style={styles.cameraTopNav}>
-            <TouchableOpacity onPress={() => setShowCameraMode(false)}>
-              <Ionicons name="close" size={30} color="#FFF" />
-            </TouchableOpacity>
-            <Text style={{ color: '#F59E0B', fontWeight: 'bold', fontSize: 16 }}>Ultra Elite 💎</Text>
-                    </View>
-
-          <View style={styles.cameraScannerBox}>
-            <View style={styles.scanFrameCornerTL} />
-            <View style={styles.scanFrameCornerTR} />
-            <View style={styles.scanFrameCornerBL} />
-            <View style={styles.scanFrameCornerBR} />
-
-            <View style={styles.detectedObjectTag}>
-              <Text style={{ color: '#0F172A', fontWeight: 'bold', fontSize: 12 }}>Coffee Cup (فنجان قهوة)</Text>
-            </View>
-          </View>
-
-          <Text style={{ color: '#E2E8F0', textAlign: 'center', marginBottom: 40 }}>
-            وجه الكاميرا نحو أي عنصر للترجمة والتعلم الفوري
+        {/* الشريط الملون للكلمة الإنجليزية */}
+        <View style={[styles.englishBadge, { backgroundColor: FLASHCARDS[currentCardIndex].base.badgeColor }]}>
+          <Text style={styles.englishBadgeText}>
+            {FLASHCARDS[currentCardIndex].base.english}
           </Text>
         </View>
-      </Modal>
-    </View>
-  );
-}
 
-const styles = StyleSheet.create({
-  fullScreenContainer: { flex: 1, backgroundColor: '#0F172A' },
-  safeArea: { flex: 1, paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 },
-  header: { flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 10, paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: '#1E293B' },
-  userInfo: { alignItems: 'flex-end' },
-  appName: { color: '#6366F1', fontSize: 14, fontWeight: 'bold' },
-  welcomeText: { color: '#F8FAFC', fontSize: 18, fontWeight: 'bold' },
-  statsContainer: { flexDirection: 'row', gap: 10 },
-  statBadge: { backgroundColor: '#1E293B', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20 },
-  statText: { color: '#F8FAFC', fontWeight: 'bold', fontSize: 13 },
-  scrollContent: { padding: 20, paddingBottom: 20 },
-  aiBanner: { backgroundColor: '#6366F1', borderRadius: 20, padding: 20, marginBottom: 25 },
-  aiBannerContent: { alignItems: 'flex-start' },
-  badge: { backgroundColor: 'rgba(255, 255, 255, 0.2)', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12, marginBottom: 10 },
-  badgeText: { color: '#FFF', fontSize: 12, fontWeight: 'bold' },
-  aiTitle: { color: '#FFF', fontSize: 22, fontWeight: 'bold', marginBottom: 6 },
-  aiSub: { color: '#E0E7FF', fontSize: 13, lineHeight: 18, textAlign: 'left', marginBottom: 15 },
-  aiButton: { backgroundColor: '#FFF', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12, gap: 8 },
-  aiButtonText: { color: '#0F172A', fontWeight: 'bold', fontSize: 14 },
-  sectionTitle: { color: '#F8FAFC', fontSize: 18, fontWeight: 'bold', marginBottom: 15, textAlign: 'right' },
-  gridContainer: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: 12, marginBottom: 25 },
-  card: { backgroundColor: '#1E293B', width: '48%', borderRadius: 16, padding: 15, alignItems: 'flex-end' },
-  iconBox: { width: 44, height: 44, borderRadius: 12, justifyContent: 'center', alignItems: 'center', marginBottom: 12 },
-  cardTitle: { color: '#F8FAFC', fontSize: 15, fontWeight: 'bold', marginBottom: 4, textAlign: 'right' },
-  cardSub: { color: '#94A3B8', fontSize: 11, textAlign: 'right', lineHeight: 15 },
-  challengeCard: { backgroundColor: '#1E293B', borderRadius: 16, padding: 18 },
-  challengeHeader: { flexDirection: 'row-reverse', alignItems: 'center', gap: 8, marginBottom: 8 },
-  challengeTitle: { color: '#F8FAFC', fontSize: 16, fontWeight: 'bold' },
-  challengeDesc: { color: '#94A3B8', fontSize: 13, textAlign: 'right', marginBottom: 12 },
-  progressBarBg: { height: 8, backgroundColor: '#334155', borderRadius: 4, overflow: 'hidden', marginBottom: 6 },
-  progressBarFill: { height: '100%', backgroundColor: '#F59E0B', borderRadius: 4 },
-  progressText: { color: '#64748B', fontSize: 11, textAlign: 'left' },
-  centerScreen: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 30 },
-  screenTitle: { color: '#F8FAFC', fontSize: 20, fontWeight: 'bold', marginTop: 15, marginBottom: 8 },
-  screenSub: { color: '#94A3B8', fontSize: 14, textAlign: 'center', lineHeight: 20 },
-  micCircle: { backgroundColor: '#6366F1', width: 70, height: 70, borderRadius: 35, justifyContent: 'center', alignItems: 'center', marginTop: 25 },
-  callScreenContainer: { flex: 1, backgroundColor: '#0B0F19', padding: 24, justifyContent: 'space-between' },
-  callHeader: { alignItems: 'center', marginTop: 40 },
-  callStatusText: { color: '#10B981', fontSize: 14, fontWeight: '600' },
-  callTimerText: { color: '#94A3B8', fontSize: 18, marginTop: 4, fontWeight: 'bold' },
-  callBody: { alignItems: 'center', justifyContent: 'center', flex: 1 },
-  pulseCircleBackground: { width: 140, height: 140, borderRadius: 70, backgroundColor: 'rgba(99, 102, 241, 0.15)', justifyContent: 'center', alignItems: 'center' },
-  mainCallAvatar: { width: 100, height: 100, borderRadius: 50, backgroundColor: '#1E293B', justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#6366F1' },
-  callAITitle: { color: '#F8FAFC', fontSize: 22, fontWeight: 'bold', marginTop: 20 },
-  transcriptBox: { backgroundColor: '#1E293B', padding: 18, borderRadius: 16, marginTop: 25, width: '100%', alignItems: 'center', borderWidth: 1, borderColor: '#334155' },
-  transcriptText: { color: '#E2E8F0', fontSize: 15, textAlign: 'center', lineHeight: 22 },
-  callControls: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginBottom: 30 },
-  controlBtnSecondary: { width: 56, height: 56, borderRadius: 28, backgroundColor: '#1E293B', justifyContent: 'center', alignItems: 'center' },
-  endCallBtn: { width: 72, height: 72, borderRadius: 36, backgroundColor: '#EF4444', justifyContent: 'center', alignItems: 'center' },
-  modalContainer: { flex: 1, backgroundColor: '#0F172A' },
-  topModalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingTop: 50, borderBottomWidth: 1, borderBottomColor: '#1E293B' },
-  modalHeaderTitle: { color: '#F8FAFC', fontSize: 17, fontWeight: 'bold' },
-  cardCounterText: { color: '#6366F1', fontWeight: 'bold' },
-  flashcardBody: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 25 },
-  flashcardBox: { backgroundColor: '#1E293B', width: '100%', height: 320, borderRadius: 24, padding: 25, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: '#334155' },
-  cardTypeBadge: { color: '#8B5CF6', fontSize: 12, position: 'absolute', top: 20, right: 20, fontWeight: 'bold' },
-  flashcardWord: { color: '#F8FAFC', fontSize: 32, fontWeight: 'bold', marginBottom: 15 },
-  flipHintText: { color: '#64748B', fontSize: 13 },
-  flashcardTranslation: { color: '#10B981', fontSize: 26, fontWeight: 'bold', marginBottom: 12 },
-  flashcardExample: { color: '#94A3B8', fontSize: 14, fontStyle: 'italic', textAlign: 'center' },
-  flashcardControls: { flexDirection: 'row', justifyContent: 'space-around', padding: 25 },
-  flashBtn: { paddingVertical: 14, paddingHorizontal: 25, borderRadius: 16 },
-  scenarioCard: { backgroundColor: '#1E293B', padding: 18, borderRadius: 16, marginBottom: 12, borderWidth: 1, borderColor: '#334155' },
-  scenarioTitle: { color: '#F8FAFC', fontSize: 16, fontWeight: 'bold', textAlign: 'right', marginBottom: 4 },
-  scenarioDesc: { color: '#94A3B8', fontSize: 12, textAlign: 'right' },
-  chatBubbleAI: { backgroundColor: '#1E293B', padding: 18, borderRadius: 16, marginTop: 20 },
-  chatText: { color: '#38BDF8', fontSize: 16, lineHeight: 24 },
-  primaryActionButton: { backgroundColor: '#6366F1', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 16, borderRadius: 16, gap: 10 },
-  primaryActionText: { color: '#FFF', fontWeight: 'bold', fontSize: 16 },
-  shadowingBody: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 25 },
-  targetSentence: { color: '#F8FAFC', fontSize: 22, fontWeight: 'bold', textAlign: 'center', marginVertical: 20, lineHeight: 32 },
-  bigMicRecordBtn: { backgroundColor: '#6366F1', width: 90, height: 90, borderRadius: 45, justifyContent: 'center', alignItems: 'center', marginTop: 30 },
-  scoreBadgeBox: { backgroundColor: '#10B98120', padding: 15, borderRadius: 16, alignItems: 'center', marginVertical: 10 },
-  scoreNumber: { color: '#10B981', fontSize: 28, fontWeight: 'bold' },
-  cameraOverlayContainer: { flex: 1, backgroundColor: '#000', padding: 20, justifyContent: 'space-between' },
-  cameraTopNav: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 40 },
-  cameraScannerBox: { height: 300, borderWidth: 1, borderColor: '#38BDF850', borderRadius: 20, justifyContent: 'center', alignItems: 'center', position: 'relative' },
-  scanFrameCornerTL: { position: 'absolute', top: 10, left: 10, width: 25, height: 25, borderTopWidth: 3, borderLeftWidth: 3, borderColor: '#38BDF8' },
-  scanFrameCornerTR: { position: 'absolute', top: 10, right: 10, width: 25, height: 25, borderTopWidth: 3, borderRightWidth: 3, borderColor: '#38BDF8' },
-  scanFrameCornerBL: { position: 'absolute', bottom: 10, left: 10, width: 25, height: 25, borderBottomWidth: 3, borderLeftWidth: 3, borderColor: '#38BDF8' },
-  scanFrameCornerBR: { position: 'absolute', bottom: 10, right: 10, width: 25, height: 25, borderBottomWidth: 3, borderRightWidth: 3, borderColor: '#38BDF8' },
-  detectedObjectTag: { backgroundColor: '#F59E0B', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 },
-  bottomNav: { backgroundColor: '#1E293B', flexDirection: 'row', justifyContent: 'space-around', paddingTop: 12, paddingBottom: Platform.OS === 'android' ? 30 : 20, borderTopWidth: 1, borderTopColor: '#334155' },
-  navItem: { alignItems: 'center', gap: 4 },
-  navText: { color: '#64748B', fontSize: 11 },
-  navTextActive: { color: '#6366F1', fontWeight: 'bold' },
-});
-        
+        {/* الترجمة العربية */}
+        <Text style={styles.arabicTranslationText}>
+          {FLASHCARDS[currentCardIndex].base.arabic}
+        </Text>
+      </View>
+
+      <View style={styles.dividerLine} />
+
+      {/* القسم الثاني: التعبير المركب */}
+      <View style={styles.phraseCard}>
+        {/* النص المنطوق باللغة العربية */}
+        <Text style={styles.arabicPronunciationText}>
+          {FLASHCARDS[currentCardIndex].phrasal.pronunciation}
+        </Text>
+
+        {/* الشريط الملون للتعبير الإنجليزي */}
+        <View style={[styles.englishBadge, { backgroundColor: FLASHCARDS[currentCardIndex].phrasal.badgeColor }]}>
+          <Text style={styles.englishBadgeText}>
+            {FLASHCARDS[currentCardIndex].phrasal.english}
+          </Text>
+        </View>
+
+        {/* الترجمة العربية */}
+        <Text style={styles.arabicTranslationText}>
+          {FLASHCARDS[currentCardIndex].phrasal.arabic}
+        </Text>
+      </View>
+    </ScrollView>
+
+    {/* أزرار التنقل */}
+    <View style={styles.flashcardControls}>
+      <TouchableOpacity style={[styles.flashBtn, { backgroundColor: '#EF444420' }]} onPress={handleNextCard}>
+        <Text style={{ color: '#EF4444', fontWeight: 'bold' }}>تخطي ❌</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.flashBtn, { backgroundColor: '#10B98120' }]} onPress={handleNextCard}>
+        <Text style={{ color: '#10B981', fontWeight: 'bold' }}>التالي ➔</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
+  // تنسيقات البطاقة المماثلة للصورة
+  cardVisualContainer: {
+    padding: 20,
+    alignItems: 'center',
+    justify: 'center',
+    flexGrow: 1,
+  },
+  phraseCard: {
+    width: '100%',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  arabicPronunciationText: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#F8FAFC',
+    marginBottom: 8,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
+  },
+  englishBadge: {
+    width: '85%',
+    paddingVertical: 12,
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 6,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  englishBadgeText: {
+    color: '#FFFFFF',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  arabicTranslationText: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#94A3B8',
+    marginTop: 6,
+  },
+  dividerLine: {
+    height: 1,
+    backgroundColor: '#334155',
+    width: '80%',
+    marginVertical: 15,
+  },
+      
