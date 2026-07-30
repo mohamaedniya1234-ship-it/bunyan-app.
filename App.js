@@ -1,7 +1,64 @@
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
+  Modal,
+  Platform,
+  Animated,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
+export default function App() {
+  const [isCallActive, setIsCallActive] = useState(true); // تجريبياً مفعلة لرؤية الميزة
+  const [callDuration, setCallDuration] = useState(0);
+  const [aiResponseText, setAiResponseText] = useState('مرحباً بك! أنا معلمك الذكي، أهلاً بك في تطبيق بنيان.');
+
+  // أنيميشن النبض
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    let interval = null;
+    if (isCallActive) {
+      interval = setInterval(() => {
+        setCallDuration((prev) => prev + 1);
+      }, 1000);
+
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, { toValue: 1.25, duration: 800, useNativeDriver: true }),
+          Animated.timing(pulseAnim, { toValue: 1, duration: 800, useNativeDriver: true }),
+        ])
+      ).start();
+    } else {
+      clearInterval(interval);
+      pulseAnim.setValue(1);
+    }
+    return () => clearInterval(interval);
+  }, [isCallActive]);
+
+  const endAiCall = () => {
+    setIsCallActive(false);
+  };
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
+  return (
+    <SafeAreaView style={styles.fullScreenContainer}>
+      <StatusBar barStyle="light-content" />
+      
       {/* 🌟 مودال المكالمة الصوتية الأسطوري (Iconic AI Call) */}
       <Modal visible={isCallActive} animationType="fade">
         <View style={styles.iconicCallContainer}>
-          {/* شريط العلوي للمكالمة */}
+          {/* الشريط العلوي للمكالمة */}
           <View style={styles.iconicCallHeader}>
             <View style={styles.liveIndicatorBadge}>
               <View style={styles.liveDot} />
@@ -57,7 +114,17 @@
           </View>
         </View>
       </Modal>
-        iconicCallContainer: {
+    </SafeAreaView>
+  );
+}
+
+// 🎨 التنسيقات المجمعة بشكل صحيح في مكانها المخصص
+const styles = StyleSheet.create({
+  fullScreenContainer: {
+    flex: 1,
+    backgroundColor: '#030712',
+  },
+  iconicCallContainer: {
     flex: 1,
     backgroundColor: '#030712',
     paddingHorizontal: 20,
@@ -219,4 +286,5 @@
     shadowRadius: 8,
     elevation: 8,
   },
-                       
+});
+        
