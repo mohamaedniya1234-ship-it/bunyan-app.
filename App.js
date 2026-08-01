@@ -452,7 +452,8 @@ export default function App() {
             {pronunciationScore && (
               <View style={styles.scoreBadgeBox}>
                 <Text style={styles.scoreNumber}>{pronunciationScore}%</Text>
-                <Text style={{ color: '#FFF', fontWeight                fontWeight: 'bold' }}>دقة النطق ممتازة! واصل التقدم</Text>
+                <Text style={{ color: '#FFF', fontWeight
+                fontWeight: 'bold' }}>دقة النطق ممتازة! واصل التقدم</Text>
               </View>
             )}
 
