@@ -6,8 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
+  SafeAreaView,
 } from 'react-native';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
 const CURRICULUM_DATA = [
@@ -21,16 +21,6 @@ const CURRICULUM_DATA = [
 ];
 
 export default function App() {
-  return (
-    <SafeAreaProvider>
-      <BunyanCoreApp />
-    </SafeAreaProvider>
-  );
-}
-
-function BunyanCoreApp() {
-  const insets = useSafeAreaInsets();
-
   const [userStats, setUserStats] = useState({
     xp: 450,
     streak: 5,
@@ -46,6 +36,7 @@ function BunyanCoreApp() {
     setUserStats((prev) => ({ ...prev, xp: prev.xp + points }));
   };
 
+  // 1. شاشة المساعد الصوتي الذكي
   const renderAITutorScreen = () => {
     const [isListening, setIsListening] = useState(false);
     const [messages, setMessages] = useState([
@@ -69,7 +60,8 @@ function BunyanCoreApp() {
     };
 
     return (
-      <View style={[styles.fullScreen, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+      <SafeAreaView style={styles.safeArea}>
+        <StatusBar barStyle="light-content" backgroundColor="#090d16" />
         <View style={styles.navHeader}>
           <TouchableOpacity style={styles.backBtn} onPress={() => setCurrentScreen('HOME')}>
             <Ionicons name="arrow-back" size={24} color="#FFF" />
@@ -101,13 +93,15 @@ function BunyanCoreApp() {
             <Ionicons name={isListening ? "radio" : "mic"} size={36} color="#FFF" />
           </TouchableOpacity>
         </View>
-      </View>
+      </SafeAreaView>
     );
   };
 
+  // 2. شاشة منهج التعلم الشامل
   const renderCurriculumScreen = () => {
     return (
-      <View style={[styles.fullScreen, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+      <SafeAreaView style={styles.safeArea}>
+        <StatusBar barStyle="light-content" backgroundColor="#090d16" />
         <View style={styles.navHeader}>
           <TouchableOpacity style={styles.backBtn} onPress={() => setCurrentScreen('HOME')}>
             <Ionicons name="arrow-back" size={24} color="#FFF" />
@@ -140,10 +134,12 @@ function BunyanCoreApp() {
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </View>
+      </SafeAreaView>
     );
   };
-      const renderLessonScreen = () => {
+
+  // 3. شاشة الدرس التفاعلي
+  const renderLessonScreen = () => {
     const [selectedOption, setSelectedOption] = useState(null);
     const [feedback, setFeedback] = useState(null);
 
@@ -161,7 +157,8 @@ function BunyanCoreApp() {
     };
 
     return (
-      <View style={[styles.fullScreen, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+      <SafeAreaView style={styles.safeArea}>
+        <StatusBar barStyle="light-content" backgroundColor="#090d16" />
         <View style={styles.navHeader}>
           <TouchableOpacity style={styles.backBtn} onPress={() => setCurrentScreen('CURRICULUM')}>
             <Ionicons name="close" size={24} color="#FFF" />
@@ -175,7 +172,7 @@ function BunyanCoreApp() {
             <Text style={styles.questionTag}>تمرين التفاعل والمفردات</Text>
             <Text style={styles.questionText}>{activeLesson?.question || 'اختر الإجابة الصحيحة'}</Text>
             
-            <TouchableOpacity style={styles.audioBtn}>
+            <TouchableOpacity style={styles.audioBtn} onPress={() => alert('تشغيل الصوت بنجاح!')}>
               <Ionicons name="volume-high" size={24} color="#38bdf8" />
               <Text style={styles.audioBtnText}>استمع للنطق</Text>
             </TouchableOpacity>
@@ -208,14 +205,15 @@ function BunyanCoreApp() {
             </View>
           )}
         </ScrollView>
-      </View>
+      </SafeAreaView>
     );
   };
 
+  // 4. الشاشة الرئيسية
   const renderHomeScreen = () => {
     return (
-      <View style={[styles.fullScreen, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-        <StatusBar barStyle="light-content" />
+      <SafeAreaView style={styles.safeArea}>
+        <StatusBar barStyle="light-content" backgroundColor="#090d16" />
         
         <View style={styles.statsBar}>
           <View style={styles.statBadge}>
@@ -253,15 +251,15 @@ function BunyanCoreApp() {
             <Text style={styles.cardDesc}>تصفح المستويات من A0 حتى C2 مع الدروس والتمارين التفاعلية.</Text>
           </TouchableOpacity>
 
-          <View style={styles.sectionCard}>
+          <TouchableOpacity style={styles.sectionCard} onPress={() => alert(`حصيلة الكلمات المتعلمة: ${userStats.learnedWords} كلمة`)}>
             <View style={styles.cardHeader}>
               <Ionicons name="school-outline" size={24} color="#a855f7" />
               <Text style={styles.cardTitle}>حصيلة المفردات</Text>
             </View>
             <Text style={styles.cardDesc}>تعلمت حتى الآن {userStats.learnedWords} كلمة. تابع التمارين لزيادة حصيلتك.</Text>
-          </View>
+          </TouchableOpacity>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     );
   };
 
@@ -278,7 +276,7 @@ function BunyanCoreApp() {
 }
 
 const styles = StyleSheet.create({
-  fullScreen: {
+  safeArea: {
     flex: 1,
     backgroundColor: '#090d16',
   },
@@ -460,7 +458,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    backgroundColor: '#1e293b',
+    backgroundColor: '#1e1b4b',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
@@ -565,4 +563,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#ef4444',
   },
 });
-        
+  
