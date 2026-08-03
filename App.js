@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,15 +6,10 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
-  Dimensions,
-  Animated,
 } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
-const { width, height } = Dimensions.get('window');
-
-// البيانات الأولية للمستويات والدروس
 const CURRICULUM_DATA = [
   { id: 'A0', title: 'مبتدئ جداً (A0)', desc: 'الأصوات الأساسية، التحيات، والأرقام', progress: 0.8 },
   { id: 'A1', title: 'مبتدئ (A1)', desc: 'التعريف بالنفس والأسئلة اليومية البسيطة', progress: 0.4 },
@@ -36,7 +31,6 @@ export default function App() {
 function BunyanCoreApp() {
   const insets = useSafeAreaInsets();
 
-  // الحالة المركزية للتطبيق (User State)
   const [userStats, setUserStats] = useState({
     xp: 450,
     streak: 5,
@@ -45,20 +39,13 @@ function BunyanCoreApp() {
     learnedWords: 84,
   });
 
-  // إدارة الشاشات (Navigation State)
-  // Screens: 'HOME' | 'CURRICULUM' | 'LESSON' | 'AI_TUTOR'
   const [currentScreen, setCurrentScreen] = useState('HOME');
-  const [activeLevel, setActiveLevel] = useState(null);
   const [activeLesson, setActiveLesson] = useState(null);
 
-  // زيادة النقاط
   const addXP = (points) => {
     setUserStats((prev) => ({ ...prev, xp: prev.xp + points }));
   };
 
-  // -------------------------------------------------------------
-  // 1. شاشة المساعد الصوتي التفاعلي (AI Tutor Screen)
-  // -------------------------------------------------------------
   const renderAITutorScreen = () => {
     const [isListening, setIsListening] = useState(false);
     const [messages, setMessages] = useState([
@@ -78,12 +65,11 @@ function BunyanCoreApp() {
         };
         setMessages((prev) => [...prev, userMsg, aiResponse]);
         addXP(15);
-      }, 2500);
+      }, 2000);
     };
 
     return (
       <View style={[styles.fullScreen, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-        {/* Header */}
         <View style={styles.navHeader}>
           <TouchableOpacity style={styles.backBtn} onPress={() => setCurrentScreen('HOME')}>
             <Ionicons name="arrow-back" size={24} color="#FFF" />
@@ -92,7 +78,6 @@ function BunyanCoreApp() {
           <View style={{ width: 40 }} />
         </View>
 
-        {/* Chat History */}
         <ScrollView contentContainerStyle={styles.chatScroll} showsVerticalScrollIndicator={false}>
           {messages.map((msg) => (
             <View key={msg.id} style={[styles.chatBubble, msg.sender === 'user' ? styles.userBubble : styles.aiBubble]}>
@@ -107,7 +92,6 @@ function BunyanCoreApp() {
           )}
         </ScrollView>
 
-        {/* Voice Control Section */}
         <View style={styles.aiControlsContainer}>
           <Text style={styles.aiStatusText}>{isListening ? 'أنصت إليك...' : 'اضغط الميكروفون للتحدث'}</Text>
           <TouchableOpacity 
@@ -120,13 +104,10 @@ function BunyanCoreApp() {
       </View>
     );
   };
-  // -------------------------------------------------------------
-  // 2. شاشة منهج التعلم الشامل (Curriculum Screen)
-  // -------------------------------------------------------------
+
   const renderCurriculumScreen = () => {
     return (
       <View style={[styles.fullScreen, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-        {/* Navigation Header */}
         <View style={styles.navHeader}>
           <TouchableOpacity style={styles.backBtn} onPress={() => setCurrentScreen('HOME')}>
             <Ionicons name="arrow-back" size={24} color="#FFF" />
@@ -143,7 +124,6 @@ function BunyanCoreApp() {
               key={lvl.id} 
               style={styles.levelCard}
               onPress={() => {
-                setActiveLevel(lvl);
                 setActiveLesson({ id: 1, title: `درس تفاعلي - ${lvl.id}`, question: 'اختر الترجمة الصحيحة لـ "Welcome"' });
                 setCurrentScreen('LESSON');
               }}
@@ -154,7 +134,6 @@ function BunyanCoreApp() {
               </View>
               <Text style={styles.levelDesc}>{lvl.desc}</Text>
               
-              {/* Progress Bar */}
               <View style={styles.progressBarBg}>
                 <View style={[styles.progressBarFill, { width: `${lvl.progress * 100}%` }]} />
               </View>
@@ -164,11 +143,7 @@ function BunyanCoreApp() {
       </View>
     );
   };
-
-  // -------------------------------------------------------------
-  // 3. شاشة الدرس التفاعلي والتمارين (Lesson Screen)
-  // -------------------------------------------------------------
-  const renderLessonScreen = () => {
+      const renderLessonScreen = () => {
     const [selectedOption, setSelectedOption] = useState(null);
     const [feedback, setFeedback] = useState(null);
 
@@ -187,7 +162,6 @@ function BunyanCoreApp() {
 
     return (
       <View style={[styles.fullScreen, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-        {/* Header */}
         <View style={styles.navHeader}>
           <TouchableOpacity style={styles.backBtn} onPress={() => setCurrentScreen('CURRICULUM')}>
             <Ionicons name="close" size={24} color="#FFF" />
@@ -207,7 +181,6 @@ function BunyanCoreApp() {
             </TouchableOpacity>
           </View>
 
-          {/* Options */}
           {options.map((opt, idx) => (
             <TouchableOpacity 
               key={idx} 
@@ -221,7 +194,6 @@ function BunyanCoreApp() {
             </TouchableOpacity>
           ))}
 
-          {/* Instant Feedback Notice */}
           {feedback === 'success' && (
             <View style={styles.feedbackSuccessBox}>
               <Ionicons name="checkmark-circle" size={24} color="#22c55e" />
@@ -240,15 +212,11 @@ function BunyanCoreApp() {
     );
   };
 
-  // -------------------------------------------------------------
-  // 4. الشاشة الرئيسية (Home Screen)
-  // -------------------------------------------------------------
   const renderHomeScreen = () => {
     return (
       <View style={[styles.fullScreen, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <StatusBar barStyle="light-content" />
         
-        {/* Top User Stats Bar */}
         <View style={styles.statsBar}>
           <View style={styles.statBadge}>
             <Ionicons name="flash" size={18} color="#eab308" />
@@ -265,7 +233,6 @@ function BunyanCoreApp() {
         </View>
 
         <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-          {/* Main Action Banner: AI Tutor */}
           <TouchableOpacity style={styles.aiBanner} onPress={() => setCurrentScreen('AI_TUTOR')}>
             <View style={styles.aiBannerBadge}>
               <Text style={styles.aiBannerBadgeText}>مباشر 24/7</Text>
@@ -278,7 +245,6 @@ function BunyanCoreApp() {
             </View>
           </TouchableOpacity>
 
-          {/* Curriculum Section */}
           <TouchableOpacity style={styles.sectionCard} onPress={() => setCurrentScreen('CURRICULUM')}>
             <View style={styles.cardHeader}>
               <Ionicons name="book-outline" size={24} color="#38bdf8" />
@@ -287,7 +253,6 @@ function BunyanCoreApp() {
             <Text style={styles.cardDesc}>تصفح المستويات من A0 حتى C2 مع الدروس والتمارين التفاعلية.</Text>
           </TouchableOpacity>
 
-          {/* Quick Word Bank Card */}
           <View style={styles.sectionCard}>
             <View style={styles.cardHeader}>
               <Ionicons name="school-outline" size={24} color="#a855f7" />
@@ -300,7 +265,6 @@ function BunyanCoreApp() {
     );
   };
 
-  // Switch Screen Controller
   switch (currentScreen) {
     case 'AI_TUTOR':
       return renderAITutorScreen();
@@ -313,9 +277,6 @@ function BunyanCoreApp() {
   }
 }
 
-// -------------------------------------------------------------
-// Style Sheet (Minimal, Dark Glassmorphism, Safe Layout)
-// -------------------------------------------------------------
 const styles = StyleSheet.create({
   fullScreen: {
     flex: 1,
@@ -604,4 +565,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#ef4444',
   },
 });
-              
+        
