@@ -6,28 +6,18 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
-  Dimensions,
+  SafeAreaView,
+  Platform,
 } from 'react-native';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function App() {
-  return (
-    <SafeAreaProvider>
-      <BunyanCoreApp />
-    </SafeAreaProvider>
-  );
-}
-
-function BunyanCoreApp() {
-  const insets = useSafeAreaInsets();
-  
   const [currentScreen, setCurrentScreen] = useState('HOME');
   const [userStats] = useState({ xp: 450, streak: 5, level: 'A1' });
 
-  // شريط التنقل السفلي التفاعلي
+  // شريط التنقل السفلي التفاعلي المحمي من الحواف
   const renderBottomNav = () => (
-    <View style={[styles.bottomNavBar, { paddingBottom: Math.max(insets.bottom, 16) }]}>
+    <View style={styles.bottomNavBar}>
       <TouchableOpacity style={styles.navNavItem} onPress={() => setCurrentScreen('HOME')}>
         <Ionicons name="home" size={24} color={currentScreen === 'HOME' ? '#38bdf8' : '#64748b'} />
       </TouchableOpacity>
@@ -47,16 +37,12 @@ function BunyanCoreApp() {
   );
 
   return (
-    <View style={[styles.mainWrapper, { paddingTop: insets.top }]}>
-      <StatusBar barStyle="light-content" backgroundColor="#090d16" translucent />
+    <SafeAreaView style={styles.safeAreaContainer}>
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
       
-      {/* محتوى الشاشة */}
-      <View style={{ flex: 1 }}>
+      <View style={styles.mainWrapper}>
         <ScrollView 
-          contentContainerStyle={[
-            styles.scrollContent, 
-            { paddingBottom: 100 + insets.bottom } // مساحة إضافية لمنع اختفاء البطاقات خلف الشريط السفلي
-          ]} 
+          contentContainerStyle={styles.scrollContent} 
           showsVerticalScrollIndicator={false}
         >
           {/* شريط الإحصائيات العلوي */}
@@ -125,18 +111,23 @@ function BunyanCoreApp() {
             </TouchableOpacity>
           </View>
         </ScrollView>
-      </View>
 
-      {/* شريط التنقل السفلي المرفع عن حافة النظام */}
-      {renderBottomNav()}
-    </View>
+        {/* شريط التنقل السفلي */}
+        {renderBottomNav()}
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeAreaContainer: {
+    flex: 1,
+    backgroundColor: '#000000',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
   mainWrapper: {
     flex: 1,
-    backgroundColor: '#000000', // خلفية سوداء مطابقة لتصميمك
+    backgroundColor: '#000000',
   },
   statsBar: {
     flexDirection: 'row',
@@ -159,6 +150,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 16,
     paddingTop: 12,
+    paddingBottom: 90, // هامش سفلي لعدم تغطية البطاقات بالشريط
   },
   fullCard: {
     backgroundColor: '#111827',
@@ -198,7 +190,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 16,
     padding: 16,
-    width: '48%', // كرتين في كل صف
+    width: '48%',
     alignItems: 'flex-end',
   },
   iconBox: {
@@ -231,12 +223,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingTop: 12,
+    paddingVertical: 14,
+    paddingBottom: 20, // رفع الأزرار عن حافة الشاشة السفلية للأندرويد
   },
   navNavItem: {
     paddingHorizontal: 16,
-    paddingVertical: 4,
     alignItems: 'center',
   },
 });
-  
+            
