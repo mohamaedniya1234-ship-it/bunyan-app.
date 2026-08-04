@@ -4,7 +4,7 @@
     "slug": "bunyan-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "icon": "./icon.png",
     "ios": {
@@ -12,7 +12,7 @@
     },
     "android": {
       "package": "com.mohamaedniya.bunyan",
-      "edgeToEdgeEnabled": true,
+      "edgeToEdgeEnabled": false,
       "adaptiveIcon": {
         "foregroundImage": "./icon.png",
         "backgroundColor": "#0F172A"
@@ -25,3 +25,4 @@
     }
   }
 }
+
