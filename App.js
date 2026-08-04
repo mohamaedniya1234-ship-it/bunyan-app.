@@ -8,13 +8,9 @@ import {
   StatusBar,
   SafeAreaView,
   Platform,
-  Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const { width } = Dimensions.get('window');
-
-// بيانات المنهج التعليمي
 const CURRICULUM_DATA = [
   { id: 'A0', title: 'مبتدئ جداً (A0)', desc: 'الأصوات الأساسية، التحيات، والأرقام' },
   { id: 'A1', title: 'مبتدئ (A1)', desc: 'التعريف بالنفس والأسئلة اليومية البسيطة' },
@@ -30,12 +26,8 @@ export default function App() {
   const [activeLesson, setActiveLesson] = useState(null);
   const [userStats] = useState({ xp: 450, streak: 5, level: 'A1' });
 
-  // -------------------------------------------------------------
-  // 1. الشاشة الرئيسية (طابق الأصل 100%)
-  // -------------------------------------------------------------
   const renderHomeScreen = () => (
     <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-      {/* شريط الإحصائيات العلوي */}
       <View style={styles.statsBar}>
         <View style={styles.statBadge}>
           <Ionicons name="flash" size={18} color="#eab308" />
@@ -51,23 +43,18 @@ export default function App() {
         </View>
       </View>
 
-      {/* منهج التعلم الشامل */}
       <TouchableOpacity activeOpacity={0.7} style={styles.fullCard} onPress={() => setCurrentScreen('CURRICULUM')}>
         <View style={styles.cardHeaderRTL}>
           <Ionicons name="chevron-back" size={20} color="#94a3b8" />
           <View style={styles.cardTitleGroup}>
             <Text style={styles.cardMainTitle}>🎓 منهج التعلم الشامل (A0 -> C2)</Text>
-            <View style={{ flexDirection: 'row-reverse', alignItems: 'center', marginTop: 4 }}>
-              <Text style={styles.cardMainTitleBold}>📚 التدرج التعليمي الكامل</Text>
-            </View>
+            <Text style={styles.cardMainTitleBold}>📚 التدرج التعليمي الكامل</Text>
             <Text style={styles.cardSubTitle}>من صفر الأبجدية حتى إتقان المحادثة الأكاديمية</Text>
           </View>
         </View>
       </TouchableOpacity>
 
-      {/* شبكة الميزات (2x2) */}
       <View style={styles.gridContainer}>
-        {/* القاموس الذكي */}
         <TouchableOpacity activeOpacity={0.7} style={styles.gridCard} onPress={() => setCurrentScreen('DICTIONARY')}>
           <View style={styles.iconBox}>
             <Ionicons name="book-outline" size={28} color="#FFF" />
@@ -76,7 +63,6 @@ export default function App() {
           <Text style={styles.gridSub}>مرادفات، وأمثلة متقدمة، IPA</Text>
         </TouchableOpacity>
 
-        {/* التحدث و Shadowing */}
         <TouchableOpacity activeOpacity={0.7} style={styles.gridCard} onPress={() => setCurrentScreen('AI_TUTOR')}>
           <View style={styles.iconBox}>
             <Ionicons name="mic-outline" size={28} color="#FFF" />
@@ -85,7 +71,6 @@ export default function App() {
           <Text style={styles.gridSub}>تحليل وتعديل مخارج الحروف</Text>
         </TouchableOpacity>
 
-        {/* اختبار المستوى AI */}
         <TouchableOpacity activeOpacity={0.7} style={styles.gridCard} onPress={() => setCurrentScreen('LEVEL_TEST')}>
           <View style={styles.iconBox}>
             <Ionicons name="pulse-outline" size={28} color="#FFF" />
@@ -94,7 +79,6 @@ export default function App() {
           <Text style={styles.gridSub}>تقييم دقيق لمستواك الحالي</Text>
         </TouchableOpacity>
 
-        {/* Ultra Elite */}
         <TouchableOpacity activeOpacity={0.7} style={styles.gridCard} onPress={() => setCurrentScreen('ULTRA_ELITE')}>
           <View style={styles.iconBox}>
             <Ionicons name="camera-outline" size={28} color="#FFF" />
@@ -106,11 +90,6 @@ export default function App() {
     </ScrollView>
   );
 
-  // -------------------------------------------------------------
-  // 2. الشاشات الفرعية (فتح الشاشات بنظام Full Screen)
-  // -------------------------------------------------------------
-  
-  // شاشة المنهج
   const renderCurriculumScreen = () => (
     <View style={styles.fullScreenInner}>
       <View style={styles.navHeader}>
@@ -141,117 +120,10 @@ export default function App() {
     </View>
   );
 
-  // شاشة الدرس
-  const renderLessonScreen = () => (
-    <View style={styles.fullScreenInner}>
-      <View style={styles.navHeader}>
-        <TouchableOpacity onPress={() => setCurrentScreen('CURRICULUM')} style={styles.backBtn}>
-          <Ionicons name="arrow-forward" size={24} color="#FFF" />
-        </TouchableOpacity>
-        <Text style={styles.navTitle}>الدرس ({activeLesson?.id || 'A1'})</Text>
-      </View>
-      <View style={styles.paddedContent}>
-        <View style={styles.interactiveBox}>
-          <Text style={styles.boxTag}>تمرين استماع وتكرار</Text>
-          <Text style={styles.boxTitle}>"How are you doing today?"</Text>
-          <TouchableOpacity style={styles.actionBtn}>
-            <Ionicons name="volume-medium" size={24} color="#FFF" />
-            <Text style={styles.actionBtnText}>استمع للنطق الأصلي</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
-
-  // شاشة التحدث و Shadowing
-  const renderAITutorScreen = () => (
-    <View style={styles.fullScreenInner}>
-      <View style={styles.navHeader}>
-        <TouchableOpacity onPress={() => setCurrentScreen('HOME')} style={styles.backBtn}>
-          <Ionicons name="arrow-forward" size={24} color="#FFF" />
-        </TouchableOpacity>
-        <Text style={styles.navTitle}>التحدث و Shadowing</Text>
-      </View>
-      <View style={styles.paddedContentCenter}>
-        <View style={styles.aiMicWrapper}>
-          <TouchableOpacity activeOpacity={0.8} style={styles.aiMicBtn}>
-            <Ionicons name="mic" size={48} color="#FFF" />
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.aiStatusText}>اضغط على الميكروفون وابدأ بالتحدث</Text>
-      </View>
-    </View>
-  );
-
-  // شاشة القاموس الذكي
-  const renderDictionaryScreen = () => (
-    <View style={styles.fullScreenInner}>
-      <View style={styles.navHeader}>
-        <TouchableOpacity onPress={() => setCurrentScreen('HOME')} style={styles.backBtn}>
-          <Ionicons name="arrow-forward" size={24} color="#FFF" />
-        </TouchableOpacity>
-        <Text style={styles.navTitle}>القاموس الذكي</Text>
-      </View>
-      <View style={styles.paddedContent}>
-        <View style={styles.interactiveBox}>
-          <Text style={styles.wordMain}>Fluency</Text>
-          <Text style={styles.wordIPA}>/ˈfluːənsi/</Text>
-          <Text style={styles.wordTranslation}>الطلاقة في التحدث والتعبير</Text>
-        </View>
-      </View>
-    </View>
-  );
-
-  // شاشة اختبار المستوى
-  const renderLevelTestScreen = () => (
-    <View style={styles.fullScreenInner}>
-      <View style={styles.navHeader}>
-        <TouchableOpacity onPress={() => setCurrentScreen('HOME')} style={styles.backBtn}>
-          <Ionicons name="arrow-forward" size={24} color="#FFF" />
-        </TouchableOpacity>
-        <Text style={styles.navTitle}>اختبار المستوى AI</Text>
-      </View>
-      <View style={styles.paddedContent}>
-        <View style={styles.interactiveBox}>
-          <Text style={styles.boxTag}>السؤال 1 من 10</Text>
-          <Text style={styles.boxTitle}>She ___ to school every morning.</Text>
-        </View>
-        {['walks', 'walk', 'walking', 'walked'].map((opt, i) => (
-          <TouchableOpacity key={i} activeOpacity={0.7} style={styles.quizOptionBtn}>
-            <Text style={styles.quizOptionText}>{opt}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    </View>
-  );
-
-  // شاشة Ultra Elite
-  const renderUltraEliteScreen = () => (
-    <View style={styles.fullScreenInner}>
-      <View style={styles.navHeader}>
-        <TouchableOpacity onPress={() => setCurrentScreen('HOME')} style={styles.backBtn}>
-          <Ionicons name="arrow-forward" size={24} color="#FFF" />
-        </TouchableOpacity>
-        <Text style={styles.navTitle}>Ultra Elite 💎</Text>
-      </View>
-      <View style={styles.paddedContentCenter}>
-        <Ionicons name="camera" size={64} color="#38bdf8" style={{ marginBottom: 16 }} />
-        <Text style={styles.boxTitle}>تعلم عبر الكاميرا</Text>
-        <Text style={styles.cardSubTitle}>وجه الكاميرا نحو الأشياء للتعرف على أسمائها فورياً</Text>
-      </View>
-    </View>
-  );
-
-  // موجه الشاشات
   const renderActiveScreen = () => {
     switch (currentScreen) {
       case 'HOME': return renderHomeScreen();
       case 'CURRICULUM': return renderCurriculumScreen();
-      case 'LESSON': return renderLessonScreen();
-      case 'AI_TUTOR': return renderAITutorScreen();
-      case 'DICTIONARY': return renderDictionaryScreen();
-      case 'LEVEL_TEST': return renderLevelTestScreen();
-      case 'ULTRA_ELITE': return renderUltraEliteScreen();
       default: return renderHomeScreen();
     }
   };
@@ -263,23 +135,23 @@ export default function App() {
       <View style={styles.mainWrapper}>
         {renderActiveScreen()}
 
-        {/* شريط التنقل السفلي المرفوع للحماية من الحافة السفلية للنظام */}
+        {/* شريط التنقل السفلي المرفوع بمسافة أمان كبيرة جداً */}
         {currentScreen === 'HOME' && (
           <View style={styles.bottomNavBar}>
             <TouchableOpacity style={styles.navNavItem} onPress={() => setCurrentScreen('HOME')}>
-              <Ionicons name="home" size={24} color="#38bdf8" />
+              <Ionicons name="home" size={26} color="#38bdf8" />
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.navNavItem} onPress={() => setCurrentScreen('CURRICULUM')}>
-              <Ionicons name="book" size={24} color="#64748b" />
+              <Ionicons name="book" size={26} color="#64748b" />
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.navNavItem} onPress={() => setCurrentScreen('DICTIONARY')}>
-              <Ionicons name="library" size={24} color="#64748b" />
+              <Ionicons name="library" size={26} color="#64748b" />
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.navNavItem} onPress={() => setCurrentScreen('LEVEL_TEST')}>
-              <Ionicons name="stats-chart" size={24} color="#64748b" />
+              <Ionicons name="stats-chart" size={26} color="#64748b" />
             </TouchableOpacity>
           </View>
         )}
@@ -288,9 +160,6 @@ export default function App() {
   );
 }
 
-// -------------------------------------------------------------
-// 3. التنسيقات (المطابقة لـ 1000016082.jpg)
-// -------------------------------------------------------------
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
@@ -343,16 +212,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 16,
     paddingTop: 12,
-    paddingBottom: 110, // منع احتجاب الأزرار في أسفل الشاشة
-  },
-  paddedContent: {
-    padding: 16,
-  },
-  paddedContentCenter: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
+    paddingBottom: 130, // مساحة ضخمة أسفل القائمة لضمان عدم اختفاء أي كرت خلف الشريط
   },
   fullCard: {
     backgroundColor: '#111827',
@@ -373,21 +233,20 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   cardMainTitle: {
-    color: '#FFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: '#9ca3af',
+    fontSize: 12,
     textAlign: 'right',
   },
   cardMainTitleBold: {
     color: '#FFF',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 4,
     textAlign: 'right',
   },
   cardSubTitle: {
     color: '#9ca3af',
-    fontSize: 12,
+    fontSize: 11,
     textAlign: 'right',
   },
   gridContainer: {
@@ -457,103 +316,22 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: 'right',
   },
-  interactiveBox: {
-    backgroundColor: '#111827',
-    borderColor: '#1f2937',
-    borderWidth: 1,
-    borderRadius: 16,
-    padding: 20,
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  boxTag: {
-    color: '#38bdf8',
-    fontSize: 13,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  boxTitle: {
-    color: '#FFF',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 12,
-  },
-  actionBtn: {
-    backgroundColor: '#0284c7',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
-    marginTop: 8,
-  },
-  actionBtnText: {
-    color: '#FFF',
-    fontWeight: 'bold',
-  },
-  wordMain: {
-    color: '#FFF',
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  wordIPA: {
-    color: '#38bdf8',
-    fontSize: 16,
-    marginBottom: 12,
-  },
-  wordTranslation: {
-    color: '#9ca3af',
-    fontSize: 16,
-  },
-  quizOptionBtn: {
-    backgroundColor: '#111827',
-    borderColor: '#1f2937',
-    borderWidth: 1,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 10,
-    alignItems: 'center',
-  },
-  quizOptionText: {
-    color: '#FFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  aiMicWrapper: {
-    marginBottom: 24,
-  },
-  aiMicBtn: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    backgroundColor: '#0284c7',
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 10,
-  },
-  aiStatusText: {
-    color: '#9ca3af',
-    fontSize: 16,
-  },
   bottomNavBar: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
+    height: 75, // ارتفاع ثابت وواضح
     backgroundColor: '#000000',
     borderTopWidth: 1,
     borderTopColor: '#1f2937',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingBottom: Platform.OS === 'ios' ? 24 : 18, // رفع الأزرار فوق شريط النظام السفلي
+    paddingBottom: Platform.OS === 'android' ? 35 : 20, // رفع الأيقونات بشكل قاطع فوق أزرار الأندرويد
   },
   navNavItem: {
-    paddingHorizontal: 16,
+    padding: 10,
     alignItems: 'center',
   },
 });
