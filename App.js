@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, StatusBar, Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 const WORDS_DATABASE = [
-  // الكلمات الأساسية
+  // كلمات أساسية
   { ar: 'كتاب', en: 'BOOK', pronunciation: 'بوك' },
   { ar: 'قلم', en: 'PEN', pronunciation: 'بين' },
   { ar: 'تفاحة', en: 'APPLE', pronunciation: 'أبل' },
@@ -24,10 +23,26 @@ const WORDS_DATABASE = [
   { ar: 'عائلة', en: 'FAMILY', pronunciation: 'فاميلي' },
   { ar: 'مدينة', en: 'CITY', pronunciation: 'سيتي' },
   { ar: 'طريق', en: 'ROAD', pronunciation: 'رود' },
+  { ar: 'رجل', en: 'MAN', pronunciation: 'مان' },
+  { ar: 'امرأة', en: 'WOMAN', pronunciation: 'وومان' },
+  { ar: 'ولد', en: 'BOY', pronunciation: 'بوي' },
+  { ar: 'بنت', en: 'GIRL', pronunciation: 'غيرل' },
+  { ar: 'طفل', en: 'BABY', pronunciation: 'بيبي' },
+  { ar: 'شجرة', en: 'TREE', pronunciation: 'تري' },
+  { ar: 'وردة', en: 'FLOWER', pronunciation: 'فلاور' },
+  { ar: 'بحر', en: 'SEA', pronunciation: 'سي' },
+  { ar: 'سماء', en: 'SKY', pronunciation: 'سكاي' },
+  { ar: 'كلب', en: 'DOG', pronunciation: 'دوغ' },
+  { ar: 'قطة', en: 'CAT', pronunciation: 'كات' },
+  { ar: 'طائر', en: 'BIRD', pronunciation: 'بيرد' },
+  { ar: 'حليب', en: 'MILK', pronunciation: 'ميلك' },
+  { ar: 'قهوة', en: 'COFFEE', pronunciation: 'كوفي' },
+  { ar: 'شاي', en: 'TEA', pronunciation: 'تي' },
 
-  // الجمل والعبارات اليومية
+  // جمل وعبارات يومية
   { ar: 'صباح الخير', en: 'GOOD MORNING', pronunciation: 'غود مورنينغ' },
   { ar: 'مساء الخير', en: 'GOOD EVENING', pronunciation: 'غود إيفنينغ' },
+  { ar: 'تصبح على خير', en: 'GOOD NIGHT', pronunciation: 'غود نايت' },
   { ar: 'شكراً لك', en: 'THANK YOU', pronunciation: 'ثانك يو' },
   { ar: 'كيف حالك؟', en: 'HOW ARE YOU?', pronunciation: 'هاو أر يو؟' },
   { ar: 'أنا أحبك', en: 'I LOVE YOU', pronunciation: 'آي لاف يو' },
@@ -58,7 +73,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+      <StatusBar barStyle="dark-content" backgroundColor="#F9FAFB" />
       
       {/* بطاقة الكلمة */}
       <View style={styles.card}>
@@ -69,16 +84,14 @@ export default function App() {
 
       {/* أزرار التنقل */}
       <View style={styles.controls}>
-        <TouchableOpacity style={styles.btn} onPress={handlePrev}>
-          <Ionicons name="arrow-forward" size={24} color="#000" />
-          <Text style={styles.btnText}>السابقة</Text>
+        <TouchableOpacity activeOpacity={0.7} style={styles.btn} onPress={handlePrev}>
+          <Text style={styles.btnText}>الكلمة السابقة  →</Text>
         </TouchableOpacity>
 
         <Text style={styles.counter}>{currentIndex + 1} / {WORDS_DATABASE.length}</Text>
 
-        <TouchableOpacity style={styles.btn} onPress={handleNext}>
-          <Text style={styles.btnText}>التالية</Text>
-          <Ionicons name="arrow-back" size={24} color="#000" />
+        <TouchableOpacity activeOpacity={0.7} style={styles.btn} onPress={handleNext}>
+          <Text style={styles.btnText}>←  الكلمة التالية</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -96,34 +109,34 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '100%',
-    aspectRatio: 1,
+    height: 380,
     backgroundColor: '#FFFFFF',
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingVertical: 40,
-    paddingHorizontal: 20,
-    elevation: 4,
+    paddingVertical: 30,
+    paddingHorizontal: 15,
+    elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.08,
     shadowRadius: 8,
   },
   arabicText: {
-    fontSize: 48,
+    fontSize: 42,
     fontWeight: 'bold',
     color: '#000000',
     textAlign: 'center',
   },
   englishText: {
-    fontSize: 44,
+    fontSize: 38,
     fontWeight: '900',
     color: '#DC2626',
     textAlign: 'center',
-    letterSpacing: 2,
+    letterSpacing: 1.5,
   },
   pronunciationText: {
-    fontSize: 42,
+    fontSize: 36,
     fontWeight: 'bold',
     color: '#16A34A',
     textAlign: 'center',
@@ -133,22 +146,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    marginTop: 30,
+    marginTop: 35,
   },
   btn: {
-    flexDirection: 'row',
-    alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 16,
-    gap: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 14,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
   },
   btnText: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 'bold',
-    color: '#000000',
+    color: '#111827',
   },
   counter: {
     fontSize: 16,
@@ -156,4 +168,4 @@ const styles = StyleSheet.create({
     color: '#6B7280',
   },
 });
-        
+
