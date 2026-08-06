@@ -1,27 +1,47 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, StatusBar, Platform } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, StatusBar, Image } from 'react-native';
 
 const WORDS_DATABASE = [
-  { ar: 'كتاب', en: 'BOOK', pronunciation: 'بوك' },
-  { ar: 'قلم', en: 'PEN', pronunciation: 'بين' },
-  { ar: 'تفاحة', en: 'APPLE', pronunciation: 'أبل' },
-  { ar: 'سيارة', en: 'CAR', pronunciation: 'كار' },
-  { ar: 'مدرسة', en: 'SCHOOL', pronunciation: 'سكول' },
-  { ar: 'شمس', en: 'SUN', pronunciation: 'سان' },
-  { ar: 'قمر', en: 'MOON', pronunciation: 'مون' },
-  { ar: 'ماء', en: 'WATER', pronunciation: 'ووتر' },
-  { ar: 'بيت', en: 'HOUSE', pronunciation: 'هاوس' },
-  { ar: 'صديق', en: 'FRIEND', pronunciation: 'فريند' },
-  { ar: 'طعام', en: 'FOOD', pronunciation: 'فود' },
-  { ar: 'وقت', en: 'TIME', pronunciation: 'تايم' },
-  { ar: 'عمل', en: 'WORK', pronunciation: 'ويرك' },
-  { ar: 'هاتف', en: 'PHONE', pronunciation: 'فون' },
-  { ar: 'باب', en: 'DOOR', pronunciation: 'دور' },
-  { ar: 'صباح الخير', en: 'GOOD MORNING', pronunciation: 'غود مورنينغ' },
-  { ar: 'مساء الخير', en: 'GOOD EVENING', pronunciation: 'غود إيفنينغ' },
-  { ar: 'شكراً لك', en: 'THANK YOU', pronunciation: 'ثانك يو' },
-  { ar: 'كيف حالك؟', en: 'HOW ARE YOU?', pronunciation: 'هاو أر يو؟' },
-  { ar: 'أنا أحبك', en: 'I LOVE YOU', pronunciation: 'آي لاف يو' }
+  { 
+    en: 'BOOK', 
+    pronunciation: 'بوك', 
+    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&q=80' 
+  },
+  { 
+    en: 'PEN', 
+    pronunciation: 'بين', 
+    image: 'https://images.unsplash.com/photo-1585336261026-675768e74ed2?w=500&q=80' 
+  },
+  { 
+    en: 'APPLE', 
+    pronunciation: 'أبل', 
+    image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500&q=80' 
+  },
+  { 
+    en: 'CAR', 
+    pronunciation: 'كار', 
+    image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=500&q=80' 
+  },
+  { 
+    en: 'SCHOOL', 
+    pronunciation: 'سكول', 
+    image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=500&q=80' 
+  },
+  { 
+    en: 'SUN', 
+    pronunciation: 'سان', 
+    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500&q=80' 
+  },
+  { 
+    en: 'WATER', 
+    pronunciation: 'ووتر', 
+    image: 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=500&q=80' 
+  },
+  { 
+    en: 'HOUSE', 
+    pronunciation: 'هاوس', 
+    image: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=500&q=80' 
+  },
 ];
 
 export default function App() {
@@ -41,12 +61,18 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       
+      {/* بطاقة الكلمة والصورة */}
       <View style={styles.card}>
-        <Text style={styles.arabicText}>{currentWord.ar}</Text>
+        <Image 
+          source={{ uri: currentWord.image }} 
+          style={styles.cardImage} 
+          resizeMode="cover"
+        />
         <Text style={styles.englishText}>{currentWord.en}</Text>
         <Text style={styles.pronunciationText}>{currentWord.pronunciation}</Text>
       </View>
 
+      {/* أزرار التنقل */}
       <View style={styles.controls}>
         <TouchableOpacity style={styles.btn} onPress={handlePrev}>
           <Text style={styles.btnText}>السابقة</Text>
@@ -72,30 +98,34 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '100%',
-    height: 360,
+    height: 420,
     backgroundColor: '#FFFFFF',
-    borderRadius: 20,
+    borderRadius: 24,
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     paddingVertical: 20,
+    paddingHorizontal: 15,
     borderWidth: 1,
     borderColor: '#E5E7EB',
+    elevation: 2,
   },
-  arabicText: {
-    fontSize: 45,
-    fontWeight: 'bold',
-    color: '#000000',
+  cardImage: {
+    width: '90%',
+    height: 180,
+    borderRadius: 16,
   },
   englishText: {
-    fontSize: 40,
+    fontSize: 42,
     fontWeight: '900',
     color: '#DC2626',
     letterSpacing: 2,
+    marginTop: 10,
   },
   pronunciationText: {
     fontSize: 38,
     fontWeight: 'bold',
     color: '#16A34A',
+    marginBottom: 10,
   },
   controls: {
     flexDirection: 'row',
@@ -121,4 +151,4 @@ const styles = StyleSheet.create({
     color: '#4B5563',
   },
 });
-                                      
+      
