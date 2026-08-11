@@ -1,96 +1,60 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, StatusBar, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 
-const WORDS_DATABASE = [
-  { 
-    en: 'BOOK', 
-    pronunciation: 'بوك', 
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&q=80' 
-  },
-  { 
-    en: 'PEN', 
-    pronunciation: 'بين', 
-    image: 'https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=600&q=80' 
-  },
-  { 
-    en: 'APPLE', 
-    pronunciation: 'أبل', 
-    image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=600&q=80' 
-  },
-  { 
-    en: 'CAR', 
-    pronunciation: 'كار', 
-    image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80' 
-  },
-  { 
-    en: 'SCHOOL', 
-    pronunciation: 'سكول', 
-    image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80' 
-  },
-  { 
-    en: 'SUN', 
-    pronunciation: 'سان', 
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=80' 
-  },
-  { 
-    en: 'WATER', 
-    pronunciation: 'ووتر', 
-    image: 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=600&q=80' 
-  },
-  { 
-    en: 'HOUSE', 
-    pronunciation: 'هاوس', 
-    image: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80' 
-  },
+const WORDS_DATA = [
+  { id: 1, word: 'BOOK', translation: 'كتاب', image: require('./assets/book.png') },
+  { id: 2, word: 'PEN', translation: 'قلم', image: require('./assets/pen.png') },
+  { id: 3, word: 'APPLE', translation: 'تفاحة', image: require('./assets/apple.png') },
+  { id: 4, word: 'CAR', translation: 'سيارة', image: require('./assets/car.png') },
+  { id: 5, word: 'SCHOOL', translation: 'مدرسة', image: require('./assets/school.png') },
+  { id: 6, word: 'SUN', translation: 'شمس', image: require('./assets/sun.png') },
+  { id: 7, word: 'WATER', translation: 'ماء', image: require('./assets/water.png') },
+  { id: 8, word: 'HOUSE', translation: 'منزل', image: require('./assets/house.png') },
 ];
 
 export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % WORDS_DATABASE.length);
+    if (currentIndex < WORDS_DATA.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      setCurrentIndex(0); // العودة للكلمة الأولى عند الوصول للنهاية
+    }
   };
 
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + WORDS_DATABASE.length) % WORDS_DATABASE.length);
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    } else {
+      setCurrentIndex(WORDS_DATA.length - 1); // الانتقال للكلمة الأخيرة
+    }
   };
 
-  const currentWord = WORDS_DATABASE[currentIndex];
+  const currentWord = WORDS_DATA[currentIndex];
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
-      
-      {/* بطاقة الكلمة والصورة */}
       <View style={styles.card}>
-        <View style={styles.imageContainer}>
-          {loading && (
-            <ActivityIndicator size="large" color="#DC2626" style={styles.loader} />
-          )}
-          <Image 
-            source={{ uri: currentWord.image }} 
-            style={styles.cardImage} 
-            resizeMode="cover"
-            onLoadStart={() => setLoading(true)}
-            onLoadEnd={() => setLoading(false)}
-          />
-        </View>
-        
-        <Text style={styles.englishText}>{currentWord.en}</Text>
-        <Text style={styles.pronunciationText}>{currentWord.pronunciation}</Text>
+        <Image source={currentWord.image} style={styles.image} resizeMode="cover" />
+        <Text style={styles.englishWord}>{currentWord.word}</Text>
+        <Text style={styles.arabicWord}>{currentWord.translation}</Text>
       </View>
 
-      {/* أزرار التنقل */}
-      <View style={styles.controls}>
-        <TouchableOpacity style={styles.btn} onPress={handleNext}>
-          <Text style={styles.btnText}>الكلمة التالية ←</Text>
+      <View style={styles.controlsContainer}>
+        {/* زر الكلمة السابقة - مع سهم يتجه لليمين */}
+        <TouchableOpacity style={styles.button} onPress={handlePrevious}>
+          <Text style={styles.buttonText}>الكلمة السابقة →</Text>
         </TouchableOpacity>
 
-        <Text style={styles.counter}>{currentIndex + 1} / {WORDS_DATABASE.length}</Text>
+        {/* العداد بتنسيق صحيح: الحالي / الإجمالي */}
+        <Text style={styles.counter}>
+          {currentIndex + 1} / {WORDS_DATA.length}
+        </Text>
 
-        <TouchableOpacity style={styles.btn} onPress={handlePrev}>
-          <Text style={styles.btnText}>→ الكلمة السابقة</Text>
+        {/* زر الكلمة التالية - مع سهم يتجه لليسار */}
+        <TouchableOpacity style={styles.button} onPress={handleNext}>
+          <Text style={styles.buttonText}>← الكلمة التالية</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -100,76 +64,68 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
     justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
   },
   card: {
     width: '100%',
-    height: 440,
+    maxWidth: 350,
     backgroundColor: '#FFFFFF',
-    borderRadius: 24,
+    borderRadius: 20,
+    padding: 20,
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 20,
-    paddingHorizontal: 15,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+    marginBottom: 30,
   },
-  imageContainer: {
-    width: '90%',
-    height: 200,
-    borderRadius: 16,
-    overflow: 'hidden',
-    backgroundColor: '#F3F4F6',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cardImage: {
+  image: {
     width: '100%',
-    height: '100%',
+    height: 200,
+    borderRadius: 15,
+    marginBottom: 20,
   },
-  loader: {
-    position: 'absolute',
-    zIndex: 1,
-  },
-  englishText: {
-    fontSize: 42,
-    fontWeight: '900',
-    color: '#DC2626',
-    letterSpacing: 2,
-    marginTop: 10,
-  },
-  pronunciationText: {
-    fontSize: 38,
+  englishWord: {
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#16A34A',
+    color: '#D32F2F',
     marginBottom: 10,
+    textAlign: 'center',
   },
-  controls: {
+  arabicWord: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: '#2E7D32',
+    textAlign: 'center',
+  },
+  controlsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    marginTop: 30,
+    maxWidth: 350,
   },
-  btn: {
-    backgroundColor: '#F3F4F6',
-    paddingVertical: 12,
-    paddingHorizontal: 18,
-    borderRadius: 12,
+  button: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 10,
   },
-  btnText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: '#1F2937',
+  buttonText: {
+    fontSize: 14,
+    color: '#333333',
+    fontWeight: '600',
   },
   counter: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#4B5563',
+    color: '#555555',
   },
 });
-    
+  
