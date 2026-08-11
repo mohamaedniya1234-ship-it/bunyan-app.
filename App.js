@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
 
+const { width, height } = Dimensions.get('window');
+
+// نستخدم مصفوفة الكلمات بنفس روابط الصور الموجودة في مشروعك
 const WORDS_DATA = [
-  { id: 1, word: 'BOOK', translation: 'كتاب', image: require('./assets/book.png') },
-  { id: 2, word: 'PEN', translation: 'قلم', image: require('./assets/pen.png') },
-  { id: 3, word: 'APPLE', translation: 'تفاحة', image: require('./assets/apple.png') },
-  { id: 4, word: 'CAR', translation: 'سيارة', image: require('./assets/car.png') },
-  { id: 5, word: 'SCHOOL', translation: 'مدرسة', image: require('./assets/school.png') },
-  { id: 6, word: 'SUN', translation: 'شمس', image: require('./assets/sun.png') },
-  { id: 7, word: 'WATER', translation: 'ماء', image: require('./assets/water.png') },
-  { id: 8, word: 'HOUSE', translation: 'منزل', image: require('./assets/house.png') },
+  { id: 1, word: 'BOOK', translation: 'بوك', image: require('./assets/book.png') },
+  { id: 2, word: 'PEN', translation: 'بين', image: require('./assets/pen.png') },
+  { id: 3, word: 'APPLE', translation: 'أبل', image: require('./assets/apple.png') },
+  { id: 4, word: 'CAR', translation: 'كار', image: require('./assets/car.png') },
+  { id: 5, word: 'SCHOOL', translation: 'سكول', image: require('./assets/school.png') },
+  { id: 6, word: 'SUN', translation: 'سان', image: require('./assets/sun.png') },
+  { id: 7, word: 'WATER', translation: 'ووتـر', image: require('./assets/water.png') },
+  { id: 8, word: 'HOUSE', translation: 'هاوس', image: require('./assets/house.png') },
 ];
 
 export default function App() {
@@ -19,7 +22,7 @@ export default function App() {
     if (currentIndex < WORDS_DATA.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      setCurrentIndex(0); // العودة للكلمة الأولى عند الوصول للنهاية
+      setCurrentIndex(0);
     }
   };
 
@@ -27,105 +30,104 @@ export default function App() {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     } else {
-      setCurrentIndex(WORDS_DATA.length - 1); // الانتقال للكلمة الأخيرة
+      setCurrentIndex(WORDS_DATA.length - 1);
     }
   };
 
-  const currentWord = WORDS_DATA[currentIndex];
+  const currentItem = WORDS_DATA[currentIndex];
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.card}>
-        <Image source={currentWord.image} style={styles.image} resizeMode="cover" />
-        <Text style={styles.englishWord}>{currentWord.word}</Text>
-        <Text style={styles.arabicWord}>{currentWord.translation}</Text>
-      </View>
+    <View style={styles.container}>
+      {/* الصورة تغطي الشاشة بالكامل */}
+      <ImageBackground source={currentItem.image} style={styles.backgroundImage} resizeMode="cover">
+        <SafeAreaView style={styles.overlay}>
+          
+          {/* محتوى النصوص فوق الصورة */}
+          <View style={styles.textContainer}>
+            <Text style={styles.englishWord}>{currentItem.word}</Text>
+            <Text style={styles.arabicWord}>{currentItem.translation}</Text>
+          </View>
 
-      <View style={styles.controlsContainer}>
-        {/* زر الكلمة السابقة - مع سهم يتجه لليمين */}
-        <TouchableOpacity style={styles.button} onPress={handlePrevious}>
-          <Text style={styles.buttonText}>الكلمة السابقة →</Text>
-        </TouchableOpacity>
+          {/* شريط التحكم في الأسفل */}
+          <View style={styles.controlsContainer}>
+            <TouchableOpacity style={styles.button} onPress={handlePrevious}>
+              <Text style={styles.buttonText}>الكلمة السابقة →</Text>
+            </TouchableOpacity>
 
-        {/* العداد بتنسيق صحيح: الحالي / الإجمالي */}
-        <Text style={styles.counter}>
-          {currentIndex + 1} / {WORDS_DATA.length}
-        </Text>
+            <Text style={styles.counter}>
+              {currentIndex + 1} / {WORDS_DATA.length}
+            </Text>
 
-        {/* زر الكلمة التالية - مع سهم يتجه لليسار */}
-        <TouchableOpacity style={styles.button} onPress={handleNext}>
-          <Text style={styles.buttonText}>← الكلمة التالية</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+            <TouchableOpacity style={styles.button} onPress={handleNext}>
+              <Text style={styles.buttonText}>← الكلمة التالية</Text>
+            </TouchableOpacity>
+          </View>
+
+        </SafeAreaView>
+      </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
   },
-  card: {
-    width: '100%',
-    maxWidth: 350,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    padding: 20,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-    marginBottom: 30,
+  backgroundImage: {
+    width: width,
+    height: height,
+    flex: 1,
   },
-  image: {
-    width: '100%',
-    height: 200,
-    borderRadius: 15,
-    marginBottom: 20,
+  overlay: {
+    flex: 1,
+    justifyContent: 'space-between',
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)', // طبقة شفافة بسيطة لإبراز النصوص
+  },
+  textContainer: {
+    alignItems: 'center',
+    marginTop: 100,
   },
   englishWord: {
-    fontSize: 28,
-    fontWeight: 'bold',
+    fontSize: 42,
+    fontWeight: '900',
     color: '#D32F2F',
+    textShadowColor: 'rgba(255, 255, 255, 0.8)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 5,
     marginBottom: 10,
-    textAlign: 'center',
   },
   arabicWord: {
-    fontSize: 26,
+    fontSize: 36,
     fontWeight: 'bold',
     color: '#2E7D32',
-    textAlign: 'center',
+    textShadowColor: 'rgba(255, 255, 255, 0.8)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 5,
   },
   controlsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '100%',
-    maxWidth: 350,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 15,
+    padding: 12,
+    marginBottom: 20,
   },
   button: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
   buttonText: {
     fontSize: 14,
     color: '#333333',
-    fontWeight: '600',
+    fontWeight: 'bold',
   },
   counter: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#555555',
+    color: '#222222',
   },
 });
-  
+            
