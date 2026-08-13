@@ -1,127 +1,104 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
-
-const { width, height } = Dimensions.get('window');
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 
 const WORDS_DATA = [
-  { id: 1, word: 'BOOK', translation: 'بوك', image: { uri: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1000' } },
-  { id: 2, word: 'PEN', translation: 'بين', image: { uri: 'https://images.unsplash.com/photo-1585336261026-875a60a1c92f?q=80&w=1000' } },
-  { id: 3, word: 'APPLE', translation: 'أبل', image: { uri: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?q=80&w=1000' } },
-  { id: 4, word: 'CAR', translation: 'كار', image: { uri: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000' } },
-  { id: 5, word: 'SCHOOL', translation: 'سكول', image: { uri: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1000' } },
-  { id: 6, word: 'SUN', translation: 'سان', image: { uri: 'https://images.unsplash.com/photo-1532592935640-3cf690f3171c?q=80&w=1000' } },
-  { id: 7, word: 'WATER', translation: 'ووتـر', image: { uri: 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?q=80&w=1000' } },
-  { id: 8, word: 'HOUSE', translation: 'هاوس', image: { uri: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1000' } },
+  { id: 1, word: 'BOOK', translation: 'كتاب / بوك', color: '#4A90E2' },
+  { id: 2, word: 'PEN', translation: 'قلم / بين', color: '#50E3C2' },
+  { id: 3, word: 'APPLE', translation: 'تفاحة / أبل', color: '#E74C3C' },
+  { id: 4, word: 'CAR', translation: 'سيارة / كار', color: '#F39C12' },
+  { id: 5, word: 'SCHOOL', translation: 'مدرسة / سكول', color: '#9B59B6' },
+  { id: 6, word: 'SUN', translation: 'شمس / سان', color: '#F1C40F' },
+  { id: 7, word: 'WATER', translation: 'ماء / ووتر', color: '#3498DB' },
+  { id: 8, word: 'HOUSE', translation: 'منزل / هاوس', color: '#2ECC71' },
 ];
 
 export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
-    if (currentIndex < WORDS_DATA.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      setCurrentIndex(0);
-    }
+    setCurrentIndex((prev) => (prev < WORDS_DATA.length - 1 ? prev + 1 : 0));
   };
 
   const handlePrevious = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    } else {
-      setCurrentIndex(WORDS_DATA.length - 1);
-    }
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : WORDS_DATA.length - 1));
   };
 
   const currentItem = WORDS_DATA[currentIndex];
 
   return (
-    <View style={styles.container}>
-      <ImageBackground source={currentItem.image} style={styles.backgroundImage} resizeMode="cover">
-        <SafeAreaView style={styles.overlay}>
-          <View style={styles.textContainer}>
-            <Text style={styles.englishWord}>{currentItem.word}</Text>
-            <Text style={styles.arabicWord}>{currentItem.translation}</Text>
-          </View>
+    <SafeAreaView style={[styles.container, { backgroundColor: currentItem.color }]}>
+      <View style={styles.card}>
+        <Text style={styles.englishWord}>{currentItem.word}</Text>
+        <Text style={styles.arabicWord}>{currentItem.translation}</Text>
+      </View>
 
-          <View style={styles.controlsContainer}>
-            <TouchableOpacity style={styles.button} onPress={handlePrevious}>
-              <Text style={styles.buttonText}>الكلمة السابقة →</Text>
-            </TouchableOpacity>
+      <View style={styles.controlsContainer}>
+        <TouchableOpacity style={styles.button} onPress={handlePrevious}>
+          <Text style={styles.buttonText}>الكلمة السابقة →</Text>
+        </TouchableOpacity>
 
-            <Text style={styles.counter}>
-              {currentIndex + 1} / {WORDS_DATA.length}
-            </Text>
+        <Text style={styles.counter}>
+          {currentIndex + 1} / {WORDS_DATA.length}
+        </Text>
 
-            <TouchableOpacity style={styles.button} onPress={handleNext}>
-              <Text style={styles.buttonText}>← الكلمة التالية</Text>
-            </TouchableOpacity>
-          </View>
-        </SafeAreaView>
-      </ImageBackground>
-    </View>
+        <TouchableOpacity style={styles.button} onPress={handleNext}>
+          <Text style={styles.buttonText}>← الكلمة التالية</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  backgroundImage: {
-    width: width,
-    height: height,
-    flex: 1,
-  },
-  overlay: {
-    flex: 1,
     justifyContent: 'space-between',
-    paddingVertical: 40,
-    paddingHorizontal: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-  },
-  textContainer: {
     alignItems: 'center',
-    marginTop: 100,
+    paddingVertical: 50,
+    paddingHorizontal: 20,
+  },
+  card: {
+    width: '90%',
+    height: 300,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 80,
+    elevation: 8,
   },
   englishWord: {
-    fontSize: 42,
-    fontWeight: '900',
-    color: '#FFFFFF',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 6,
-    marginBottom: 10,
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: '#222',
+    marginBottom: 15,
   },
   arabicWord: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#4CAF50',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 6,
+    fontSize: 32,
+    fontWeight: '600',
+    color: '#555',
   },
   controlsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(255, 255, 255, 0.92)',
+    width: '100%',
+    backgroundColor: '#FFFFFF',
     borderRadius: 15,
-    padding: 12,
-    marginBottom: 20,
+    padding: 15,
   },
   button: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    padding: 10,
   },
   buttonText: {
-    fontSize: 14,
-    color: '#222222',
+    fontSize: 15,
     fontWeight: 'bold',
+    color: '#333',
   },
   counter: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#222222',
+    color: '#666',
   },
 });
-      
+    
