@@ -2,14 +2,62 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 
 const WORDS_DATA = [
-  { id: 1, word: 'BOOK', translation: 'بوك', image: { uri: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1000' } },
-  { id: 2, word: 'PEN', translation: 'بين', image: { uri: 'https://images.unsplash.com/photo-1585336261026-875a60a1c92f?q=80&w=1000' } },
-  { id: 3, word: 'APPLE', translation: 'أبل', image: { uri: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?q=80&w=1000' } },
-  { id: 4, word: 'CAR', translation: 'كار', image: { uri: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000' } },
-  { id: 5, word: 'SCHOOL', translation: 'سكول', image: { uri: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1000' } },
-  { id: 6, word: 'SUN', translation: 'سان', image: { uri: 'https://images.unsplash.com/photo-1532592935640-3cf690f3171c?q=80&w=1000' } },
-  { id: 7, word: 'WATER', translation: 'ووتـر', image: { uri: 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?q=80&w=1000' } }, // صورة ماء نقية وحقيقية
-  { id: 8, word: 'HOUSE', translation: 'هاوس', image: { uri: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1000' } },
+  { 
+    id: 1, 
+    arabic: 'كتاب', 
+    english: 'BOOK', 
+    pronunciation: 'بوك', 
+    image: { uri: 'https://cdn-icons-png.flaticon.com/512/3389/3389081.png' } 
+  },
+  { 
+    id: 2, 
+    arabic: 'قلم', 
+    english: 'PEN', 
+    pronunciation: 'بين', 
+    image: { uri: 'https://cdn-icons-png.flaticon.com/512/1250/1250615.png' } 
+  },
+  { 
+    id: 3, 
+    arabic: 'تفاحة', 
+    english: 'APPLE', 
+    pronunciation: 'أبل', 
+    image: { uri: 'https://cdn-icons-png.flaticon.com/512/415/415733.png' } 
+  },
+  { 
+    id: 4, 
+    arabic: 'سيارة', 
+    english: 'CAR', 
+    pronunciation: 'كار', 
+    image: { uri: 'https://cdn-icons-png.flaticon.com/512/741/741407.png' } 
+  },
+  { 
+    id: 5, 
+    arabic: 'مدرسة', 
+    english: 'SCHOOL', 
+    pronunciation: 'سكول', 
+    image: { uri: 'https://cdn-icons-png.flaticon.com/512/167/167707.png' } 
+  },
+  { 
+    id: 6, 
+    arabic: 'شمس', 
+    english: 'SUN', 
+    pronunciation: 'سان', 
+    image: { uri: 'https://cdn-icons-png.flaticon.com/512/869/869869.png' } 
+  },
+  { 
+    id: 7, 
+    arabic: 'ماء', 
+    english: 'WATER', 
+    pronunciation: 'ووتر', 
+    image: { uri: 'https://cdn-icons-png.flaticon.com/512/3105/3105807.png' } // صورة كرتونية لكأس ماء
+  },
+  { 
+    id: 8, 
+    arabic: 'منزل', 
+    english: 'HOUSE', 
+    pronunciation: 'هاوس', 
+    image: { uri: 'https://cdn-icons-png.flaticon.com/512/619/619153.png' } 
+  },
 ];
 
 export default function App() {
@@ -35,14 +83,20 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* بطاقة عرض الكلمة والنوع */}
+      {/* بطاقة العرض الرئيسية */}
       <View style={styles.card}>
-        <Image source={currentItem.image} style={styles.image} resizeMode="cover" />
-        <Text style={styles.englishWord}>{currentItem.word}</Text>
-        <Text style={styles.arabicWord}>{currentItem.translation}</Text>
+        <Image source={currentItem.image} style={styles.image} resizeMode="contain" />
+        
+        {/* المعنى بالعربي في الأعلى */}
+        <Text style={styles.arabicWord}>{currentItem.arabic}</Text>
+        
+        {/* الكلمة الإنجليزية والنطق الصوتي بالأسفل */}
+        <Text style={styles.englishAndPronunciation}>
+          {currentItem.english} / {currentItem.pronunciation}
+        </Text>
       </View>
 
-      {/* أزرار التنقل والعداد */}
+      {/* أزرار التحكم والعداد */}
       <View style={styles.controlsContainer}>
         <TouchableOpacity style={styles.button} onPress={handlePrevious}>
           <Text style={styles.buttonText}>الكلمة السابقة →</Text>
@@ -63,7 +117,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F7F9FC',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -73,34 +127,33 @@ const styles = StyleSheet.create({
     maxWidth: 360,
     backgroundColor: '#FFFFFF',
     borderRadius: 24,
-    padding: 20,
+    padding: 24,
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 5,
-    marginBottom: 30,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 3,
+    marginBottom: 40,
     borderWidth: 1,
-    borderColor: '#EFEFEF',
+    borderColor: '#F0F0F0',
   },
   image: {
-    width: '100%',
-    height: 220,
-    borderRadius: 16,
-    marginBottom: 20,
-  },
-  englishWord: {
-    fontSize: 34,
-    fontWeight: '800',
-    color: '#D32F2F',
-    marginBottom: 8,
-    textAlign: 'center',
+    width: 180,
+    height: 180,
+    marginBottom: 30,
   },
   arabicWord: {
+    fontSize: 40,
+    fontWeight: '900',
+    color: '#000000',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  englishAndPronunciation: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#2E7D32',
+    fontWeight: '800',
+    color: '#000000',
     textAlign: 'center',
   },
   controlsContainer: {
@@ -118,7 +171,7 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingVertical: 8,
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
   },
   buttonText: {
     fontSize: 14,
@@ -128,7 +181,7 @@ const styles = StyleSheet.create({
   counter: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#555555',
+    color: '#444444',
   },
 });
-
+    
