@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   controlsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justify.content: 'space-between',
+    justifyContent: 'space-between',
     width: '100%',
     maxWidth: 360,
     backgroundColor: '#FFFFFF',
@@ -154,4 +154,4 @@ const styles = StyleSheet.create({
     color: '#444444',
   },
 });
-
+                                                                           
