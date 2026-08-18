@@ -1,67 +1,66 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 
-// روابط تعتمد على أسماء الكلمات مباشرة لضمان التطابق 100%
 const WORDS_DATA = [
   // 1-10
-  { id: 1, arabic: 'كتاب', english: 'BOOK', pronunciation: 'بوك', image: { uri: 'https://img.icons8.com/color/256/book.png' } },
-  { id: 2, arabic: 'قلم', english: 'PEN', pronunciation: 'بين', image: { uri: 'https://img.icons8.com/color/256/pen.png' } },
-  { id: 3, arabic: 'تفاحة', english: 'APPLE', pronunciation: 'أبل', image: { uri: 'https://img.icons8.com/color/256/apple.png' } },
-  { id: 4, arabic: 'سيارة', english: 'CAR', pronunciation: 'كار', image: { uri: 'https://img.icons8.com/color/256/car.png' } },
-  { id: 5, arabic: 'مدرسة', english: 'SCHOOL', pronunciation: 'سكول', image: { uri: 'https://img.icons8.com/color/256/school.png' } },
-  { id: 6, arabic: 'شمس', english: 'SUN', pronunciation: 'سان', image: { uri: 'https://img.icons8.com/color/256/sun.png' } },
-  { id: 7, arabic: 'ماء', english: 'WATER', pronunciation: 'ووتر', image: { uri: 'https://img.icons8.com/color/256/glass-of-water.png' } },
-  { id: 8, arabic: 'منزل', english: 'HOUSE', pronunciation: 'هاوس', image: { uri: 'https://img.icons8.com/color/256/home.png' } },
-  { id: 9, arabic: 'قطة', english: 'CAT', pronunciation: 'كات', image: { uri: 'https://img.icons8.com/color/256/cat.png' } },
-  { id: 10, arabic: 'كلب', english: 'DOG', pronunciation: 'دوغ', image: { uri: 'https://img.icons8.com/color/256/dog.png' } },
+  { id: 1, arabic: 'كتاب', english: 'BOOK', pronunciation: 'بوك', emoji: '📖' },
+  { id: 2, arabic: 'قلم', english: 'PEN', pronunciation: 'بين', emoji: '🖊️' },
+  { id: 3, arabic: 'تفاحة', english: 'APPLE', pronunciation: 'أبل', emoji: '🍎' },
+  { id: 4, arabic: 'سيارة', english: 'CAR', pronunciation: 'كار', emoji: '🚗' },
+  { id: 5, arabic: 'مدرسة', english: 'SCHOOL', pronunciation: 'سكول', emoji: '🏫' },
+  { id: 6, arabic: 'شمس', english: 'SUN', pronunciation: 'سان', emoji: '☀️' },
+  { id: 7, arabic: 'ماء', english: 'WATER', pronunciation: 'ووتر', emoji: '💧' },
+  { id: 8, arabic: 'منزل', english: 'HOUSE', pronunciation: 'هاوس', emoji: '🏠' },
+  { id: 9, arabic: 'قطة', english: 'CAT', pronunciation: 'كات', emoji: '🐈' },
+  { id: 10, arabic: 'كلب', english: 'DOG', pronunciation: 'دوغ', emoji: '🐕' },
 
   // 11-20
-  { id: 11, arabic: 'شجرة', english: 'TREE', pronunciation: 'تري', image: { uri: 'https://img.icons8.com/color/256/tree.png' } },
-  { id: 12, arabic: 'زهرة', english: 'FLOWER', pronunciation: 'فلاور', image: { uri: 'https://img.icons8.com/color/256/flower.png' } },
-  { id: 13, arabic: 'حليب', english: 'MILK', pronunciation: 'ميلك', image: { uri: 'https://img.icons8.com/color/256/milk.png' } },
-  { id: 14, arabic: 'موز', english: 'BANANA', pronunciation: 'بنانة', image: { uri: 'https://img.icons8.com/color/256/banana.png' } },
-  { id: 15, arabic: 'طائرة', english: 'PLANE', pronunciation: 'بلين', image: { uri: 'https://img.icons8.com/color/256/airplane.png' } },
-  { id: 16, arabic: 'قمر', english: 'MOON', pronunciation: 'مون', image: { uri: 'https://img.icons8.com/color/256/moon.png' } },
-  { id: 17, arabic: 'حافلة', english: 'BUS', pronunciation: 'باص', image: { uri: 'https://img.icons8.com/color/256/bus.png' } },
-  { id: 18, arabic: 'طاولة', english: 'TABLE', pronunciation: 'تيبل', image: { uri: 'https://img.icons8.com/color/256/table.png' } },
-  { id: 19, arabic: 'كرسي', english: 'CHAIR', pronunciation: 'تشير', image: { uri: 'https://img.icons8.com/color/256/chair.png' } },
-  { id: 20, arabic: 'ساعة', english: 'CLOCK', pronunciation: 'كلوك', image: { uri: 'https://img.icons8.com/color/256/clock.png' } },
+  { id: 11, arabic: 'شجرة', english: 'TREE', pronunciation: 'تري', emoji: '🌳' },
+  { id: 12, arabic: 'زهرة', english: 'FLOWER', pronunciation: 'فلاور', emoji: '🌻' },
+  { id: 13, arabic: 'حليب', english: 'MILK', pronunciation: 'ميلك', emoji: '🥛' },
+  { id: 14, arabic: 'موز', english: 'BANANA', pronunciation: 'بنانة', emoji: '🍌' },
+  { id: 15, arabic: 'طائرة', english: 'PLANE', pronunciation: 'بلين', emoji: '✈️' },
+  { id: 16, arabic: 'قمر', english: 'MOON', pronunciation: 'مون', emoji: '🌙' },
+  { id: 17, arabic: 'حافلة', english: 'BUS', pronunciation: 'باص', emoji: '🚌' },
+  { id: 18, arabic: 'طاولة', english: 'TABLE', pronunciation: 'تيبل', emoji: '🍽️' },
+  { id: 19, arabic: 'كرسي', english: 'CHAIR', pronunciation: 'تشير', emoji: '🪑' },
+  { id: 20, arabic: 'ساعة', english: 'CLOCK', pronunciation: 'كلوك', emoji: '🕒' },
 
   // 21-30
-  { id: 21, arabic: 'خبز', english: 'BREAD', pronunciation: 'بريد', image: { uri: 'https://img.icons8.com/color/256/bread.png' } },
-  { id: 22, arabic: 'جبن', english: 'CHEESE', pronunciation: 'تشيز', image: { uri: 'https://img.icons8.com/color/256/cheese.png' } },
-  { id: 23, arabic: 'بيض', english: 'EGG', pronunciation: 'إيغ', image: { uri: 'https://img.icons8.com/color/256/eggs.png' } },
-  { id: 24, arabic: 'سمك', english: 'FISH', pronunciation: 'فيش', image: { uri: 'https://img.icons8.com/color/256/fish.png' } },
-  { id: 25, arabic: 'طائر', english: 'BIRD', pronunciation: 'بيرد', image: { uri: 'https://img.icons8.com/color/256/bird.png' } },
-  { id: 26, arabic: 'أسد', english: 'LION', pronunciation: 'لايون', image: { uri: 'https://img.icons8.com/color/256/lion.png' } },
-  { id: 27, arabic: 'فيل', english: 'ELEPHANT', pronunciation: 'إليفانت', image: { uri: 'https://img.icons8.com/color/256/elephant.png' } },
-  { id: 28, arabic: 'قرد', english: 'MONKEY', pronunciation: 'مانكي', image: { uri: 'https://img.icons8.com/color/256/monkey.png' } },
-  { id: 29, arabic: 'دب', english: 'BEAR', pronunciation: 'بير', image: { uri: 'https://img.icons8.com/color/256/bear.png' } },
-  { id: 30, arabic: 'أرنب', english: 'RABBIT', pronunciation: 'رابيت', image: { uri: 'https://img.icons8.com/color/256/rabbit.png' } },
+  { id: 21, arabic: 'خبز', english: 'BREAD', pronunciation: 'بريد', emoji: '🍞' },
+  { id: 22, arabic: 'جبن', english: 'CHEESE', pronunciation: 'تشيز', emoji: '🧀' },
+  { id: 23, arabic: 'بيض', english: 'EGG', pronunciation: 'إيغ', emoji: '🥚' },
+  { id: 24, arabic: 'سمك', english: 'FISH', pronunciation: 'فيش', emoji: '🐟' },
+  { id: 25, arabic: 'طائر', english: 'BIRD', pronunciation: 'بيرد', emoji: '🐦' },
+  { id: 26, arabic: 'أسد', english: 'LION', pronunciation: 'لايون', emoji: '🦁' },
+  { id: 27, arabic: 'فيل', english: 'ELEPHANT', pronunciation: 'إليفانت', emoji: '🐘' },
+  { id: 28, arabic: 'قرد', english: 'MONKEY', pronunciation: 'مانكي', emoji: '🐒' },
+  { id: 29, arabic: 'دب', english: 'BEAR', pronunciation: 'بير', emoji: '🐻' },
+  { id: 30, arabic: 'أرنب', english: 'RABBIT', pronunciation: 'رابيت', emoji: '🐰' },
 
   // 31-40
-  { id: 31, arabic: 'هاتف', english: 'PHONE', pronunciation: 'فون', image: { uri: 'https://img.icons8.com/color/256/smartphone.png' } },
-  { id: 32, arabic: 'مفتاح', english: 'KEY', pronunciation: 'كي', image: { uri: 'https://img.icons8.com/color/256/key.png' } },
-  { id: 33, arabic: 'حقيبة', english: 'BAG', pronunciation: 'باغ', image: { uri: 'https://img.icons8.com/color/256/backpack.png' } },
-  { id: 34, arabic: 'باب', english: 'DOOR', pronunciation: 'دور', image: { uri: 'https://img.icons8.com/color/256/door.png' } },
-  { id: 35, arabic: 'نافذة', english: 'WINDOW', pronunciation: 'ويندو', image: { uri: 'https://img.icons8.com/color/256/window.png' } },
-  { id: 36, arabic: 'سرير', english: 'BED', pronunciation: 'بيد', image: { uri: 'https://img.icons8.com/color/256/bed.png' } },
-  { id: 37, arabic: 'قبعة', english: 'HAT', pronunciation: 'هات', image: { uri: 'https://img.icons8.com/color/256/hat.png' } },
-  { id: 38, arabic: 'حذاء', english: 'SHOES', pronunciation: 'شوز', image: { uri: 'https://img.icons8.com/color/256/shoes.png' } },
-  { id: 39, arabic: 'قميص', english: 'SHIRT', pronunciation: 'شيرت', image: { uri: 'https://img.icons8.com/color/256/t-shirt.png' } },
-  { id: 40, arabic: 'كرة', english: 'BALL', pronunciation: 'بول', image: { uri: 'https://img.icons8.com/color/256/soccer-ball.png' } },
+  { id: 31, arabic: 'هاتف', english: 'PHONE', pronunciation: 'فون', emoji: '📱' },
+  { id: 32, arabic: 'مفتاح', english: 'KEY', pronunciation: 'كي', emoji: '🔑' },
+  { id: 33, arabic: 'حقيبة', english: 'BAG', pronunciation: 'باغ', emoji: '🎒' },
+  { id: 34, arabic: 'باب', english: 'DOOR', pronunciation: 'دور', emoji: '🚪' },
+  { id: 35, arabic: 'نافذة', english: 'WINDOW', pronunciation: 'ويندو', emoji: '🪟' },
+  { id: 36, arabic: 'سرير', english: 'BED', pronunciation: 'بيد', emoji: '🛏️' },
+  { id: 37, arabic: 'قبعة', english: 'HAT', pronunciation: 'هات', emoji: '🧢' },
+  { id: 38, arabic: 'حذاء', english: 'SHOES', pronunciation: 'شوز', emoji: '👞' },
+  { id: 39, arabic: 'قميص', english: 'SHIRT', pronunciation: 'شيرت', emoji: '👕' },
+  { id: 40, arabic: 'كرة', english: 'BALL', pronunciation: 'بول', emoji: '⚽' },
 
   // 41-50
-  { id: 41, arabic: 'مطر', english: 'RAIN', pronunciation: 'رين', image: { uri: 'https://img.icons8.com/color/256/rain.png' } },
-  { id: 42, arabic: 'نجمة', english: 'STAR', pronunciation: 'ستار', image: { uri: 'https://img.icons8.com/color/256/star.png' } },
-  { id: 43, arabic: 'سحابة', english: 'CLOUD', pronunciation: 'كلاود', image: { uri: 'https://img.icons8.com/color/256/clouds.png' } },
-  { id: 44, arabic: 'نار', english: 'FIRE', pronunciation: 'فاير', image: { uri: 'https://img.icons8.com/color/256/fire-element.png' } },
-  { id: 45, arabic: 'برتقال', english: 'ORANGE', pronunciation: 'أورانج', image: { uri: 'https://img.icons8.com/color/256/orange.png' } },
-  { id: 46, arabic: 'عنب', english: 'GRAPES', pronunciation: 'غريبس', image: { uri: 'https://img.icons8.com/color/256/grapes.png' } },
-  { id: 47, arabic: 'بطيخ', english: 'WATERMELON', pronunciation: 'ووترميلون', image: { uri: 'https://img.icons8.com/color/256/watermelon.png' } },
-  { id: 48, arabic: 'فراولة', english: 'STRAWBERRY', pronunciation: 'ستروبيري', image: { uri: 'https://img.icons8.com/color/256/strawberry.png' } },
-  { id: 49, arabic: 'جزر', english: 'CARROT', pronunciation: 'كاروت', image: { uri: 'https://img.icons8.com/color/256/carrot.png' } },
-  { id: 50, arabic: 'دراجة', english: 'BICYCLE', pronunciation: 'بايسكل', image: { uri: 'https://img.icons8.com/color/256/bicycle.png' } },
+  { id: 41, arabic: 'مطر', english: 'RAIN', pronunciation: 'رين', emoji: '🌧️' },
+  { id: 42, arabic: 'نجمة', english: 'STAR', pronunciation: 'ستار', emoji: '⭐' },
+  { id: 43, arabic: 'سحابة', english: 'CLOUD', pronunciation: 'كلاود', emoji: '☁️' },
+  { id: 44, arabic: 'نار', english: 'FIRE', pronunciation: 'فاير', emoji: '🔥' },
+  { id: 45, arabic: 'برتقال', english: 'ORANGE', pronunciation: 'أورانج', emoji: '🍊' },
+  { id: 46, arabic: 'عنب', english: 'GRAPES', pronunciation: 'غريبس', emoji: '🍇' },
+  { id: 47, arabic: 'بطيخ', english: 'WATERMELON', pronunciation: 'ووترميلون', emoji: '🍉' },
+  { id: 48, arabic: 'فراولة', english: 'STRAWBERRY', pronunciation: 'ستروبيري', emoji: '🍓' },
+  { id: 49, arabic: 'جزر', english: 'CARROT', pronunciation: 'كاروت', emoji: '🥕' },
+  { id: 50, arabic: 'دراجة', english: 'BICYCLE', pronunciation: 'بايسكل', emoji: '🚲' },
 ];
 
 export default function App() {
@@ -88,12 +87,8 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.card}>
-        <Image 
-          key={currentItem.id} 
-          source={currentItem.image} 
-          style={styles.image} 
-          resizeMode="contain" 
-        />
+        {/* استبدلنا مكون الصورة بمكون نصي يعرض الإيموجي بحجم ضخم */}
+        <Text style={styles.emojiIcon}>{currentItem.emoji}</Text>
         
         <Text style={styles.arabicWord}>{currentItem.arabic}</Text>
         
@@ -143,10 +138,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#F0F0F0',
   },
-  image: {
-    width: 180,
-    height: 180,
-    marginBottom: 30,
+  emojiIcon: {
+    fontSize: 120, // حجم كبير جداً ليظهر كأنه صورة
+    marginBottom: 20,
+    textAlign: 'center',
   },
   arabicWord: {
     fontSize: 40,
@@ -189,4 +184,4 @@ const styles = StyleSheet.create({
     color: '#444444',
   },
 });
-    
+  
