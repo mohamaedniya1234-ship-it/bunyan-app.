@@ -9,7 +9,7 @@
     "icon": "./icon.png",
     "splash": {
       "image": "./splash.png",
-      "resizeMode": "cover",
+      "resizeMode": "contain",
       "backgroundColor": "#FFFFFF"
     },
     "ios": {
