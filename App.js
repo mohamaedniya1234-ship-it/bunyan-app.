@@ -13,14 +13,12 @@ import * as SplashScreen from 'expo-splash-screen';
 
 SplashScreen.preventAutoHideAsync();
 
-// التصنيفات الجديدة الشاملة
 const categories = [
   'الكل', 'العائلة', 'أعضاء الجسم', 'الألوان', 'الحيوانات', 'الطعام', 
   'المهن', 'المنزل', 'الملابس', 'الطبيعة', 'النقل', 'المدرسة', 
   'الرياضة', 'الطقس', 'الصفات', 'الأفعال', 'التحيات', 'جمل مفيدة'
 ];
 
-// القائمة الضخمة: 200 كلمة وجملة حقيقية
 const vocabularyData = [
   // --- العائلة ---
   { id: 1, arabic: 'أب', english: 'FATHER', pron: 'فاذر', emoji: '👨', category: 'العائلة' },
@@ -142,7 +140,7 @@ const vocabularyData = [
   { id: 99, arabic: 'قارب', english: 'BOAT', pron: 'بوت', emoji: '🚤', category: 'النقل' },
   { id: 100, arabic: 'دراجة نارية', english: 'MOTORCYCLE', pron: 'موتور سايكل', emoji: '🏍️', category: 'النقل' },
 
-  // --- المدرسة (جديد) ---
+  // --- المدرسة ---
   { id: 101, arabic: 'مدرسة', english: 'SCHOOL', pron: 'سكول', emoji: '🏫', category: 'المدرسة' },
   { id: 102, arabic: 'كتاب', english: 'BOOK', pron: 'بوك', emoji: '📖', category: 'المدرسة' },
   { id: 103, arabic: 'قلم', english: 'PEN', pron: 'بين', emoji: '🖊️', category: 'المدرسة' },
@@ -154,7 +152,7 @@ const vocabularyData = [
   { id: 109, arabic: 'مكتب', english: 'DESK', pron: 'ديسك', emoji: '🪑', category: 'المدرسة' },
   { id: 110, arabic: 'امتحان', english: 'EXAM', pron: 'إكزام', emoji: '📝', category: 'المدرسة' },
 
-  // --- الرياضة (جديد) ---
+  // --- الرياضة ---
   { id: 111, arabic: 'رياضة', english: 'SPORT', pron: 'سبورت', emoji: '🏃', category: 'الرياضة' },
   { id: 112, arabic: 'كرة قدم', english: 'FOOTBALL', pron: 'فوت بول', emoji: '⚽', category: 'الرياضة' },
   { id: 113, arabic: 'كرة سلة', english: 'BASKETBALL', pron: 'باسكت بول', emoji: '🏀', category: 'الرياضة' },
@@ -166,7 +164,7 @@ const vocabularyData = [
   { id: 119, arabic: 'كرة', english: 'BALL', pron: 'بول', emoji: '🏐', category: 'الرياضة' },
   { id: 120, arabic: 'هدف', english: 'GOAL', pron: 'جول', emoji: '🥅', category: 'الرياضة' },
 
-  // --- الطقس (جديد) ---
+  // --- الطقس ---
   { id: 121, arabic: 'طقس', english: 'WEATHER', pron: 'ويذر', emoji: '🌡️', category: 'الطقس' },
   { id: 122, arabic: 'مشمس', english: 'SUNNY', pron: 'صاني', emoji: '☀️', category: 'الطقس' },
   { id: 123, arabic: 'غائم', english: 'CLOUDY', pron: 'كلاودي', emoji: '☁️', category: 'الطقس' },
@@ -178,7 +176,7 @@ const vocabularyData = [
   { id: 129, arabic: 'عاصفة', english: 'STORM', pron: 'ستورم', emoji: '⛈️', category: 'الطقس' },
   { id: 130, arabic: 'ضباب', english: 'FOG', pron: 'فوج', emoji: '🌫️', category: 'الطقس' },
 
-  // --- الصفات (جديد) ---
+  // --- الصفات ---
   { id: 131, arabic: 'كبير', english: 'BIG', pron: 'بيج', emoji: '🐘', category: 'الصفات' },
   { id: 132, arabic: 'صغير', english: 'SMALL', pron: 'سمول', emoji: '🐜', category: 'الصفات' },
   { id: 133, arabic: 'طويل', english: 'TALL', pron: 'تول', emoji: '🦒', category: 'الصفات' },
@@ -195,7 +193,7 @@ const vocabularyData = [
   { id: 144, arabic: 'حزين', english: 'SAD', pron: 'ساد', emoji: '😢', category: 'الصفات' },
   { id: 145, arabic: 'غاضب', english: 'ANGRY', pron: 'أنجري', emoji: '😡', category: 'الصفات' },
 
-  // --- الأفعال (جديد) ---
+  // --- الأفعال ---
   { id: 146, arabic: 'يأكل', english: 'EAT', pron: 'إيت', emoji: '🍽️', category: 'الأفعال' },
   { id: 147, arabic: 'يشرب', english: 'DRINK', pron: 'درينك', emoji: '🥤', category: 'الأفعال' },
   { id: 148, arabic: 'ينام', english: 'SLEEP', pron: 'سليب', emoji: '😴', category: 'الأفعال' },
@@ -288,12 +286,16 @@ export default function App() {
   const handleNext = () => {
     if (currentIndex < filteredData.length - 1) {
       setCurrentIndex(currentIndex + 1);
+    } else {
+      setCurrentIndex(0); 
     }
   };
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+    } else {
+      setCurrentIndex(filteredData.length - 1); 
     }
   };
 
@@ -334,9 +336,8 @@ export default function App() {
           {/* شريط التنقل السفلي */}
           <View style={styles.navigationRow}>
             <TouchableOpacity
-              style={[styles.navButton, currentIndex === 0 && styles.disabledButton]}
+              style={styles.navButton}
               onPress={handlePrevious}
-              disabled={currentIndex === 0}
             >
               <Text style={styles.navButtonText}>← السابقة</Text>
             </TouchableOpacity>
@@ -346,12 +347,8 @@ export default function App() {
             </Text>
 
             <TouchableOpacity
-              style={[
-                styles.navButton,
-                currentIndex === filteredData.length - 1 && styles.disabledButton,
-              ]}
+              style={styles.navButton}
               onPress={handleNext}
-              disabled={currentIndex === filteredData.length - 1}
             >
               <Text style={styles.navButtonText}>التالية →</Text>
             </TouchableOpacity>
@@ -447,9 +444,6 @@ const styles = StyleSheet.create({
   navButton: {
     paddingVertical: 8,
     paddingHorizontal: 10,
-  },
-  disabledButton: {
-    opacity: 0.3,
   },
   navButtonText: {
     fontSize: 14,
