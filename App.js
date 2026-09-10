@@ -145,7 +145,7 @@ const vocabularyData = [
   { id: 102, arabic: 'كتاب', english: 'BOOK', pron: 'بوك', emoji: '📖', category: 'المدرسة' },
   { id: 103, arabic: 'قلم', english: 'PEN', pron: 'بين', emoji: '🖊️', category: 'المدرسة' },
   { id: 104, arabic: 'دفتر', english: 'NOTEBOOK', pron: 'نوت بوك', emoji: '📓', category: 'المدرسة' },
-  { id: 105, arabic: 'سبورة', english: 'BOARD', pron: 'بورد', emoji: ' blackboard', category: 'المدرسة' },
+  { id: 105, arabic: 'سبورة', english: 'BOARD', pron: 'بورد', emoji: '🪵', category: 'المدرسة' },
   { id: 106, arabic: 'مسطرة', english: 'RULER', pron: 'رولر', emoji: '📏', category: 'المدرسة' },
   { id: 107, arabic: 'ممحات', english: 'ERASER', pron: 'إريزر', emoji: '🧽', category: 'المدرسة' },
   { id: 108, arabic: 'طالب', english: 'STUDENT', pron: 'ستيودنت', emoji: '🧑‍🎓', category: 'المدرسة' },
@@ -256,6 +256,7 @@ const vocabularyData = [
 ];
 
 export default function App() {
+  const [currentScreen, setCurrentScreen] = useState('HOME'); // 'HOME' أو 'VOCABULARY'
   const [selectedCategory, setSelectedCategory] = useState('الكل');
   const [filteredData, setFilteredData] = useState(vocabularyData);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -287,7 +288,7 @@ export default function App() {
     if (currentIndex < filteredData.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      setCurrentIndex(0); 
+      setCurrentIndex(0);
     }
   };
 
@@ -295,15 +296,85 @@ export default function App() {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     } else {
-      setCurrentIndex(filteredData.length - 1); 
+      setCurrentIndex(filteredData.length - 1);
     }
   };
 
   const currentItem = filteredData[currentIndex] || filteredData[0];
 
+  // 1. الشاشة الرئيسية (4 بطاقات)
+  if (currentScreen === 'HOME') {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
+        <View style={styles.homeHeader}>
+          <Text style={styles.homeTitle}>Bunyan</Text>
+          <Text style={styles.homeSubtitle}>اختر القسم الذي تريد دراسته</Text>
+        </View>
+
+        <View style={styles.gridContainer}>
+          {/* الصف الأول */}
+          <View style={styles.gridRow}>
+            {/* البطاقة الأولى: الكلمات والجمل */}
+            <TouchableOpacity
+              style={styles.gridCard}
+              onPress={() => setCurrentScreen('VOCABULARY')}
+            >
+              <View style={styles.cardContent}>
+                <Text style={styles.cardEmojiHeader}>👩💯👋</Text>
+                <Text style={styles.cardMainText}>إلى أخ...</Text>
+              </View>
+              <Text style={styles.cardFooterText}>كلمات و الجمل</Text>
+            </TouchableOpacity>
+
+            {/* البطاقة الثانية: قاعدة حرف C */}
+            <TouchableOpacity style={styles.gridCard}>
+              <View style={styles.cardContent}>
+                <Text style={styles.ruleTitle}>عندك مشكلة مع حرف <Text style={styles.redCircle}>C</Text></Text>
+                <View style={styles.ruleBox}>
+                  <Text style={styles.badgeYellow}>S</Text>
+                  <Text style={styles.ruleText}>متى ينطق</Text>
+                </View>
+                <View style={styles.ruleBox}>
+                  <Text style={styles.badgeYellow}>K</Text>
+                  <Text style={styles.ruleText}>ومتى ينطق</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          {/* الصف الثاني */}
+          <View style={styles.gridRow}>
+            {/* البطاقة الثالثة: النص */}
+            <TouchableOpacity style={styles.gridCard}>
+              <View style={styles.cardContent}>
+                <Text style={styles.largeCardText}>نص</Text>
+              </View>
+            </TouchableOpacity>
+
+            {/* البطاقة الرابعة: أساسيات اللغة الإنجليزية */}
+            <TouchableOpacity style={styles.gridCard}>
+              <View style={styles.cardContent}>
+                <Text style={styles.mediumCardText}>اساسيات اللغة الانجليزية</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // 2. شاشة الكلمات والجمل (200 كلمة)
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
+
+      {/* زر العودة للشاشة الرئيسية */}
+      <View style={styles.topHeaderNav}>
+        <TouchableOpacity style={styles.backButton} onPress={() => setCurrentScreen('HOME')}>
+          <Text style={styles.backButtonText}>← القائمة الرئيسية</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* شريط التصنيفات العلوي */}
       <View style={styles.categoryContainer}>
@@ -360,31 +431,155 @@ export default function App() {
 }
 
 const { width } = Dimensions.get('window');
+const cardWidth = (width - 48) / 2;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F9FA',
   },
+  // --- أنماط الشاشة الرئيسية ---
+  homeHeader: {
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  homeTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#0084FF',
+  },
+  homeSubtitle: {
+    fontSize: 14,
+    color: '#6C757D',
+    marginTop: 4,
+  },
+  gridContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+    justifyContent: 'center',
+  },
+  gridRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  gridCard: {
+    width: cardWidth,
+    height: cardWidth * 1.05,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    padding: 12,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    borderWidth: 1,
+    borderColor: '#EFEFEF',
+  },
+  cardContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  cardEmojiHeader: {
+    fontSize: 26,
+    marginBottom: 4,
+  },
+  cardMainText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#D32F2F',
+  },
+  cardFooterText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#E53935',
+    marginTop: 6,
+  },
+  ruleTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+    color: '#212529',
+  },
+  redCircle: {
+    color: '#D32F2F',
+    fontWeight: 'bold',
+  },
+  ruleBox: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    marginVertical: 2,
+  },
+  badgeYellow: {
+    backgroundColor: '#FFEB3B',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    fontWeight: 'bold',
+    fontSize: 12,
+    marginLeft: 4,
+  },
+  ruleText: {
+    fontSize: 11,
+    color: '#333',
+  },
+  largeCardText: {
+    fontSize: 38,
+    fontWeight: 'bold',
+    color: '#212529',
+  },
+  mediumCardText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#212529',
+    textAlign: 'center',
+    lineHeight: 26,
+  },
+
+  // --- أنماط شاشة الكلمات ---
+  topHeaderNav: {
+    paddingHorizontal: 16,
+    paddingTop: 10,
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    backgroundColor: '#E9ECEF',
+    borderRadius: 12,
+  },
+  backButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#0084FF',
+  },
   categoryContainer: {
-    paddingVertical: 15,
+    paddingVertical: 10,
   },
   scrollContent: {
     paddingHorizontal: 15,
     flexDirection: 'row-reverse',
   },
   categoryPill: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: 18,
+    paddingVertical: 8,
     borderRadius: 25,
     backgroundColor: '#E9ECEF',
-    marginLeft: 10,
+    marginLeft: 8,
   },
   activeCategoryPill: {
     backgroundColor: '#0084FF',
   },
   categoryText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#495057',
     fontWeight: '600',
   },
@@ -396,40 +591,40 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingBottom: 40,
+    paddingBottom: 20,
   },
   card: {
     width: width * 0.88,
     backgroundColor: '#FFFFFF',
     borderRadius: 24,
-    paddingVertical: 40,
+    paddingVertical: 30,
     paddingHorizontal: 20,
     alignItems: 'center',
+    elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 12,
-    elevation: 5,
     borderWidth: 1,
     borderColor: '#E9ECEF',
   },
   emoji: {
-    fontSize: 90,
-    marginBottom: 20,
+    fontSize: 80,
+    marginBottom: 15,
   },
   arabicWord: {
-    fontSize: 34, 
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#212529',
-    marginBottom: 12,
+    marginBottom: 10,
     textAlign: 'center',
   },
   englishWord: {
-    fontSize: 18, 
+    fontSize: 18,
     fontWeight: '600',
     color: '#495057',
     letterSpacing: 1,
-    marginBottom: 40,
+    marginBottom: 30,
     textAlign: 'center',
   },
   navigationRow: {
