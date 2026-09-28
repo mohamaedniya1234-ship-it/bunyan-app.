@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
+import * as Speech from 'expo-speech';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -256,7 +257,7 @@ const vocabularyData = [
 ];
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState('HOME'); // 'HOME' أو 'VOCABULARY'
+  const [currentScreen, setCurrentScreen] = useState('HOME'); 
   const [selectedCategory, setSelectedCategory] = useState('الكل');
   const [filteredData, setFilteredData] = useState(vocabularyData);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -300,9 +301,16 @@ export default function App() {
     }
   };
 
+  // دالة تشغيل الصوت
+  const speakWord = (word) => {
+    Speech.speak(word, {
+      language: 'en-US',
+      rate: 0.9, 
+    });
+  };
+
   const currentItem = filteredData[currentIndex] || filteredData[0];
 
-  // 1. الشاشة الرئيسية (4 بطاقات)
   if (currentScreen === 'HOME') {
     return (
       <SafeAreaView style={styles.container}>
@@ -313,9 +321,7 @@ export default function App() {
         </View>
 
         <View style={styles.gridContainer}>
-          {/* الصف الأول */}
           <View style={styles.gridRow}>
-            {/* البطاقة الأولى: الكلمات والجمل */}
             <TouchableOpacity
               style={styles.gridCard}
               onPress={() => setCurrentScreen('VOCABULARY')}
@@ -327,7 +333,6 @@ export default function App() {
               <Text style={styles.cardFooterText}>كلمات و الجمل</Text>
             </TouchableOpacity>
 
-            {/* البطاقة الثانية: قاعدة حرف C */}
             <TouchableOpacity style={styles.gridCard}>
               <View style={styles.cardContent}>
                 <Text style={styles.ruleTitle}>عندك مشكلة مع حرف <Text style={styles.redCircle}>C</Text></Text>
@@ -343,16 +348,13 @@ export default function App() {
             </TouchableOpacity>
           </View>
 
-          {/* الصف الثاني */}
           <View style={styles.gridRow}>
-            {/* البطاقة الثالثة: النص */}
             <TouchableOpacity style={styles.gridCard}>
               <View style={styles.cardContent}>
                 <Text style={styles.largeCardText}>نص</Text>
               </View>
             </TouchableOpacity>
 
-            {/* البطاقة الرابعة: أساسيات اللغة الإنجليزية */}
             <TouchableOpacity style={styles.gridCard}>
               <View style={styles.cardContent}>
                 <Text style={styles.mediumCardText}>اساسيات اللغة الانجليزية</Text>
@@ -364,19 +366,16 @@ export default function App() {
     );
   }
 
-  // 2. شاشة الكلمات والجمل (200 كلمة)
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
 
-      {/* زر العودة للشاشة الرئيسية */}
       <View style={styles.topHeaderNav}>
         <TouchableOpacity style={styles.backButton} onPress={() => setCurrentScreen('HOME')}>
           <Text style={styles.backButtonText}>← القائمة الرئيسية</Text>
         </TouchableOpacity>
       </View>
 
-      {/* شريط التصنيفات العلوي */}
       <View style={styles.categoryContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
           {categories.map((cat, index) => (
@@ -393,7 +392,6 @@ export default function App() {
         </ScrollView>
       </View>
 
-      {/* كارت عرض الكلمة الرئيسي */}
       <View style={styles.cardContainer}>
         <View style={styles.card}>
           <Text style={styles.emoji}>{currentItem.emoji}</Text>
@@ -404,7 +402,14 @@ export default function App() {
             {currentItem.pron} / {currentItem.english}
           </Text>
 
-          {/* شريط التنقل السفلي */}
+          {/* زر الاستماع الجديد */}
+          <TouchableOpacity 
+            style={styles.soundButton} 
+            onPress={() => speakWord(currentItem.english)}
+          >
+            <Text style={styles.soundButtonText}>🔊 استمع للكلمة</Text>
+          </TouchableOpacity>
+
           <View style={styles.navigationRow}>
             <TouchableOpacity
               style={styles.navButton}
@@ -438,7 +443,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8F9FA',
   },
-  // --- أنماط الشاشة الرئيسية ---
   homeHeader: {
     paddingTop: 20,
     paddingHorizontal: 20,
@@ -543,8 +547,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 26,
   },
-
-  // --- أنماط شاشة الكلمات ---
   topHeaderNav: {
     paddingHorizontal: 16,
     paddingTop: 10,
@@ -624,8 +626,20 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#495057',
     letterSpacing: 1,
-    marginBottom: 30,
+    marginBottom: 20,
     textAlign: 'center',
+  },
+  soundButton: {
+    backgroundColor: '#E3F2FD',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    marginBottom: 30,
+  },
+  soundButtonText: {
+    color: '#0084FF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   navigationRow: {
     flexDirection: 'row-reverse',
