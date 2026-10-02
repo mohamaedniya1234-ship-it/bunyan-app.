@@ -301,7 +301,7 @@ export default function App() {
     }
   };
 
-  // دالة نطق الصوت المعدلة لمنع خروج التطبيق
+  // دالة نطق الصوت (تم حل مشكلة التوقف المفاجئ)
   const speakWord = async (word) => {
     try {
       const isSpeaking = await Speech.isSpeakingAsync();
@@ -319,14 +319,68 @@ export default function App() {
 
   const currentItem = filteredData[currentIndex] || filteredData[0];
 
-  // شاشة الشرح لقاعدة حرف C
-  if (currentScreen === 'RULE_C') {
+  // ==========================================
+  // شاشة قائمة الحروف المحيرة (أسرار النطق)
+  // ==========================================
+  if (currentScreen === 'PRONUNCIATION_RULES') {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
         <View style={styles.topHeaderNav}>
           <TouchableOpacity style={styles.backButton} onPress={() => setCurrentScreen('HOME')}>
             <Text style={styles.backButtonText}>← القائمة الرئيسية</Text>
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView contentContainerStyle={styles.ruleScreenContent}>
+          <Text style={styles.screenMainTitle}>أسرار النطق</Text>
+          <Text style={styles.screenSubTitle}>اختر الحرف لمعرفة أسرار نطقه</Text>
+
+          {/* زر حرف C */}
+          <TouchableOpacity 
+            style={styles.letterMenuCard} 
+            onPress={() => setCurrentScreen('RULE_C')}
+          >
+            <View style={styles.letterIconContainer}>
+              <Text style={styles.letterIcon}>C</Text>
+            </View>
+            <View style={styles.letterMenuText}>
+              <Text style={styles.letterMenuTitle}>قاعدة حرف C</Text>
+              <Text style={styles.letterMenuSubtitle}>متى ننطقه S ومتى ننطقه K؟</Text>
+            </View>
+            <Text style={styles.arrowIcon}>←</Text>
+          </TouchableOpacity>
+
+          {/* زر حرف G */}
+          <TouchableOpacity 
+            style={styles.letterMenuCard} 
+            onPress={() => setCurrentScreen('RULE_G')}
+          >
+            <View style={styles.letterIconContainer}>
+              <Text style={styles.letterIcon}>G</Text>
+            </View>
+            <View style={styles.letterMenuText}>
+              <Text style={styles.letterMenuTitle}>قاعدة حرف G</Text>
+              <Text style={styles.letterMenuSubtitle}>متى ننطقه جـ (J) ومتى ننطقه گ؟</Text>
+            </View>
+            <Text style={styles.arrowIcon}>←</Text>
+          </TouchableOpacity>
+
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  // ==========================================
+  // شاشة الشرح لقاعدة حرف C
+  // ==========================================
+  if (currentScreen === 'RULE_C') {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
+        <View style={styles.topHeaderNav}>
+          <TouchableOpacity style={styles.backButton} onPress={() => setCurrentScreen('PRONUNCIATION_RULES')}>
+            <Text style={styles.backButtonText}>← قائمة الحروف</Text>
           </TouchableOpacity>
         </View>
 
@@ -418,7 +472,113 @@ export default function App() {
     );
   }
 
+  // ==========================================
+  // شاشة الشرح لقاعدة حرف G
+  // ==========================================
+  if (currentScreen === 'RULE_G') {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
+        <View style={styles.topHeaderNav}>
+          <TouchableOpacity style={styles.backButton} onPress={() => setCurrentScreen('PRONUNCIATION_RULES')}>
+            <Text style={styles.backButtonText}>← قائمة الحروف</Text>
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView contentContainerStyle={styles.ruleScreenContent}>
+          <Text style={styles.screenMainTitle}>قاعدة نطق حرف G</Text>
+          <Text style={styles.screenSubTitle}>متى ننطقه "ج" ومتى ننطقه "گ" ؟</Text>
+
+          {/* القاعدة الأولى: J (ج) */}
+          <View style={styles.ruleDetailCard}>
+            <View style={styles.ruleDetailHeader}>
+              <Text style={styles.badgeYellowBig}>J</Text>
+              <Text style={styles.ruleDetailTitle}>يُنطق مثل حرف J (جـ)</Text>
+            </View>
+            <Text style={styles.ruleExplanation}>
+              إذا جاء بعد حرف G مباشرة أحد هذه الحروف الثلاثة: ( E, I, Y )
+            </Text>
+
+            <View style={styles.examplesContainer}>
+              <View style={styles.exampleRow}>
+                <View>
+                  <Text style={styles.exampleEnglish}>Gym <Text style={styles.exampleTranslation}>(نادي رياضي)</Text></Text>
+                </View>
+                <TouchableOpacity onPress={() => speakWord('Gym')} style={styles.smallSoundBtn}>
+                  <Text style={styles.smallSoundIcon}>🔊</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.exampleRow}>
+                <View>
+                  <Text style={styles.exampleEnglish}>Magic <Text style={styles.exampleTranslation}>(سحر)</Text></Text>
+                </View>
+                <TouchableOpacity onPress={() => speakWord('Magic')} style={styles.smallSoundBtn}>
+                  <Text style={styles.smallSoundIcon}>🔊</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.exampleRow}>
+                <View>
+                  <Text style={styles.exampleEnglish}>Orange <Text style={styles.exampleTranslation}>(برتقال)</Text></Text>
+                </View>
+                <TouchableOpacity onPress={() => speakWord('Orange')} style={styles.smallSoundBtn}>
+                  <Text style={styles.smallSoundIcon}>🔊</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+          {/* القاعدة الثانية: G (گ) */}
+          <View style={styles.ruleDetailCard}>
+            <View style={styles.ruleDetailHeader}>
+              <Text style={styles.badgeYellowBig}>G</Text>
+              <Text style={styles.ruleDetailTitle}>يُنطق G (گ - جيم مصرية)</Text>
+            </View>
+            <Text style={styles.ruleExplanation}>
+              إذا جاء بعده أي حرف آخر (مثل: A, O, U) أو إذا جاء في نهاية الكلمة.
+            </Text>
+
+            <View style={styles.examplesContainer}>
+              <View style={styles.exampleRow}>
+                <View>
+                  <Text style={styles.exampleEnglish}>Game <Text style={styles.exampleTranslation}>(لعبة)</Text></Text>
+                </View>
+                <TouchableOpacity onPress={() => speakWord('Game')} style={styles.smallSoundBtn}>
+                  <Text style={styles.smallSoundIcon}>🔊</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.exampleRow}>
+                <View>
+                  <Text style={styles.exampleEnglish}>Good <Text style={styles.exampleTranslation}>(جيد)</Text></Text>
+                </View>
+                <TouchableOpacity onPress={() => speakWord('Good')} style={styles.smallSoundBtn}>
+                  <Text style={styles.smallSoundIcon}>🔊</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.exampleRow}>
+                <View>
+                  <Text style={styles.exampleEnglish}>Dog <Text style={styles.exampleTranslation}>(كلب)</Text></Text>
+                </View>
+                <TouchableOpacity onPress={() => speakWord('Dog')} style={styles.smallSoundBtn}>
+                  <Text style={styles.smallSoundIcon}>🔊</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Text style={{fontSize: 12, color: '#D32F2F', marginTop: 10, textAlign: 'right'}}>
+              *ملاحظة: توجد بعض الكلمات الشاذة لهذه القاعدة مثل Girl (فتاة) و Give (يعطي).
+            </Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  // ==========================================
   // الشاشة الرئيسية
+  // ==========================================
   if (currentScreen === 'HOME') {
     return (
       <SafeAreaView style={styles.container}>
@@ -430,6 +590,7 @@ export default function App() {
 
         <View style={styles.gridContainer}>
           <View style={styles.gridRow}>
+            {/* بطاقة الكلمات والجمل */}
             <TouchableOpacity
               style={styles.gridCard}
               onPress={() => setCurrentScreen('VOCABULARY')}
@@ -441,21 +602,18 @@ export default function App() {
               <Text style={styles.cardFooterText}>كلمات و الجمل</Text>
             </TouchableOpacity>
 
+            {/* بطاقة أسرار النطق (التي تجمع كل الحروف) */}
             <TouchableOpacity 
               style={styles.gridCard}
-              onPress={() => setCurrentScreen('RULE_C')}
+              onPress={() => setCurrentScreen('PRONUNCIATION_RULES')}
             >
               <View style={styles.cardContent}>
-                <Text style={styles.ruleTitle}>عندك مشكلة مع حرف <Text style={styles.redCircle}>C</Text></Text>
-                <View style={styles.ruleBox}>
-                  <Text style={styles.badgeYellow}>S</Text>
-                  <Text style={styles.ruleText}>متى ينطق</Text>
-                </View>
-                <View style={styles.ruleBox}>
-                  <Text style={styles.badgeYellow}>K</Text>
-                  <Text style={styles.ruleText}>ومتى ينطق</Text>
-                </View>
+                <Text style={{ fontSize: 35, marginBottom: 8 }}>🤔</Text>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#F57C00', textAlign: 'center' }}>أسرار النطق</Text>
               </View>
+              <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#E65100', marginTop: 6, textAlign: 'center' }}>
+                الحروف المحيرة
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -477,7 +635,9 @@ export default function App() {
     );
   }
 
-  // شاشة الكلمات والجمل
+  // ==========================================
+  // شاشة الكلمات والجمل (الأساسية)
+  // ==========================================
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
@@ -563,11 +723,6 @@ const styles = StyleSheet.create({
   cardEmojiHeader: { fontSize: 26, marginBottom: 4 },
   cardMainText: { fontSize: 24, fontWeight: 'bold', color: '#D32F2F' },
   cardFooterText: { fontSize: 15, fontWeight: 'bold', color: '#E53935', marginTop: 6 },
-  ruleTitle: { fontSize: 12, fontWeight: 'bold', textAlign: 'center', marginBottom: 8, color: '#212529' },
-  redCircle: { color: '#D32F2F', fontWeight: 'bold' },
-  ruleBox: { flexDirection: 'row-reverse', alignItems: 'center', marginVertical: 2 },
-  badgeYellow: { backgroundColor: '#FFEB3B', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4, fontWeight: 'bold', fontSize: 12, marginLeft: 4 },
-  ruleText: { fontSize: 11, color: '#333' },
   largeCardText: { fontSize: 38, fontWeight: 'bold', color: '#212529' },
   mediumCardText: { fontSize: 18, fontWeight: 'bold', color: '#212529', textAlign: 'center', lineHeight: 26 },
   
@@ -576,6 +731,15 @@ const styles = StyleSheet.create({
   backButton: { alignSelf: 'flex-start', paddingVertical: 6, paddingHorizontal: 12, backgroundColor: '#E9ECEF', borderRadius: 12 },
   backButtonText: { fontSize: 14, fontWeight: '600', color: '#0084FF' },
   
+  /* شاشة قائمة الحروف المحيرة (أسرار النطق) */
+  letterMenuCard: { flexDirection: 'row-reverse', backgroundColor: '#FFFFFF', borderRadius: 16, padding: 15, marginBottom: 15, alignItems: 'center', elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 5, borderWidth: 1, borderColor: '#E9ECEF' },
+  letterIconContainer: { width: 50, height: 50, borderRadius: 25, backgroundColor: '#FFF3E0', justifyContent: 'center', alignItems: 'center', marginLeft: 15 },
+  letterIcon: { fontSize: 24, fontWeight: 'bold', color: '#F57C00' },
+  letterMenuText: { flex: 1, alignItems: 'flex-end' },
+  letterMenuTitle: { fontSize: 18, fontWeight: 'bold', color: '#212529', marginBottom: 4 },
+  letterMenuSubtitle: { fontSize: 13, color: '#6C757D' },
+  arrowIcon: { fontSize: 20, color: '#ADB5BD', marginRight: 10 },
+
   /* شاشة الكلمات والجمل */
   categoryContainer: { paddingVertical: 5 },
   scrollContent: { paddingHorizontal: 15, flexDirection: 'row-reverse' },
@@ -595,7 +759,7 @@ const styles = StyleSheet.create({
   navButtonText: { fontSize: 14, color: '#0084FF', fontWeight: 'bold' },
   counterText: { fontSize: 15, fontWeight: '700', color: '#212529' },
 
-  /* شاشة قاعدة C */
+  /* شاشة القواعد والتفاصيل (C و G) */
   ruleScreenContent: { paddingHorizontal: 20, paddingBottom: 40 },
   screenMainTitle: { fontSize: 26, fontWeight: 'bold', color: '#212529', textAlign: 'center', marginTop: 10 },
   screenSubTitle: { fontSize: 16, color: '#6C757D', textAlign: 'center', marginBottom: 20, marginTop: 5 },
