@@ -241,3 +241,50 @@ export const vocabularyData = [
   { id: 199, arabic: 'هل يمكنك مساعدتي؟', english: 'Can you help me?', pron: 'كان يو هيلب مي؟', emoji: '🆘', category: 'جمل مفيدة' },
   { id: 200, arabic: 'سررت بلقائك', english: 'Nice to meet you', pron: 'نايس تو ميت يو', emoji: '🤝', category: 'جمل مفيدة' }
 ];
+
+// بيانات قسم "نص" (محادثات وقصص قصيرة)
+export const storiesData = [
+  {
+    id: 1,
+    title: 'في المطعم (At the Restaurant)',
+    arabicText: 'مرحباً، أود طاولة لشخصين من فضلك.',
+    englishText: 'Hello, I would like a table for two, please.',
+    pron: 'هلو، آي وود لايك أ تيبل فور تو، بليز.'
+  },
+  {
+    id: 2,
+    title: 'التعارف اليومي (Daily Introduction)',
+    arabicText: 'سعيد بلقائك، أنا أتعلم اللغة الإنجليزية كل يوم.',
+    englishText: 'Nice to meet you, I am learning English every day.',
+    pron: 'نايس تو ميت يو، آي أم ليرنينج إنجليش إفري داي.'
+  },
+  {
+    id: 3,
+    title: 'السؤال عن الاتجاهات (Asking for Directions)',
+    arabicText: 'عذراً، أين أقرب محطة قطار؟',
+    englishText: 'Excuse me, where is the nearest train station?',
+    pron: 'إكسكيوز مي، وير إز ذا نيريست ترين ستيشن؟'
+  }
+];
+
+// بيانات قسم "أساسيات اللغة الإنجليزية" (قواعد مبسطة)
+export const grammarData = [
+  {
+    id: 1,
+    title: 'الضمائر الشخصية (Subject Pronouns)',
+    description: 'تُستخدَم للدلالة على فاعل الجملة وهي الأساس في تكوين أي جملة إنجليزية:',
+    examples: 'I (أنا) - He (هو) - She (هي) - We (نحن) - They (هم)'
+  },
+  {
+    id: 2,
+    title: 'فعل الكينة (Verb To Be)',
+    description: 'يُستخدم للوصف أو التعريف ويتغير حسب الفاعل (Am, Is, Are):',
+    examples: 'I am happy (أنا سعيد) - She is smart (هي ذكية) - They are friends (هم أصدقاء)'
+  },
+  {
+    id: 3,
+    title: 'أدوات النكرة والمعرفة (Articles)',
+    description: 'نستخدم (A / An) قبل الاسم المفرد النكرة، و(The) للشيء المحدود المعروف:',
+    examples: 'A cat (قطة) - An apple (تفاحة) - The sun (الشمس)'
+  }
+];
