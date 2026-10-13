@@ -15,7 +15,7 @@ import {
 import * as SplashScreen from 'expo-splash-screen';
 import * as Speech from 'expo-speech';
 import { Ionicons } from '@expo/vector-icons';
-import { categories, vocabularyData } from './data'; // استيراد الكلمات والأقسام من الملف الخارجي
+import { categories, vocabularyData, storiesData, grammarData } from './data';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -48,11 +48,12 @@ export default function App() {
     setCurrentIndex(0);
   }, [selectedCategory]);
 
+  // التحكم بزر الرجوع في الهاتف (Hardware Back Button)
   useEffect(() => {
     const backAction = () => {
       if (currentScreen === 'HOME') {
         return false; 
-      } else if (['PRONUNCIATION_RULES', 'VOCABULARY'].includes(currentScreen)) {
+      } else if (['PRONUNCIATION_RULES', 'VOCABULARY', 'TEXT_STORIES', 'GRAMMAR_BASICS'].includes(currentScreen)) {
         setCurrentScreen('HOME'); 
         return true; 
       } else if (['RULE_C', 'RULE_G', 'RULE_SILENT'].includes(currentScreen)) {
@@ -99,6 +100,9 @@ export default function App() {
 
   const currentItem = filteredData[currentIndex] || filteredData[0];
 
+  // ==========================================
+  // 1. شاشة أسرار النطق (القائمة الرئيسية)
+  // ==========================================
   if (currentScreen === 'PRONUNCIATION_RULES') {
     return (
       <SafeAreaView style={styles.container}>
@@ -150,6 +154,7 @@ export default function App() {
     );
   }
 
+  // تفاصيل الحروف الصامتة
   if (currentScreen === 'RULE_SILENT') {
     return (
       <SafeAreaView style={styles.container}>
@@ -169,53 +174,15 @@ export default function App() {
               <Text style={styles.badgeYellowBig}>K</Text>
               <Text style={styles.ruleDetailTitle}>حرف K لا يُنطق</Text>
             </View>
-            <Text style={styles.ruleExplanation}>
-              إذا جاء حرف K في بداية الكلمة وجاء بعده مباشرة حرف N، فإننا لا ننطق حرف K.
-            </Text>
+            <Text style={styles.ruleExplanation}>إذا جاء حرف K في بداية الكلمة وجاء بعده مباشرة حرف N، فإننا لا ننطق حرف K.</Text>
             <View style={styles.examplesContainer}>
               <View style={styles.exampleRow}>
-                <View>
-                  <Text style={styles.exampleEnglish}>Know <Text style={styles.exampleTranslation}>(يَعرف - "نو")</Text></Text>
-                </View>
-                <TouchableOpacity onPress={() => speakWord('Know')} style={styles.smallSoundBtn}>
-                  <Text style={styles.smallSoundIcon}>🔊</Text>
-                </TouchableOpacity>
+                <Text style={styles.exampleEnglish}>Know <Text style={styles.exampleTranslation}>(يَعرف - "نو")</Text></Text>
+                <TouchableOpacity onPress={() => speakWord('Know')} style={styles.smallSoundBtn}><Text style={styles.smallSoundIcon}>🔊</Text></TouchableOpacity>
               </View>
               <View style={styles.exampleRow}>
-                <View>
-                  <Text style={styles.exampleEnglish}>Knife <Text style={styles.exampleTranslation}>(سكين - "نايف")</Text></Text>
-                </View>
-                <TouchableOpacity onPress={() => speakWord('Knife')} style={styles.smallSoundBtn}>
-                  <Text style={styles.smallSoundIcon}>🔊</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.ruleDetailCard}>
-            <View style={styles.ruleDetailHeader}>
-              <Text style={styles.badgeYellowBig}>W</Text>
-              <Text style={styles.ruleDetailTitle}>حرف W لا يُنطق</Text>
-            </View>
-            <Text style={styles.ruleExplanation}>
-              إذا جاء حرف W في بداية الكلمة وجاء بعده مباشرة حرف R، فإننا لا ننطق حرف W.
-            </Text>
-            <View style={styles.examplesContainer}>
-              <View style={styles.exampleRow}>
-                <View>
-                  <Text style={styles.exampleEnglish}>Write <Text style={styles.exampleTranslation}>(يَكتب - "رايت")</Text></Text>
-                </View>
-                <TouchableOpacity onPress={() => speakWord('Write')} style={styles.smallSoundBtn}>
-                  <Text style={styles.smallSoundIcon}>🔊</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.exampleRow}>
-                <View>
-                  <Text style={styles.exampleEnglish}>Wrong <Text style={styles.exampleTranslation}>(خاطئ - "رونج")</Text></Text>
-                </View>
-                <TouchableOpacity onPress={() => speakWord('Wrong')} style={styles.smallSoundBtn}>
-                  <Text style={styles.smallSoundIcon}>🔊</Text>
-                </TouchableOpacity>
+                <Text style={styles.exampleEnglish}>Knife <Text style={styles.exampleTranslation}>(سكين - "نايف")</Text></Text>
+                <TouchableOpacity onPress={() => speakWord('Knife')} style={styles.smallSoundBtn}><Text style={styles.smallSoundIcon}>🔊</Text></TouchableOpacity>
               </View>
             </View>
           </View>
@@ -224,6 +191,7 @@ export default function App() {
     );
   }
 
+  // تفاصيل قاعدة C
   if (currentScreen === 'RULE_C') {
     return (
       <SafeAreaView style={styles.container}>
@@ -236,59 +204,16 @@ export default function App() {
         <ScrollView contentContainerStyle={styles.ruleScreenContent}>
           <Text style={styles.screenMainTitle}>قاعدة نطق حرف C</Text>
           <Text style={styles.screenSubTitle}>متى ننطقه S ومتى ننطقه K؟</Text>
-
           <View style={styles.ruleDetailCard}>
             <View style={styles.ruleDetailHeader}>
               <Text style={styles.badgeYellowBig}>S</Text>
               <Text style={styles.ruleDetailTitle}>يُنطق مثل السين (S)</Text>
             </View>
-            <Text style={styles.ruleExplanation}>
-              إذا جاء بعد حرف C أحد هذه الحروف الثلاثة: ( e, i, y ) فإنه يُنطق (س).
-            </Text>
+            <Text style={styles.ruleExplanation}>إذا جاء بعد حرف C أحد هذه الحروف الثلاثة: ( e, i, y ) فإنه يُنطق (س).</Text>
             <View style={styles.examplesContainer}>
               <View style={styles.exampleRow}>
-                <View>
-                  <Text style={styles.exampleEnglish}>C<Text style={{color: '#E53935'}}>i</Text>ty <Text style={styles.exampleTranslation}>(مدينة)</Text></Text>
-                </View>
-                <TouchableOpacity onPress={() => speakWord('City')} style={styles.smallSoundBtn}>
-                  <Text style={styles.smallSoundIcon}>🔊</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.exampleRow}>
-                <View>
-                  <Text style={styles.exampleEnglish}>C<Text style={{color: '#E53935'}}>e</Text>nter <Text style={styles.exampleTranslation}>(مركز)</Text></Text>
-                </View>
-                <TouchableOpacity onPress={() => speakWord('Center')} style={styles.smallSoundBtn}>
-                  <Text style={styles.smallSoundIcon}>🔊</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.ruleDetailCard}>
-            <View style={styles.ruleDetailHeader}>
-              <Text style={styles.badgeYellowBig}>K</Text>
-              <Text style={styles.ruleDetailTitle}>يُنطق مثل الكاف (K)</Text>
-            </View>
-            <Text style={styles.ruleExplanation}>
-              إذا جاء بعده أي حرف آخر غير (e, i, y) فإنه يُنطق (ك).
-            </Text>
-            <View style={styles.examplesContainer}>
-              <View style={styles.exampleRow}>
-                <View>
-                  <Text style={styles.exampleEnglish}>C<Text style={{color: '#0084FF'}}>a</Text>t <Text style={styles.exampleTranslation}>(قطة)</Text></Text>
-                </View>
-                <TouchableOpacity onPress={() => speakWord('Cat')} style={styles.smallSoundBtn}>
-                  <Text style={styles.smallSoundIcon}>🔊</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.exampleRow}>
-                <View>
-                  <Text style={styles.exampleEnglish}>C<Text style={{color: '#0084FF'}}>o</Text>ld <Text style={styles.exampleTranslation}>(بارد)</Text></Text>
-                </View>
-                <TouchableOpacity onPress={() => speakWord('Cold')} style={styles.smallSoundBtn}>
-                  <Text style={styles.smallSoundIcon}>🔊</Text>
-                </TouchableOpacity>
+                <Text style={styles.exampleEnglish}>City <Text style={styles.exampleTranslation}>(مدينة)</Text></Text>
+                <TouchableOpacity onPress={() => speakWord('City')} style={styles.smallSoundBtn}><Text style={styles.smallSoundIcon}>🔊</Text></TouchableOpacity>
               </View>
             </View>
           </View>
@@ -297,6 +222,7 @@ export default function App() {
     );
   }
 
+  // تفاصيل قاعدة G
   if (currentScreen === 'RULE_G') {
     return (
       <SafeAreaView style={styles.container}>
@@ -309,59 +235,16 @@ export default function App() {
         <ScrollView contentContainerStyle={styles.ruleScreenContent}>
           <Text style={styles.screenMainTitle}>قاعدة نطق حرف G</Text>
           <Text style={styles.screenSubTitle}>متى ننطقه جـ ومتى ننطقه گ؟</Text>
-
           <View style={styles.ruleDetailCard}>
             <View style={styles.ruleDetailHeader}>
               <Text style={styles.badgeYellowBig}>J</Text>
               <Text style={styles.ruleDetailTitle}>يُنطق (جـ) معطشة</Text>
             </View>
-            <Text style={styles.ruleExplanation}>
-              غالباً إذا جاء بعد حرف G أحد الحروف: ( e, i, y ) فإنه يُنطق (جـ).
-            </Text>
+            <Text style={styles.ruleExplanation}>إذا جاء بعد حرف G أحد الحروف: ( e, i, y ) فإنه يُنطق (جـ).</Text>
             <View style={styles.examplesContainer}>
               <View style={styles.exampleRow}>
-                <View>
-                  <Text style={styles.exampleEnglish}>G<Text style={{color: '#E53935'}}>y</Text>m <Text style={styles.exampleTranslation}>(صالة رياضية)</Text></Text>
-                </View>
-                <TouchableOpacity onPress={() => speakWord('Gym')} style={styles.smallSoundBtn}>
-                  <Text style={styles.smallSoundIcon}>🔊</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.exampleRow}>
-                <View>
-                  <Text style={styles.exampleEnglish}>G<Text style={{color: '#E53935'}}>i</Text>ant <Text style={styles.exampleTranslation}>(عملاق)</Text></Text>
-                </View>
-                <TouchableOpacity onPress={() => speakWord('Giant')} style={styles.smallSoundBtn}>
-                  <Text style={styles.smallSoundIcon}>🔊</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.ruleDetailCard}>
-            <View style={styles.ruleDetailHeader}>
-              <Text style={styles.badgeYellowBig}>G</Text>
-              <Text style={styles.ruleDetailTitle}>يُنطق (گ) مصرية</Text>
-            </View>
-            <Text style={styles.ruleExplanation}>
-              إذا جاء بعده أي حرف آخر (مثل a, o, u) فإنه يُنطق (گ).
-            </Text>
-            <View style={styles.examplesContainer}>
-              <View style={styles.exampleRow}>
-                <View>
-                  <Text style={styles.exampleEnglish}>G<Text style={{color: '#0084FF'}}>o</Text>od <Text style={styles.exampleTranslation}>(جيد)</Text></Text>
-                </View>
-                <TouchableOpacity onPress={() => speakWord('Good')} style={styles.smallSoundBtn}>
-                  <Text style={styles.smallSoundIcon}>🔊</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.exampleRow}>
-                <View>
-                  <Text style={styles.exampleEnglish}>G<Text style={{color: '#0084FF'}}>a</Text>me <Text style={styles.exampleTranslation}>(لعبة)</Text></Text>
-                </View>
-                <TouchableOpacity onPress={() => speakWord('Game')} style={styles.smallSoundBtn}>
-                  <Text style={styles.smallSoundIcon}>🔊</Text>
-                </TouchableOpacity>
+                <Text style={styles.exampleEnglish}>Gym <Text style={styles.exampleTranslation}>(صالة رياضية)</Text></Text>
+                <TouchableOpacity onPress={() => speakWord('Gym')} style={styles.smallSoundBtn}><Text style={styles.smallSoundIcon}>🔊</Text></TouchableOpacity>
               </View>
             </View>
           </View>
@@ -370,6 +253,75 @@ export default function App() {
     );
   }
 
+  // ==========================================
+  // 2. شاشة "نص" (القصص والمحادثات المفعلة حديثاً)
+  // ==========================================
+  if (currentScreen === 'TEXT_STORIES') {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
+        <View style={styles.topHeaderNav}>
+          <TouchableOpacity style={styles.iconBackButton} onPress={() => setCurrentScreen('HOME')}>
+            <Ionicons name="home" size={24} color="#0084FF" />
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView contentContainerStyle={styles.ruleScreenContent}>
+          <Text style={styles.screenMainTitle}>نصوص ومحادثات</Text>
+          <Text style={styles.screenSubTitle}>طور مهارة القراءة والاستماع بجمل واقعية</Text>
+
+          {storiesData.map((item) => (
+            <View key={item.id} style={styles.ruleDetailCard}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#0084FF', marginBottom: 6 }}>{item.title}</Text>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#212529', marginBottom: 4 }}>{item.englishText}</Text>
+              <Text style={{ fontSize: 14, color: '#6C757D', marginBottom: 12 }}>النطق: {item.pron}</Text>
+              <Text style={{ fontSize: 15, color: '#495057', marginBottom: 15, borderTopWidth: 1, borderTopColor: '#F1F3F5', paddingTop: 8 }}>
+                الترجمة: {item.arabicText}
+              </Text>
+              <TouchableOpacity style={styles.soundButton} onPress={() => speakWord(item.englishText)}>
+                <Text style={styles.soundButtonText}>🔊 استمع للنص</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  // ==========================================
+  // 3. شاشة "أساسيات اللغة الإنجليزية" المفعلة حديثاً
+  // ==========================================
+  if (currentScreen === 'GRAMMAR_BASICS') {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
+        <View style={styles.topHeaderNav}>
+          <TouchableOpacity style={styles.iconBackButton} onPress={() => setCurrentScreen('HOME')}>
+            <Ionicons name="home" size={24} color="#0084FF" />
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView contentContainerStyle={styles.ruleScreenContent}>
+          <Text style={styles.screenMainTitle}>أساسيات اللغة الإنجليزية</Text>
+          <Text style={styles.screenSubTitle}>قواعد مبسطة لبناء أساس قوي</Text>
+
+          {grammarData.map((rule) => (
+            <View key={rule.id} style={styles.ruleDetailCard}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#D32F2F', marginBottom: 8 }}>{rule.title}</Text>
+              <Text style={{ fontSize: 15, color: '#495057', lineHeight: 22, marginBottom: 10 }}>{rule.description}</Text>
+              <View style={{ backgroundColor: '#F8F9FA', padding: 10, borderRadius: 8 }}>
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#0084FF' }}>أمثلة: {rule.examples}</Text>
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  // ==========================================
+  // الشاشة الرئيسية (HOME - مع تفعيل الأزرار)
+  // ==========================================
   if (currentScreen === 'HOME') {
     return (
       <SafeAreaView style={styles.container}>
@@ -401,15 +353,22 @@ export default function App() {
           </View>
 
           <View style={styles.gridRow}>
-            <TouchableOpacity style={styles.gridCard}>
+            {/* تم تفعيل بطاقة نص */}
+            <TouchableOpacity style={styles.gridCard} onPress={() => setCurrentScreen('TEXT_STORIES')}>
               <View style={styles.cardContent}>
+                <Text style={{ fontSize: 30, marginBottom: 4 }}>📖</Text>
                 <Text style={styles.largeCardText}>نص</Text>
               </View>
+              <Text style={{ fontSize: 12, color: '#6C757D', marginTop: 4 }}>محادثات وقصص</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.gridCard}>
+
+            {/* تم تفعيل بطاقة أساسيات اللغة الإنجليزية */}
+            <TouchableOpacity style={styles.gridCard} onPress={() => setCurrentScreen('GRAMMAR_BASICS')}>
               <View style={styles.cardContent}>
+                <Text style={{ fontSize: 30, marginBottom: 4 }}>✍️</Text>
                 <Text style={styles.mediumCardText}>اساسيات اللغة الانجليزية</Text>
               </View>
+              <Text style={{ fontSize: 12, color: '#6C757D', marginTop: 4 }}>قواعد مبسطة</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -417,6 +376,9 @@ export default function App() {
     );
   }
 
+  // ==========================================
+  // شاشة الكلمات والجمل (الافتراضية)
+  // ==========================================
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
@@ -477,8 +439,8 @@ const styles = StyleSheet.create({
   cardEmojiHeader: { fontSize: 26, marginBottom: 4 },
   cardMainText: { fontSize: 24, fontWeight: 'bold', color: '#D32F2F' },
   cardFooterText: { fontSize: 15, fontWeight: 'bold', color: '#E53935', marginTop: 6 },
-  largeCardText: { fontSize: 38, fontWeight: 'bold', color: '#212529' },
-  mediumCardText: { fontSize: 18, fontWeight: 'bold', color: '#212529', textAlign: 'center', lineHeight: 26 },
+  largeCardText: { fontSize: 32, fontWeight: 'bold', color: '#212529' },
+  mediumCardText: { fontSize: 15, fontWeight: 'bold', color: '#212529', textAlign: 'center', lineHeight: 22 },
   
   topHeaderNav: { paddingHorizontal: 20, paddingTop: 15, paddingBottom: 10, flexDirection: 'row' },
   iconBackButton: { width: 44, height: 44, backgroundColor: '#E3F2FD', borderRadius: 22, justifyContent: 'center', alignItems: 'center', elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2 },
