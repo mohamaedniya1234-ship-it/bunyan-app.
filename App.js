@@ -25,6 +25,14 @@ export default function App() {
   const [filteredData, setFilteredData] = useState(vocabularyData);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // حالات قسم الاختبارات (Quiz States)
+  const [quizQuestions, setQuizQuestions] = useState([]);
+  const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [isAnswered, setIsAnswered] = useState(false);
+  const [quizFinished, setQuizFinished] = useState(false);
+
   useEffect(() => {
     async function prepare() {
       try {
@@ -53,7 +61,7 @@ export default function App() {
     const backAction = () => {
       if (currentScreen === 'HOME') {
         return false; 
-      } else if (['PRONUNCIATION_RULES', 'VOCABULARY', 'TEXT_STORIES', 'GRAMMAR_BASICS'].includes(currentScreen)) {
+      } else if (['PRONUNCIATION_RULES', 'VOCABULARY', 'TEXT_STORIES', 'GRAMMAR_BASICS', 'QUIZ_SCREEN'].includes(currentScreen)) {
         setCurrentScreen('HOME'); 
         return true; 
       } else if (['RULE_C', 'RULE_G', 'RULE_SILENT'].includes(currentScreen)) {
@@ -98,10 +106,141 @@ export default function App() {
     }
   };
 
+  // دالة بدء اختبار جديد
+  const startQuiz = () => {
+    const shuffled = [...vocabularyData].sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 10); // 10 أسئلة في كل اختبار
+    
+    const formattedQuestions = selected.map(item => {
+      const wrongOptions = vocabularyData
+        .filter(v => v.id !== item.id)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3)
+        .map(v => v.english);
+      
+      const options = [...wrongOptions, item.english].sort(() => 0.5 - Math.random());
+      return {
+        arabic: item.arabic,
+        emoji: item.emoji,
+        correct: item.english,
+        options: options
+      };
+    });
+
+    setQuizQuestions(formattedQuestions);
+    setCurrentQuizIndex(0);
+    setScore(0);
+    setSelectedOption(null);
+    setIsAnswered(false);
+    setQuizFinished(false);
+    setCurrentScreen('QUIZ_SCREEN');
+  };
+
+  const handleAnswerOption = (option) => {
+    if (isAnswered) return;
+    setSelectedOption(option);
+    setIsAnswered(true);
+
+    if (option === quizQuestions[currentQuizIndex].correct) {
+      setScore(score + 1);
+    }
+  };
+
+  const handleNextQuestion = () => {
+    const nextIndex = currentQuizIndex + 1;
+    if (nextIndex < quizQuestions.length) {
+      setCurrentQuizIndex(nextIndex);
+      setSelectedOption(null);
+      setIsAnswered(false);
+    } else {
+      setQuizFinished(true);
+    }
+  };
+
   const currentItem = filteredData[currentIndex] || filteredData[0];
 
   // ==========================================
-  // 1. شاشة أسرار النطق (القائمة الرئيسية)
+  // شاشة الاختبارات التفاعلية (QUIZ_SCREEN)
+  // ==========================================
+  if (currentScreen === 'QUIZ_SCREEN') {
+    const currentQ = quizQuestions[currentQuizIndex];
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
+        <View style={styles.topHeaderNav}>
+          <TouchableOpacity style={styles.iconBackButton} onPress={() => setCurrentScreen('HOME')}>
+            <Ionicons name="home" size={24} color="#0084FF" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.cardContainer}>
+          {quizFinished ? (
+            <View style={styles.card}>
+              <Text style={{ fontSize: 60, marginBottom: 15 }}>🎉</Text>
+              <Text style={styles.screenMainTitle}>انتهى الاختبار!</Text>
+              <Text style={{ fontSize: 18, color: '#495057', marginVertical: 15, fontWeight: 'bold' }}>
+                نتيجتك هي: {score} من {quizQuestions.length}
+              </Text>
+              <TouchableOpacity style={styles.soundButton} onPress={startQuiz}>
+                <Text style={styles.soundButtonText}>🔄 إعادة الاختبار</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            currentQ && (
+              <View style={styles.card}>
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#6C757D', marginBottom: 10 }}>
+                  السؤال {currentQuizIndex + 1} / {quizQuestions.length}
+                </Text>
+                <Text style={{ fontSize: 60, marginBottom: 10 }}>{currentQ.emoji}</Text>
+                <Text style={styles.arabicWord}>{currentQ.arabic}</Text>
+                <Text style={{ fontSize: 15, color: '#6C757D', marginBottom: 20 }}>ما هي الكلمة بالإنجليزية؟</Text>
+
+                <View style={{ width: '100%', marginBottom: 20 }}>
+                  {currentQ.options.map((option, index) => {
+                    let btnBg = '#FFFFFF';
+                    let txtColor = '#212529';
+                    let borderColor = '#E9ECEF';
+
+                    if (isAnswered) {
+                      if (option === currentQ.correct) {
+                        btnBg = '#D4EDDA';
+                        txtColor = '#155724';
+                        borderColor = '#C3E6CB';
+                      } else if (option === selectedOption) {
+                        btnBg = '#F8D7DA';
+                        txtColor = '#721C24';
+                        borderColor = '#F5C6CB';
+                      }
+                    }
+
+                    return (
+                      <TouchableOpacity
+                        key={index}
+                        style={[styles.optionButton, { backgroundColor: btnBg, borderColor: borderColor }]}
+                        onPress={() => handleAnswerOption(option)}
+                        disabled={isAnswered}
+                      >
+                        <Text style={[styles.optionText, { color: txtColor }]}>{option}</Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+
+                {isAnswered && (
+                  <TouchableOpacity style={styles.soundButton} onPress={handleNextQuestion}>
+                    <Text style={styles.soundButtonText}>السؤال التالي ←</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            )
+          )}
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // ==========================================
+  // الشاشات الأخرى (أسرار النطق، النصوص، القواعد)
   // ==========================================
   if (currentScreen === 'PRONUNCIATION_RULES') {
     return (
@@ -154,7 +293,6 @@ export default function App() {
     );
   }
 
-  // تفاصيل الحروف الصامتة
   if (currentScreen === 'RULE_SILENT') {
     return (
       <SafeAreaView style={styles.container}>
@@ -164,11 +302,9 @@ export default function App() {
             <Ionicons name="arrow-back" size={24} color="#0084FF" />
           </TouchableOpacity>
         </View>
-
         <ScrollView contentContainerStyle={styles.ruleScreenContent}>
           <Text style={styles.screenMainTitle}>الحروف الصامتة</Text>
           <Text style={styles.screenSubTitle}>حروف نكتبها ولا ننطقها</Text>
-
           <View style={styles.ruleDetailCard}>
             <View style={styles.ruleDetailHeader}>
               <Text style={styles.badgeYellowBig}>K</Text>
@@ -180,10 +316,6 @@ export default function App() {
                 <Text style={styles.exampleEnglish}>Know <Text style={styles.exampleTranslation}>(يَعرف - "نو")</Text></Text>
                 <TouchableOpacity onPress={() => speakWord('Know')} style={styles.smallSoundBtn}><Text style={styles.smallSoundIcon}>🔊</Text></TouchableOpacity>
               </View>
-              <View style={styles.exampleRow}>
-                <Text style={styles.exampleEnglish}>Knife <Text style={styles.exampleTranslation}>(سكين - "نايف")</Text></Text>
-                <TouchableOpacity onPress={() => speakWord('Knife')} style={styles.smallSoundBtn}><Text style={styles.smallSoundIcon}>🔊</Text></TouchableOpacity>
-              </View>
             </View>
           </View>
         </ScrollView>
@@ -191,7 +323,6 @@ export default function App() {
     );
   }
 
-  // تفاصيل قاعدة C
   if (currentScreen === 'RULE_C') {
     return (
       <SafeAreaView style={styles.container}>
@@ -222,7 +353,6 @@ export default function App() {
     );
   }
 
-  // تفاصيل قاعدة G
   if (currentScreen === 'RULE_G') {
     return (
       <SafeAreaView style={styles.container}>
@@ -253,9 +383,6 @@ export default function App() {
     );
   }
 
-  // ==========================================
-  // 2. شاشة "نص" (القصص والمحادثات المفعلة حديثاً)
-  // ==========================================
   if (currentScreen === 'TEXT_STORIES') {
     return (
       <SafeAreaView style={styles.container}>
@@ -288,9 +415,6 @@ export default function App() {
     );
   }
 
-  // ==========================================
-  // 3. شاشة "أساسيات اللغة الإنجليزية" المفعلة حديثاً
-  // ==========================================
   if (currentScreen === 'GRAMMAR_BASICS') {
     return (
       <SafeAreaView style={styles.container}>
@@ -320,7 +444,7 @@ export default function App() {
   }
 
   // ==========================================
-  // الشاشة الرئيسية (HOME - مع تفعيل الأزرار)
+  // الشاشة الرئيسية (HOME - مع إضافة زر الاختبارات)
   // ==========================================
   if (currentScreen === 'HOME') {
     return (
@@ -353,7 +477,6 @@ export default function App() {
           </View>
 
           <View style={styles.gridRow}>
-            {/* تم تفعيل بطاقة نص */}
             <TouchableOpacity style={styles.gridCard} onPress={() => setCurrentScreen('TEXT_STORIES')}>
               <View style={styles.cardContent}>
                 <Text style={{ fontSize: 30, marginBottom: 4 }}>📖</Text>
@@ -362,13 +485,23 @@ export default function App() {
               <Text style={{ fontSize: 12, color: '#6C757D', marginTop: 4 }}>محادثات وقصص</Text>
             </TouchableOpacity>
 
-            {/* تم تفعيل بطاقة أساسيات اللغة الإنجليزية */}
             <TouchableOpacity style={styles.gridCard} onPress={() => setCurrentScreen('GRAMMAR_BASICS')}>
               <View style={styles.cardContent}>
                 <Text style={{ fontSize: 30, marginBottom: 4 }}>✍️</Text>
                 <Text style={styles.mediumCardText}>اساسيات اللغة الانجليزية</Text>
               </View>
               <Text style={{ fontSize: 12, color: '#6C757D', marginTop: 4 }}>قواعد مبسطة</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* زر خاص بقسم الاختبارات التفاعلية */}
+          <View style={{ marginTop: 10, paddingHorizontal: 4 }}>
+            <TouchableOpacity style={styles.quizBannerButton} onPress={startQuiz}>
+              <Text style={{ fontSize: 22, marginRight: 10 }}>🎯</Text>
+              <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFFFFF' }}>اختبر معلوماتك</Text>
+                <Text style={{ fontSize: 12, color: '#E3F2FD' }}>تحدَّ نفسك في الكلمات والجمل</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -432,15 +565,17 @@ const styles = StyleSheet.create({
   homeHeader: { paddingTop: 20, paddingHorizontal: 20, alignItems: 'center', marginBottom: 10 },
   homeTitle: { fontSize: 28, fontWeight: 'bold', color: '#0084FF' },
   homeSubtitle: { fontSize: 14, color: '#6C757D', marginTop: 4 },
-  gridContainer: { flex: 1, paddingHorizontal: 16, justifyContent: 'center' },
+  gridContainer: { flex: 1, paddingHorizontal: 16, justifyContent: 'center', paddingBottom: 20 },
   gridRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 },
-  gridCard: { width: cardWidth, height: cardWidth * 1.05, backgroundColor: '#FFFFFF', borderRadius: 20, padding: 12, alignItems: 'center', justifyContent: 'space-between', elevation: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.1, shadowRadius: 6, borderWidth: 1, borderColor: '#EFEFEF' },
+  gridCard: { width: cardWidth, height: cardWidth * 0.95, backgroundColor: '#FFFFFF', borderRadius: 20, padding: 12, alignItems: 'center', justifyContent: 'space-between', elevation: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.1, shadowRadius: 6, borderWidth: 1, borderColor: '#EFEFEF' },
   cardContent: { flex: 1, alignItems: 'center', justifyContent: 'center', width: '100%' },
   cardEmojiHeader: { fontSize: 26, marginBottom: 4 },
   cardMainText: { fontSize: 24, fontWeight: 'bold', color: '#D32F2F' },
   cardFooterText: { fontSize: 15, fontWeight: 'bold', color: '#E53935', marginTop: 6 },
   largeCardText: { fontSize: 32, fontWeight: 'bold', color: '#212529' },
-  mediumCardText: { fontSize: 15, fontWeight: 'bold', color: '#212529', textAlign: 'center', lineHeight: 22 },
+  mediumCardText: { fontSize: 14, fontWeight: 'bold', color: '#212529', textAlign: 'center', lineHeight: 20 },
+  
+  quizBannerButton: { flexDirection: 'row-reverse', backgroundColor: '#0084FF', borderRadius: 16, padding: 15, alignItems: 'center', elevation: 3, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4 },
   
   topHeaderNav: { paddingHorizontal: 20, paddingTop: 15, paddingBottom: 10, flexDirection: 'row' },
   iconBackButton: { width: 44, height: 44, backgroundColor: '#E3F2FD', borderRadius: 22, justifyContent: 'center', alignItems: 'center', elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2 },
@@ -464,8 +599,12 @@ const styles = StyleSheet.create({
   emoji: { fontSize: 80, marginBottom: 15 },
   arabicWord: { fontSize: 32, fontWeight: 'bold', color: '#212529', marginBottom: 10, textAlign: 'center' },
   englishWord: { fontSize: 18, fontWeight: '600', color: '#495057', letterSpacing: 1, marginBottom: 20, textAlign: 'center' },
-  soundButton: { backgroundColor: '#E3F2FD', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20, marginBottom: 30 },
+  soundButton: { backgroundColor: '#E3F2FD', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20, marginBottom: 30, width: '100%', alignItems: 'center' },
   soundButtonText: { color: '#0084FF', fontSize: 16, fontWeight: 'bold' },
+  
+  optionButton: { width: '100%', paddingVertical: 12, paddingHorizontal: 15, borderRadius: 12, borderWidth: 1, marginBottom: 10, alignItems: 'center' },
+  optionText: { fontSize: 16, fontWeight: 'bold', letterSpacing: 1 },
+
   navigationRow: { flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between', width: '100%', paddingTop: 15, borderTopWidth: 1, borderTopColor: '#F1F3F5' },
   navButton: { paddingVertical: 8, paddingHorizontal: 10 },
   navButtonText: { fontSize: 14, color: '#0084FF', fontWeight: 'bold' },
