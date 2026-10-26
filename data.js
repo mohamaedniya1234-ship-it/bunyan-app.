@@ -18,6 +18,11 @@ export const vocabularyData = [
   { id: 8, arabic: 'عمة / خالة', english: 'AUNT', pron: 'آنت', emoji: '👩‍🦱', category: 'العائلة' },
   { id: 9, arabic: 'ابن', english: 'SON', pron: 'صن', emoji: '👶', category: 'العائلة' },
   { id: 10, arabic: 'ابنة', english: 'DAUGHTER', pron: 'دوتر', emoji: '👧', category: 'العائلة' },
+  { id: 201, arabic: 'ابن العم / الخال', english: 'COUSIN', pron: 'كازن', emoji: '🧑‍🤝‍🧑', category: 'العائلة' },
+  { id: 202, arabic: 'طفل', english: 'BABY', pron: 'بيبي', emoji: '👶', category: 'العائلة' },
+  { id: 203, arabic: 'والدان', english: 'PARENTS', pron: 'بيرنتس', emoji: '👩‍👦', category: 'العائلة' },
+  { id: 204, arabic: 'زوج', english: 'HUSBAND', pron: 'هازباند', emoji: '🤵', category: 'العائلة' },
+  { id: 205, arabic: 'زوجة', english: 'WIFE', pron: 'وايف', emoji: '👰', category: 'العائلة' },
 
   // --- أعضاء الجسم ---
   { id: 11, arabic: 'رأس', english: 'HEAD', pron: 'هيد', emoji: '🗣️', category: 'أعضاء الجسم' },
@@ -30,6 +35,11 @@ export const vocabularyData = [
   { id: 18, arabic: 'شعر', english: 'HAIR', pron: 'هير', emoji: '💇', category: 'أعضاء الجسم' },
   { id: 19, arabic: 'وجه', english: 'FACE', pron: 'فيس', emoji: '👱', category: 'أعضاء الجسم' },
   { id: 20, arabic: 'أسنان', english: 'TEETH', pron: 'تيث', emoji: '🦷', category: 'أعضاء الجسم' },
+  { id: 206, arabic: 'ذراع', english: 'ARM', pron: 'آرم', emoji: '🦾', category: 'أعضاء الجسم' },
+  { id: 207, arabic: 'ساق', english: 'LEG', pron: 'ليج', emoji: '🦵', category: 'أعضاء الجسم' },
+  { id: 208, arabic: 'إصبع', english: 'FINGER', pron: 'فينجر', emoji: '☝️', category: 'أعضاء الجسم' },
+  { id: 209, arabic: 'قلب', english: 'HEART', pron: 'هارت', emoji: '❤️', category: 'أعضاء الجسم' },
+  { id: 210, arabic: 'بطن', english: 'STOMACH', pron: 'ستومك', emoji: '🤰', category: 'أعضاء الجسم' },
 
   // --- الألوان ---
   { id: 21, arabic: 'أحمر', english: 'RED', pron: 'ريد', emoji: '🔴', category: 'الألوان' },
@@ -42,6 +52,9 @@ export const vocabularyData = [
   { id: 28, arabic: 'وردي', english: 'PINK', pron: 'بينك', emoji: '🌸', category: 'الألوان' },
   { id: 29, arabic: 'بني', english: 'BROWN', pron: 'براون', emoji: '🟤', category: 'الألوان' },
   { id: 30, arabic: 'رمادي', english: 'GRAY', pron: 'جراي', emoji: '🔘', category: 'الألوان' },
+  { id: 211, arabic: 'بنفسجي', english: 'PURPLE', pron: 'بيربل', emoji: '🟣', category: 'الألوان' },
+  { id: 212, arabic: 'ذهبي', english: 'GOLD', pron: 'جولد', emoji: '🪙', category: 'الألوان' },
+  { id: 213, arabic: 'فضّي', english: 'SILVER', pron: 'سيلفر', emoji: '🥈', category: 'الألوان' },
 
   // --- الحيوانات ---
   { id: 31, arabic: 'قطة', english: 'CAT', pron: 'كات', emoji: '🐱', category: 'الحيوانات' },
@@ -56,6 +69,10 @@ export const vocabularyData = [
   { id: 40, arabic: 'قرد', english: 'MONKEY', pron: 'مونكي', emoji: '🐒', category: 'الحيوانات' },
   { id: 41, arabic: 'أرنب', english: 'RABBIT', pron: 'رابيت', emoji: '🐰', category: 'الحيوانات' },
   { id: 42, arabic: 'دجاجة', english: 'CHICKEN', pron: 'تشيكن', emoji: '🐔', category: 'الحيوانات' },
+  { id: 214, arabic: 'دب', english: 'BEAR', pron: 'بير', emoji: '🐻', category: 'الحيوانات' },
+  { id: 215, arabic: 'ثعبان', english: 'SNAKE', pron: 'سنيك', emoji: '🐍', category: 'الحيوانات' },
+  { id: 216, arabic: 'زرافة', english: 'GIRAFFE', pron: 'جراف', emoji: '🦒', category: 'الحيوانات' },
+  { id: 217, arabic: 'ثعلب', english: 'FOX', pron: 'فوكس', emoji: '🦊', category: 'الحيوانات' },
 
   // --- الطعام ---
   { id: 43, arabic: 'تفاحة', english: 'APPLE', pron: 'آبل', emoji: '🍎', category: 'الطعام' },
@@ -71,6 +88,11 @@ export const vocabularyData = [
   { id: 53, arabic: 'أرز', english: 'RICE', pron: 'رايس', emoji: '🍚', category: 'الطعام' },
   { id: 54, arabic: 'جبن', english: 'CHEESE', pron: 'تشيز', emoji: '🧀', category: 'الطعام' },
   { id: 55, arabic: 'عصير', english: 'JUICE', pron: 'جوس', emoji: '🧃', category: 'الطعام' },
+  { id: 218, arabic: 'شاي', english: 'TEA', pron: 'تي', emoji: '🍵', category: 'الطعام' },
+  { id: 219, arabic: 'قهوة', english: 'COFFEE', pron: 'كوفي', emoji: '☕', category: 'الطعام' },
+  { id: 220, arabic: 'حساء', english: 'SOUP', pron: 'سوب', emoji: '🥣', category: 'الطعام' },
+  { id: 221, arabic: 'سلطة', english: 'SALAD', pron: 'سالاد', emoji: '🥗', category: 'الطعام' },
+  { id: 222, arabic: 'مثلجات', english: 'ICE CREAM', pron: 'آيس كريم', emoji: '🍦', category: 'الطعام' },
 
   // --- المهن ---
   { id: 56, arabic: 'طبيب', english: 'DOCTOR', pron: 'دكتور', emoji: '👨‍⚕️', category: 'المهن' },
@@ -85,6 +107,9 @@ export const vocabularyData = [
   { id: 65, arabic: 'محامي', english: 'LAWYER', pron: 'لوير', emoji: '💼', category: 'المهن' },
   { id: 66, arabic: 'محاسب', english: 'ACCOUNTANT', pron: 'أكاونتانت', emoji: '📊', category: 'المهن' },
   { id: 67, arabic: 'صحفي', english: 'JOURNALIST', pron: 'جورناليست', emoji: '🎤', category: 'المهن' },
+  { id: 223, arabic: 'سائق', english: 'DRIVER', pron: 'درايفر', emoji: '🚘', category: 'المهن' },
+  { id: 224, arabic: 'مبرمج', english: 'PROGRAMMER', pron: 'بروجرامر', emoji: '💻', category: 'المهن' },
+  { id: 225, arabic: 'مكاتبي', english: 'CLERK', pron: 'كليرك', emoji: '📑', category: 'المهن' },
 
   // --- المنزل ---
   { id: 68, arabic: 'باب', english: 'DOOR', pron: 'دور', emoji: '🚪', category: 'المنزل' },
@@ -99,6 +124,9 @@ export const vocabularyData = [
   { id: 77, arabic: 'أريكة', english: 'SOFA', pron: 'سوفا', emoji: '🛋️', category: 'المنزل' },
   { id: 78, arabic: 'مصباح', english: 'LAMP', pron: 'لامب', emoji: '💡', category: 'المنزل' },
   { id: 79, arabic: 'جدار', english: 'WALL', pron: 'وول', emoji: '🧱', category: 'المنزل' },
+  { id: 226, arabic: 'مفتاح', english: 'KEY', pron: 'كي', emoji: '🔑', category: 'المنزل' },
+  { id: 227, arabic: 'سقف', english: 'ROOF', pron: 'روف', emoji: '🏠', category: 'المنزل' },
+  { id: 228, arabic: 'ثلاجة', english: 'FRIDGE', pron: 'فريج', emoji: '🧊', category: 'المنزل' },
 
   // --- الملابس ---
   { id: 80, arabic: 'قميص', english: 'SHIRT', pron: 'شيرت', emoji: '👔', category: 'الملابس' },
@@ -112,6 +140,8 @@ export const vocabularyData = [
   { id: 88, arabic: 'سترة', english: 'JACKET', pron: 'جاكيت', emoji: '🧥', category: 'الملابس' },
   { id: 89, arabic: 'حزام', english: 'BELT', pron: 'بيلت', emoji: '🎗️', category: 'الملابس' },
   { id: 90, arabic: 'نظارات', english: 'GLASSES', pron: 'جلاسيس', emoji: '👓', category: 'الملابس' },
+  { id: 229, arabic: 'حقيبة يد', english: 'PURSE', pron: 'بيرس', emoji: '👛', category: 'الملابس' },
+  { id: 230, arabic: 'قفازات', english: 'GLOVES', pron: 'جلوفز', emoji: '🧤', category: 'الملابس' },
 
   // --- الطبيعة ---
   { id: 91, arabic: 'شمس', english: 'SUN', pron: 'صن', emoji: '☀️', category: 'الطبيعة' },
@@ -126,6 +156,8 @@ export const vocabularyData = [
   { id: 100, arabic: 'صحراء', english: 'DESERT', pron: 'ديزيرت', emoji: '🏜️', category: 'الطبيعة' },
   { id: 101, arabic: 'غابة', english: 'FOREST', pron: 'فوريست', emoji: '🌲', category: 'الطبيعة' },
   { id: 102, arabic: 'حجر', english: 'STONE', pron: 'ستون', emoji: '🪨', category: 'الطبيعة' },
+  { id: 231, arabic: 'جزيرة', english: 'ISLAND', pron: 'آيلاند', emoji: '🏝️', category: 'الطبيعة' },
+  { id: 232, arabic: 'محيط', english: 'OCEAN', pron: 'أوشن', emoji: '🌊', category: 'الطبيعة' },
 
   // --- النقل ---
   { id: 103, arabic: 'سيارة', english: 'CAR', pron: 'كار', emoji: '🚗', category: 'النقل' },
@@ -138,6 +170,8 @@ export const vocabularyData = [
   { id: 110, arabic: 'شاحنة', english: 'TRUCK', pron: 'تراك', emoji: '🚛', category: 'النقل' },
   { id: 111, arabic: 'دراجة نارية', english: 'MOTORCYCLE', pron: 'موتورسيكل', emoji: '🏍️', category: 'النقل' },
   { id: 112, arabic: 'هليكوبتر', english: 'HELICOPTER', pron: 'هليكوبتر', emoji: '🚁', category: 'النقل' },
+  { id: 233, arabic: 'سيارة أجرة', english: 'TAXI', pron: 'تاكسي', emoji: '🚕', category: 'النقل' },
+  { id: 234, arabic: 'مترو الأنفاق', english: 'METRO', pron: 'مترو', emoji: '🚇', category: 'النقل' },
 
   // --- المدرسة ---
   { id: 113, arabic: 'قلم', english: 'PEN', pron: 'بين', emoji: '🖊️', category: 'المدرسة' },
@@ -152,6 +186,8 @@ export const vocabularyData = [
   { id: 122, arabic: 'طالب', english: 'STUDENT', pron: 'ستيودنت', emoji: '👨‍🎓', category: 'المدرسة' },
   { id: 123, arabic: 'امتحان', english: 'EXAM', pron: 'إكزام', emoji: '📝', category: 'المدرسة' },
   { id: 124, arabic: 'درس', english: 'LESSON', pron: 'ليسون', emoji: '📖', category: 'المدرسة' },
+  { id: 235, arabic: 'مقص', english: 'SCISSORS', pron: 'سيزارز', emoji: '✂️', category: 'المدرسة' },
+  { id: 236, arabic: 'مكتبة', english: 'LIBRARY', pron: 'لايبراري', emoji: '🏛️', category: 'المدرسة' },
 
   // --- الرياضة ---
   { id: 125, arabic: 'كرة قدم', english: 'FOOTBALL', pron: 'فوتبول', emoji: '⚽', category: 'الرياضة' },
@@ -165,6 +201,8 @@ export const vocabularyData = [
   { id: 133, arabic: 'ملعب', english: 'STADIUM', pron: 'ستاديوم', emoji: '🏟️', category: 'الرياضة' },
   { id: 134, arabic: 'بطل', english: 'CHAMPION', pron: 'تشامبيون', emoji: '🏆', category: 'الرياضة' },
   { id: 135, arabic: 'مباراة', english: 'MATCH', pron: 'ماتش', emoji: '⏱️', category: 'الرياضة' },
+  { id: 237, arabic: 'ملاكمة', english: 'BOXING', pron: 'بوكسينج', emoji: '🥊', category: 'الرياضة' },
+  { id: 238, arabic: 'مدرب', english: 'COACH', pron: 'كوتش', emoji: '🧢', category: 'الرياضة' },
 
   // --- الطقس ---
   { id: 136, arabic: 'حار', english: 'HOT', pron: 'هوت', emoji: '🥵', category: 'الطقس' },
@@ -177,6 +215,8 @@ export const vocabularyData = [
   { id: 143, arabic: 'عاصفة', english: 'STORM', pron: 'ستورم', emoji: '🌩️', category: 'الطقس' },
   { id: 144, arabic: 'ربيع', english: 'SPRING', pron: 'سبرينج', emoji: '🌸', category: 'الطقس' },
   { id: 145, arabic: 'شتاء', english: 'WINTER', pron: 'وينتر', emoji: '🌨️', category: 'الطقس' },
+  { id: 239, arabic: 'صيف', english: 'SUMMER', pron: 'سامر', emoji: '🏖️', category: 'الطقس' },
+  { id: 240, arabic: 'خريف', english: 'AUTUMN', pron: 'أوتم', emoji: '🍂', category: 'الطقس' },
 
   // --- الصفات ---
   { id: 146, arabic: 'كبير', english: 'BIG', pron: 'بيج', emoji: '🐘', category: 'الصفات' },
@@ -194,6 +234,12 @@ export const vocabularyData = [
   { id: 158, arabic: 'غاضب', english: 'ANGRY', pron: 'آنجري', emoji: '😡', category: 'الصفات' },
   { id: 159, arabic: 'متعب', english: 'TIRED', pron: 'تايرد', emoji: '😫', category: 'الصفات' },
   { id: 160, arabic: 'ذكي', english: 'SMART', pron: 'سمارت', emoji: '🧠', category: 'الصفات' },
+  { id: 241, arabic: 'غني', english: 'RICH', pron: 'ريتش', emoji: '💎', category: 'الصفات' },
+  { id: 242, arabic: 'فقير', english: 'POOR', pron: 'بور', emoji: '🏚️', category: 'الصفات' },
+  { id: 243, arabic: 'جديد', english: 'NEW', pron: 'نيو', emoji: '🆕', category: 'الصفات' },
+  { id: 244, arabic: 'قديم', english: 'OLD', pron: 'أولد', emoji: '🕰️', category: 'الصفات' },
+  { id: 245, arabic: 'سهل', english: 'EASY', pron: 'إيزي', emoji: '✅', category: 'الصفات' },
+  { id: 246, arabic: 'صعب', english: 'HARD', pron: 'هارد', emoji: '🧩', category: 'الصفات' },
 
   // --- الأفعال ---
   { id: 161, arabic: 'يأكل', english: 'EAT', pron: 'إيت', emoji: '🍽️', category: 'الأفعال' },
@@ -216,6 +262,12 @@ export const vocabularyData = [
   { id: 178, arabic: 'يغلق', english: 'CLOSE', pron: 'كلوز', emoji: '🔒', category: 'الأفعال' },
   { id: 179, arabic: 'يمشي', english: 'WALK', pron: 'ووك', emoji: '🚶', category: 'الأفعال' },
   { id: 180, arabic: 'يجري', english: 'RUN', pron: 'ران', emoji: '🏃', category: 'الأفعال' },
+  { id: 247, arabic: 'يشترون', english: 'BUY', pron: 'باي', emoji: '🛒', category: 'الأفعال' },
+  { id: 248, arabic: 'يبيع', english: 'SELL', pron: 'سيل', emoji: '🏷️', category: 'الأفعال' },
+  { id: 249, arabic: 'يعطي', english: 'GIVE', pron: 'جيف', emoji: '🎁', category: 'الأفعال' },
+  { id: 250, arabic: 'ياخذ', english: 'TAKE', pron: 'تيك', emoji: '🤲', category: 'الأفعال' },
+  { id: 251, arabic: 'يفكر', english: 'THINK', pron: 'ثينك', emoji: '🤔', category: 'الأفعال' },
+  { id: 252, arabic: 'ساعد', english: 'HELP', pron: 'هيلب', emoji: '🤝', category: 'الأفعال' },
 
   // --- التحيات ---
   { id: 181, arabic: 'مرحباً', english: 'HELLO', pron: 'هيلو', emoji: '👋', category: 'التحيات' },
@@ -228,6 +280,8 @@ export const vocabularyData = [
   { id: 188, arabic: 'آسف', english: 'SORRY', pron: 'سوري', emoji: '😔', category: 'التحيات' },
   { id: 189, arabic: 'نعم', english: 'YES', pron: 'يس', emoji: '👍', category: 'التحيات' },
   { id: 190, arabic: 'لا', english: 'NO', pron: 'نو', emoji: '👎', category: 'التحيات' },
+  { id: 191, arabic: 'أهلاً بك', english: 'WELCOME', pron: 'ويلكم', emoji: '🤗', category: 'التحيات' },
+  { id: 192, arabic: 'مع السلامة', english: 'SEE YOU LATER', pron: 'سي يو ليتر', emoji: '🙋', category: 'التحيات' },
 
   // --- جمل مفيدة ---
   { id: 191, arabic: 'كيف حالك؟', english: 'How are you?', pron: 'هاو آر يو؟', emoji: '❓', category: 'جمل مفيدة' },
@@ -239,7 +293,17 @@ export const vocabularyData = [
   { id: 197, arabic: 'لا أفهم', english: 'I do not understand', pron: 'آي دو نوت أندرستاند', emoji: '🤷', category: 'جمل مفيدة' },
   { id: 198, arabic: 'كم السعر؟', english: 'How much is this?', pron: 'هاو ماتش إز ذيس؟', emoji: '💰', category: 'جمل مفيدة' },
   { id: 199, arabic: 'هل يمكنك مساعدتي؟', english: 'Can you help me?', pron: 'كان يو هيلب مي؟', emoji: '🆘', category: 'جمل مفيدة' },
-  { id: 200, arabic: 'سررت بلقائك', english: 'Nice to meet you', pron: 'نايس تو ميت يو', emoji: '🤝', category: 'جمل مفيدة' }
+  { id: 200, arabic: 'سررت بلقائك', english: 'Nice to meet you', pron: 'نايس تو ميت يو', emoji: '🤝', category: 'جمل مفيدة' },
+  { id: 291, arabic: 'أنا جائع', english: 'I am hungry', pron: 'آي أم هنجري', emoji: '🍔', category: 'جمل مفيدة' },
+  { id: 292, arabic: 'أنا عطشان', english: 'I am thirsty', pron: 'آي أم ثيرستي', emoji: '🥤', category: 'جمل مفيدة' },
+  { id: 293, arabic: 'ماذا تفعل؟', english: 'What are you doing?', pron: 'وات آر يو دوينج؟', emoji: '❓', category: 'جمل مفيدة' },
+  { id: 294, arabic: 'أتمنى لك يوماً سعيداً', english: 'Have a nice day', pron: 'هاف أ نايس داي', emoji: '☀️', category: 'جمل مفيدة' },
+  { id: 295, arabic: 'لا مشكلة', english: 'No problem', pron: 'نو بروبلم', emoji: '👌', category: 'جمل مفيدة' },
+  { id: 296, arabic: 'أين الحمام؟', english: 'Where is the bathroom?', pron: 'وير إز ذا باثروم؟', emoji: '🚻', category: 'جمل مفيدة' },
+  { id: 297, arabic: 'أحتاج إلى مساعدة', english: 'I need help', pron: 'آي نيد هيلب', emoji: '🆘', category: 'جمل مفيدة' },
+  { id: 298, arabic: 'أنا بخير، شكراً', english: 'I am fine, thank you', pron: 'آي أم فاين، ثانك يو', emoji: '😊', category: 'جمل مفيدة' },
+  { id: 299, arabic: 'الوقت متأخر', english: 'It is late', pron: 'إت إز ليت', emoji: '⏰', category: 'جمل مفيدة' },
+  { id: 300, arabic: 'أراك غداً', english: 'See you tomorrow', pron: 'سي يو تومورو', emoji: '👋', category: 'جمل مفيدة' }
 ];
 
 // بيانات قسم "نص" (محادثات وقصص قصيرة)
@@ -264,6 +328,20 @@ export const storiesData = [
     arabicText: 'عذراً، أين أقرب محطة قطار؟',
     englishText: 'Excuse me, where is the nearest train station?',
     pron: 'إكسكيوز مي، وير إز ذا نيريست ترين ستيشن؟'
+  },
+  {
+    id: 4,
+    title: 'في الفندق (At the Hotel)',
+    arabicText: 'مرحباً، لدي حجز لغرفة لشخص واحد.',
+    englishText: 'Hello, I have a reservation for a single room.',
+    pron: 'هلو، آي هاف أ ريزرفيشن فور أ سينجل روم.'
+  },
+  {
+    id: 5,
+    title: 'التسوق (Shopping)',
+    arabicText: 'كم سعر هذا قميص من فضلك؟',
+    englishText: 'How much is this shirt, please?',
+    pron: 'هاو ماتش إز ذيس شيرت، بليز؟'
   }
 ];
 
@@ -277,7 +355,7 @@ export const grammarData = [
   },
   {
     id: 2,
-    title: 'فعل الكينة (Verb To Be)',
+    title: 'فعل الكينونة (Verb To Be)',
     description: 'يُستخدم للوصف أو التعريف ويتغير حسب الفاعل (Am, Is, Are):',
     examples: 'I am happy (أنا سعيد) - She is smart (هي ذكية) - They are friends (هم أصدقاء)'
   },
@@ -286,5 +364,11 @@ export const grammarData = [
     title: 'أدوات النكرة والمعرفة (Articles)',
     description: 'نستخدم (A / An) قبل الاسم المفرد النكرة، و(The) للشيء المحدود المعروف:',
     examples: 'A cat (قطة) - An apple (تفاحة) - The sun (الشمس)'
+  },
+  {
+    id: 4,
+    title: 'المضارع البسيط (Present Simple)',
+    description: 'يُستخدم للتعبير عن العادات، الحقائق والأحداث اليومية المكررة:',
+    examples: 'I play football (أنا ألعب كرة القدم) - He drinks water (هو يشرب الماء)'
   }
 ];
