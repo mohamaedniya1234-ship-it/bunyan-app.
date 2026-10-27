@@ -1,4 +1,4 @@
-// data.js - النسخة النهائية الشاملة والموسعة (أكثر من 320 عنصر حقيقي)
+// data.js - النسخة النهائية الشاملة والموسعة (أكثر من 302 كلمة + أسرار النطق الموسعة)
 
 export const categories = [
   'الكل', 'العائلة', 'أعضاء الجسم', 'الألوان', 'الحيوانات', 'الطعام', 
@@ -284,7 +284,7 @@ export const vocabularyData = [
   { id: 244, arabic: 'أهلاً بك', english: 'WELCOME', pron: 'ويلكم', emoji: '🤗', category: 'التحيات' },
   { id: 245, arabic: 'مع السلامة', english: 'SEE YOU LATER', pron: 'سي يو ليتر', emoji: '🙋', category: 'التحيات' },
 
-  // --- 17. جمل مفيدة (من 246 إلى 330 - تجاوز الـ 300 فعلياً) ---
+  // --- 17. جمل مفيدة (من 246 إلى 302) ---
   { id: 246, arabic: 'كيف حالك؟', english: 'How are you?', pron: 'هاو آر يو؟', emoji: '❓', category: 'جمل مفيدة' },
   { id: 247, arabic: 'ما اسمك؟', english: 'What is your name?', pron: 'وات إز يور نيم؟', emoji: '🤔', category: 'جمل مفيدة' },
   { id: 248, arabic: 'كم عمرك؟', english: 'How old are you?', pron: 'هاو أولد آر يو؟', emoji: '🎂', category: 'جمل مفيدة' },
@@ -328,7 +328,7 @@ export const vocabularyData = [
   { id: 286, arabic: 'الطقس بارد جداً اليوم', english: 'The weather is very cold today', pron: 'ذا ويذر إز فيري كولد توداي', emoji: '🥶', category: 'جمل مفيدة' },
   { id: 287, arabic: 'أنا أحب تناول الأكل الصحي', english: 'I like eating healthy food', pron: 'آي لايك إيتينج هيلثي فود', emoji: '🥗', category: 'جمل مفيدة' },
   { id: 288, arabic: 'لدي أصدقاء رائعون', english: 'I have wonderful friends', pron: 'آي هاف ووندرفول فريندز', emoji: '👥', category: 'جمل مفيدة' },
-  { id: 289, arabic: 'أنا أتمرن بانتظام', english: 'I exercise regularly', pron: 'آي إكسرسايز ريجولارلي', emoji: '🏋️', category: 'الجمل' },
+  { id: 289, arabic: 'أنا أتمرن بانتظام', english: 'I exercise regularly', pron: 'آي إكسرسايز ريجولارلي', emoji: '🏋️', category: 'جمل مفيدة' },
   { id: 290, arabic: 'هذا هو المكان الصحيح', english: 'This is the right place', pron: 'ذيس إز ذا رايت بليس', emoji: '📍', category: 'جمل مفيدة' },
   { id: 291, arabic: 'أنا أتكلم بصوت منخفض', english: 'I speak in a low voice', pron: 'آي سبيك إن أ لو فويس', emoji: '🗣️', category: 'جمل مفيدة' },
   { id: 292, arabic: 'يجب أن أذهب الآن', english: 'I must go now', pron: 'آي مست جو ناو', emoji: '🏃', category: 'جمل مفيدة' },
@@ -411,7 +411,7 @@ export const grammarData = [
   }
 ];
 
-// بيانات قسم "أسرار النطق" (Pronunciation Secrets) الموسعة
+// بيانات قسم "أسرار النطق" (Pronunciation Secrets) الموسعة جداً (تمت زيادة العدد والقواعد)
 export const pronunciationRules = [
   {
     id: 1,
@@ -468,5 +468,33 @@ export const pronunciationRules = [
     subtitle: 'متى لا يُنطق حرف W؟',
     rule: 'لا يُنطق حرف W إذا جاء متبوعاً مباشرة بحرف R في بداية الكلمة.',
     example: 'Write (رايت - يكتب، لا ننطق الواو) / Wrong (رونج - خطأ)'
+  },
+  {
+    id: 9,
+    title: 'قاعدة نطق الحرفين (CH)',
+    subtitle: 'صوت الشين أو الكاف',
+    rule: 'في الغالب يُنطق الحرفان (CH) بصوت (تش)، وفي بعض الكلمات ذات الأصل اليوناني تُنطق (ك).',
+    example: 'Chair (كرسي - نُطقت تش) / School (مدرسة - نُطقت ك)'
+  },
+  {
+    id: 10,
+    title: 'قاعدة نطق الحرفين (SH)',
+    subtitle: 'صوت الشين الواضح',
+    rule: 'عندما يجتمع الحرفان S و H فإنهما يعطيان دائماً صوت حرف (الشين) العربي الصريح.',
+    example: 'Fish (فيش - سمكة) / Shop (شوب - متجر)'
+  },
+  {
+    id: 11,
+    title: 'الحروف الصامتة: حرف B',
+    subtitle: 'متى يسقط صوت حرف B؟',
+    rule: 'لا يُنطق حرف B إذا جاء في نهاية الكلمة ومتبوعاً بحرف M مباشرة.',
+    example: 'Climb (كلايم - يتسلق، لا ننطق الباء) / Comb (كوم - مشط)'
+  },
+  {
+    id: 12,
+    title: 'قاعدة نطق الحرف (S) بين حرفين متحركين',
+    subtitle: 'متى يُنطق (Z)؟',
+    rule: 'إذا وقع حرف S بين حرفين متحركين (مثل a, e, i, o, u) فإنه غالباً يُنطق بصوت (Z) وليس (S).',
+    example: 'Rose (روز - وردة) / Music (موزيك - موسيقى)'
   }
 ];
