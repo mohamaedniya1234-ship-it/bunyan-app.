@@ -1,4 +1,4 @@
-// data.js
+// data.js - الملف الكامل والشامل لتطبيق بنيان
 
 export const categories = [
   'الكل', 'العائلة', 'أعضاء الجسم', 'الألوان', 'الحيوانات', 'الطعام', 
@@ -267,7 +267,7 @@ export const vocabularyData = [
   { id: 249, arabic: 'يعطي', english: 'GIVE', pron: 'جيف', emoji: '🎁', category: 'الأفعال' },
   { id: 250, arabic: 'ياخذ', english: 'TAKE', pron: 'تيك', emoji: '🤲', category: 'الأفعال' },
   { id: 251, arabic: 'يفكر', english: 'THINK', pron: 'ثينك', emoji: '🤔', category: 'الأفعال' },
-  { id: 252, arabic: 'ساعد', english: 'HELP', pron: 'هيلب', emoji: '🤝', category: 'الأفعال' },
+  { id: 252, arabic: 'يساعد', english: 'HELP', pron: 'هيلب', emoji: '🤝', category: 'الأفعال' },
 
   // --- التحيات ---
   { id: 181, arabic: 'مرحباً', english: 'HELLO', pron: 'هيلو', emoji: '👋', category: 'التحيات' },
@@ -284,16 +284,14 @@ export const vocabularyData = [
   { id: 192, arabic: 'مع السلامة', english: 'SEE YOU LATER', pron: 'سي يو ليتر', emoji: '🙋', category: 'التحيات' },
 
   // --- جمل مفيدة ---
-  { id: 191, arabic: 'كيف حالك؟', english: 'How are you?', pron: 'هاو آر يو؟', emoji: '❓', category: 'جمل مفيدة' },
-  { id: 192, arabic: 'ما اسمك؟', english: 'What is your name?', pron: 'وات إز يور نيم؟', emoji: '🤔', category: 'جمل مفيدة' },
-  { id: 193, arabic: 'كم عمرك؟', english: 'How old are you?', pron: 'هاو أولد آر يو؟', emoji: '🎂', category: 'جمل مفيدة' },
-  { id: 194, arabic: 'من أين أنت؟', english: 'Where are you from?', pron: 'وير آر يو فروم؟', emoji: '🌍', category: 'جمل مفيدة' },
-  { id: 195, arabic: 'أين تعيش؟', english: 'Where do you live?', pron: 'وير دو يو ليف؟', emoji: '🏠', category: 'جمل مفيدة' },
-  { id: 196, arabic: 'هل تتحدث الإنجليزية؟', english: 'Do you speak English?', pron: 'دو يو سبيك إنجليش؟', emoji: '🗣️', category: 'جمل مفيدة' },
-  { id: 197, arabic: 'لا أفهم', english: 'I do not understand', pron: 'آي دو نوت أندرستاند', emoji: '🤷', category: 'جمل مفيدة' },
-  { id: 198, arabic: 'كم السعر؟', english: 'How much is this?', pron: 'هاو ماتش إز ذيس؟', emoji: '💰', category: 'جمل مفيدة' },
-  { id: 199, arabic: 'هل يمكنك مساعدتي؟', english: 'Can you help me?', pron: 'كان يو هيلب مي؟', emoji: '🆘', category: 'جمل مفيدة' },
-  { id: 200, arabic: 'سررت بلقائك', english: 'Nice to meet you', pron: 'نايس تو ميت يو', emoji: '🤝', category: 'جمل مفيدة' },
+  { id: 193, arabic: 'كيف حالك؟', english: 'How are you?', pron: 'هاو آر يو؟', emoji: '❓', category: 'جمل مفيدة' },
+  { id: 194, arabic: 'ما اسمك؟', english: 'What is your name?', pron: 'وات إز يور نيم؟', emoji: '🤔', category: 'جمل مفيدة' },
+  { id: 195, arabic: 'كم عمرك؟', english: 'How old are you?', pron: 'هاو أولد آر يو؟', emoji: '🎂', category: 'جمل مفيدة' },
+  { id: 196, arabic: 'من أين أنت؟', english: 'Where are you from?', pron: 'وير آر يو فروم؟', emoji: '🌍', category: 'جمل مفيدة' },
+  { id: 197, arabic: 'أين تعيش؟', english: 'Where do you live?', pron: 'وير دو يو ليف؟', emoji: '🏠', category: 'جمل مفيدة' },
+  { id: 198, arabic: 'هل تتحدث الإنجليزية؟', english: 'Do you speak English?', pron: 'دو يو سبيك إنجليش؟', emoji: '🗣️', category: 'جمل مفيدة' },
+  { id: 199, arabic: 'لا أفهم', english: 'I do not understand', pron: 'آي دو نوت أندرستاند', emoji: '🤷', category: 'جمل مفيدة' },
+  { id: 200, arabic: 'كم السعر؟', english: 'How much is this?', pron: 'هاو ماتش إز ذيس؟', emoji: '💰', category: 'جمل مفيدة' },
   { id: 291, arabic: 'أنا جائع', english: 'I am hungry', pron: 'آي أم هنجري', emoji: '🍔', category: 'جمل مفيدة' },
   { id: 292, arabic: 'أنا عطشان', english: 'I am thirsty', pron: 'آي أم ثيرستي', emoji: '🥤', category: 'جمل مفيدة' },
   { id: 293, arabic: 'ماذا تفعل؟', english: 'What are you doing?', pron: 'وات آر يو دوينج؟', emoji: '❓', category: 'جمل مفيدة' },
@@ -370,5 +368,65 @@ export const grammarData = [
     title: 'المضارع البسيط (Present Simple)',
     description: 'يُستخدم للتعبير عن العادات، الحقائق والأحداث اليومية المكررة:',
     examples: 'I play football (أنا ألعب كرة القدم) - He drinks water (هو يشرب الماء)'
+  }
+];
+
+// بيانات قسم "أسرار النطق" (Pronunciation Secrets) الموسعة
+export const pronunciationRules = [
+  {
+    id: 1,
+    title: 'قاعدة نطق حرف C',
+    subtitle: 'متى ننطقه (س) ومتى ننطقه (ك)؟',
+    rule: 'إذا جاء بعد حرف C أحد الحرفين (e, i, y) فإنه يُنطق (س)، وما عدا ذلك يُنطق (ك).',
+    example: 'City (مدينة - نُطقت س) / Cat (قطة - نُطقت ك)'
+  },
+  {
+    id: 2,
+    title: 'قاعدة نطق حرف G',
+    subtitle: 'متى ننطقه (ج) معطشة ومتى ننطقه (گ) عادية؟',
+    rule: 'غالباً إذا جاء بعد حرف G حروف (e, i, y) يُنطق (ج معطشة)، وما عدا ذلك يُنطق جيماً عادية.',
+    example: 'Gym (صالة رياضية - نُطقت ج) / Game (لعبة - نُطقت جيماً عادية)'
+  },
+  {
+    id: 3,
+    title: 'الحروف الصامتة: حرف K',
+    subtitle: 'حروف نكتبها ولا ننطقها',
+    rule: 'إذا جاء حرف K في بداية الكلمة وجاء بعده حرف N مباشرة، فإننا لا ننطق حرف K أبداً.',
+    example: 'Know (يعرف - تُنطق نو فقط بدون الكاف)'
+  },
+  {
+    id: 4,
+    title: 'قاعدة نطق الحرفين (TH)',
+    subtitle: 'الصوتي (ذ) وغير الصوتي (ث)',
+    rule: 'له نطقان أساسيان: صوتي يشبه الذال (مثل This)، وغير صوتي يشبه الثاء (مثل Think).',
+    example: 'Think (يفكر - ث) / This (هذا - ذ)'
+  },
+  {
+    id: 5,
+    title: 'قاعدة نطق نهاية الأفعال (ED)',
+    subtitle: 'كيف تنطق الـ ED في أفعال الماضي؟',
+    rule: 'تُنطق (ت) إذا انتهى الفعل بحرف مهموس، أو (د) إذا انتهى بحرف مجهور، أو (إد) إذا انتهى بـ t أو d.',
+    example: 'Worked (ووركت - ت) / Played (بلايد - د) / Needed (نيديد - إد)'
+  },
+  {
+    id: 6,
+    title: 'قاعدة الحروف المركبة (TION)',
+    subtitle: 'كيف تُنطق نهاية الكلمات الطويلة؟',
+    rule: 'إذا اجتمعت الحروف (tion) في نهاية الكلمة، فإنها تُنطق دائماً بصوت (شن).',
+    example: 'Action (أكشن) / Education (إديوكيشن)'
+  },
+  {
+    id: 7,
+    title: 'قاعدة الحروف المركبة (PH)',
+    subtitle: 'دمج الحرفين P و H',
+    rule: 'عندما يجتمع الحرفان P و H في الكلمة، فإنهما يُنطبان تماماً مثل حرف (F).',
+    example: 'Phone (فون - هاتف) / Photo (فوتو - صورة)'
+  },
+  {
+    id: 8,
+    title: 'الحروف الصامتة: حرف W',
+    subtitle: 'متى لا يُنطق حرف W؟',
+    rule: 'لا يُنطق حرف W إذا جاء متبوعاً مباشرة بحرف R في بداية الكلمة.',
+    example: 'Write (رايت - يكتب، لا ننطق الواو) / Wrong (رونج - خطأ)'
   }
 ];
