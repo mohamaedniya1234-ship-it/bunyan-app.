@@ -15,7 +15,7 @@ import {
 import * as SplashScreen from 'expo-splash-screen';
 import * as Speech from 'expo-speech';
 import { Ionicons } from '@expo/vector-icons';
-import { categories, vocabularyData, storiesData, grammarData } from './data';
+import { categories, vocabularyData, storiesData, grammarData, pronunciationRules } from './data';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -63,9 +63,6 @@ export default function App() {
         return false; 
       } else if (['PRONUNCIATION_RULES', 'VOCABULARY', 'TEXT_STORIES', 'GRAMMAR_BASICS', 'QUIZ_SCREEN'].includes(currentScreen)) {
         setCurrentScreen('HOME'); 
-        return true; 
-      } else if (['RULE_C', 'RULE_G', 'RULE_SILENT'].includes(currentScreen)) {
-        setCurrentScreen('PRONUNCIATION_RULES'); 
         return true; 
       }
       return false;
@@ -240,7 +237,7 @@ export default function App() {
   }
 
   // ==========================================
-  // الشاشات الأخرى (أسرار النطق، النصوص، القواعد)
+  // شاشة أسرار النطق الديناميكية (PRONUNCIATION_RULES)
   // ==========================================
   if (currentScreen === 'PRONUNCIATION_RULES') {
     return (
@@ -254,130 +251,27 @@ export default function App() {
 
         <ScrollView contentContainerStyle={styles.ruleScreenContent}>
           <Text style={styles.screenMainTitle}>أسرار النطق</Text>
-          <Text style={styles.screenSubTitle}>اختر الحرف لمعرفة أسرار نطقه</Text>
+          <Text style={styles.screenSubTitle}>قواعد الحروف والحركات المحيرة في الإنجليزية</Text>
 
-          <TouchableOpacity style={styles.letterMenuCard} onPress={() => setCurrentScreen('RULE_C')}>
-            <View style={styles.letterIconContainer}>
-              <Text style={styles.letterIcon}>C</Text>
-            </View>
-            <View style={styles.letterMenuText}>
-              <Text style={styles.letterMenuTitle}>قاعدة حرف C</Text>
-              <Text style={styles.letterMenuSubtitle}>متى ننطقه S ومتى ننطقه K؟</Text>
-            </View>
-            <Ionicons name="chevron-back" size={20} color="#ADB5BD" style={styles.arrowIcon} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.letterMenuCard} onPress={() => setCurrentScreen('RULE_G')}>
-            <View style={[styles.letterIconContainer, { backgroundColor: '#E3F2FD' }]}>
-              <Text style={[styles.letterIcon, { color: '#0084FF' }]}>G</Text>
-            </View>
-            <View style={styles.letterMenuText}>
-              <Text style={styles.letterMenuTitle}>قاعدة حرف G</Text>
-              <Text style={styles.letterMenuSubtitle}>متى ننطقه جـ (J) ومتى ننطقه گ؟</Text>
-            </View>
-            <Ionicons name="chevron-back" size={20} color="#ADB5BD" style={styles.arrowIcon} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.letterMenuCard} onPress={() => setCurrentScreen('RULE_SILENT')}>
-            <View style={[styles.letterIconContainer, { backgroundColor: '#FCE4EC' }]}>
-              <Ionicons name="volume-mute" size={24} color="#E91E63" />
-            </View>
-            <View style={styles.letterMenuText}>
-              <Text style={styles.letterMenuTitle}>الحروف الصامتة</Text>
-              <Text style={styles.letterMenuSubtitle}>تُكتب ولا تُنطق (مثل K و W)</Text>
-            </View>
-            <Ionicons name="chevron-back" size={20} color="#ADB5BD" style={styles.arrowIcon} />
-          </TouchableOpacity>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
-  if (currentScreen === 'RULE_SILENT') {
-    return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
-        <View style={styles.topHeaderNav}>
-          <TouchableOpacity style={styles.iconBackButton} onPress={() => setCurrentScreen('PRONUNCIATION_RULES')}>
-            <Ionicons name="arrow-back" size={24} color="#0084FF" />
-          </TouchableOpacity>
-        </View>
-        <ScrollView contentContainerStyle={styles.ruleScreenContent}>
-          <Text style={styles.screenMainTitle}>الحروف الصامتة</Text>
-          <Text style={styles.screenSubTitle}>حروف نكتبها ولا ننطقها</Text>
-          <View style={styles.ruleDetailCard}>
-            <View style={styles.ruleDetailHeader}>
-              <Text style={styles.badgeYellowBig}>K</Text>
-              <Text style={styles.ruleDetailTitle}>حرف K لا يُنطق</Text>
-            </View>
-            <Text style={styles.ruleExplanation}>إذا جاء حرف K في بداية الكلمة وجاء بعده مباشرة حرف N، فإننا لا ننطق حرف K.</Text>
-            <View style={styles.examplesContainer}>
-              <View style={styles.exampleRow}>
-                <Text style={styles.exampleEnglish}>Know <Text style={styles.exampleTranslation}>(يَعرف - "نو")</Text></Text>
-                <TouchableOpacity onPress={() => speakWord('Know')} style={styles.smallSoundBtn}><Text style={styles.smallSoundIcon}>🔊</Text></TouchableOpacity>
+          {pronunciationRules.map((rule) => (
+            <View key={rule.id} style={styles.ruleDetailCard}>
+              <View style={styles.ruleDetailHeader}>
+                <Text style={styles.badgeYellowBig}>💡</Text>
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                  <Text style={styles.ruleDetailTitle}>{rule.title}</Text>
+                  <Text style={{ fontSize: 13, color: '#F57C00', fontWeight: 'bold', marginTop: 2 }}>{rule.subtitle}</Text>
+                </View>
+              </View>
+              
+              <Text style={styles.ruleExplanation}>{rule.rule}</Text>
+              
+              <View style={styles.examplesContainer}>
+                <View style={styles.exampleRow}>
+                  <Text style={styles.exampleEnglish}>{rule.example}</Text>
+                </View>
               </View>
             </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
-  if (currentScreen === 'RULE_C') {
-    return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
-        <View style={styles.topHeaderNav}>
-          <TouchableOpacity style={styles.iconBackButton} onPress={() => setCurrentScreen('PRONUNCIATION_RULES')}>
-            <Ionicons name="arrow-back" size={24} color="#0084FF" />
-          </TouchableOpacity>
-        </View>
-        <ScrollView contentContainerStyle={styles.ruleScreenContent}>
-          <Text style={styles.screenMainTitle}>قاعدة نطق حرف C</Text>
-          <Text style={styles.screenSubTitle}>متى ننطقه S ومتى ننطقه K؟</Text>
-          <View style={styles.ruleDetailCard}>
-            <View style={styles.ruleDetailHeader}>
-              <Text style={styles.badgeYellowBig}>S</Text>
-              <Text style={styles.ruleDetailTitle}>يُنطق مثل السين (S)</Text>
-            </View>
-            <Text style={styles.ruleExplanation}>إذا جاء بعد حرف C أحد هذه الحروف الثلاثة: ( e, i, y ) فإنه يُنطق (س).</Text>
-            <View style={styles.examplesContainer}>
-              <View style={styles.exampleRow}>
-                <Text style={styles.exampleEnglish}>City <Text style={styles.exampleTranslation}>(مدينة)</Text></Text>
-                <TouchableOpacity onPress={() => speakWord('City')} style={styles.smallSoundBtn}><Text style={styles.smallSoundIcon}>🔊</Text></TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
-  if (currentScreen === 'RULE_G') {
-    return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor="#F8F9FA" />
-        <View style={styles.topHeaderNav}>
-          <TouchableOpacity style={styles.iconBackButton} onPress={() => setCurrentScreen('PRONUNCIATION_RULES')}>
-            <Ionicons name="arrow-back" size={24} color="#0084FF" />
-          </TouchableOpacity>
-        </View>
-        <ScrollView contentContainerStyle={styles.ruleScreenContent}>
-          <Text style={styles.screenMainTitle}>قاعدة نطق حرف G</Text>
-          <Text style={styles.screenSubTitle}>متى ننطقه جـ ومتى ننطقه گ؟</Text>
-          <View style={styles.ruleDetailCard}>
-            <View style={styles.ruleDetailHeader}>
-              <Text style={styles.badgeYellowBig}>J</Text>
-              <Text style={styles.ruleDetailTitle}>يُنطق (جـ) معطشة</Text>
-            </View>
-            <Text style={styles.ruleExplanation}>إذا جاء بعد حرف G أحد الحروف: ( e, i, y ) فإنه يُنطق (جـ).</Text>
-            <View style={styles.examplesContainer}>
-              <View style={styles.exampleRow}>
-                <Text style={styles.exampleEnglish}>Gym <Text style={styles.exampleTranslation}>(صالة رياضية)</Text></Text>
-                <TouchableOpacity onPress={() => speakWord('Gym')} style={styles.smallSoundBtn}><Text style={styles.smallSoundIcon}>🔊</Text></TouchableOpacity>
-              </View>
-            </View>
-          </View>
+          ))}
         </ScrollView>
       </SafeAreaView>
     );
@@ -444,7 +338,7 @@ export default function App() {
   }
 
   // ==========================================
-  // الشاشة الرئيسية (HOME - مع إضافة زر الاختبارات)
+  // الشاشة الرئيسية (HOME)
   // ==========================================
   if (currentScreen === 'HOME') {
     return (
@@ -488,7 +382,7 @@ export default function App() {
             <TouchableOpacity style={styles.gridCard} onPress={() => setCurrentScreen('GRAMMAR_BASICS')}>
               <View style={styles.cardContent}>
                 <Text style={{ fontSize: 30, marginBottom: 4 }}>✍️</Text>
-                <Text style={styles.mediumCardText}>اساسيات اللغة الانجليزية</Text>
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#212529', textAlign: 'center', lineHeight: 20 }}>اساسيات اللغة الانجليزية</Text>
               </View>
               <Text style={{ fontSize: 12, color: '#6C757D', marginTop: 4 }}>قواعد مبسطة</Text>
             </TouchableOpacity>
@@ -573,20 +467,11 @@ const styles = StyleSheet.create({
   cardMainText: { fontSize: 24, fontWeight: 'bold', color: '#D32F2F' },
   cardFooterText: { fontSize: 15, fontWeight: 'bold', color: '#E53935', marginTop: 6 },
   largeCardText: { fontSize: 32, fontWeight: 'bold', color: '#212529' },
-  mediumCardText: { fontSize: 14, fontWeight: 'bold', color: '#212529', textAlign: 'center', lineHeight: 20 },
   
   quizBannerButton: { flexDirection: 'row-reverse', backgroundColor: '#0084FF', borderRadius: 16, padding: 15, alignItems: 'center', elevation: 3, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4 },
   
   topHeaderNav: { paddingHorizontal: 20, paddingTop: 15, paddingBottom: 10, flexDirection: 'row' },
   iconBackButton: { width: 44, height: 44, backgroundColor: '#E3F2FD', borderRadius: 22, justifyContent: 'center', alignItems: 'center', elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2 },
-  
-  letterMenuCard: { flexDirection: 'row-reverse', backgroundColor: '#FFFFFF', borderRadius: 16, padding: 15, marginBottom: 15, alignItems: 'center', elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 5, borderWidth: 1, borderColor: '#E9ECEF' },
-  letterIconContainer: { width: 50, height: 50, borderRadius: 25, backgroundColor: '#FFF3E0', justifyContent: 'center', alignItems: 'center', marginLeft: 15 },
-  letterIcon: { fontSize: 24, fontWeight: 'bold', color: '#F57C00' },
-  letterMenuText: { flex: 1, alignItems: 'flex-end' },
-  letterMenuTitle: { fontSize: 18, fontWeight: 'bold', color: '#212529', marginBottom: 4 },
-  letterMenuSubtitle: { fontSize: 13, color: '#6C757D' },
-  arrowIcon: { marginRight: 10 },
   
   categoryContainer: { paddingVertical: 5 },
   scrollContent: { paddingHorizontal: 15, flexDirection: 'row-reverse' },
@@ -615,13 +500,10 @@ const styles = StyleSheet.create({
   screenSubTitle: { fontSize: 16, color: '#6C757D', textAlign: 'center', marginBottom: 20, marginTop: 5 },
   ruleDetailCard: { backgroundColor: '#FFFFFF', borderRadius: 16, padding: 20, marginBottom: 20, elevation: 3, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, borderWidth: 1, borderColor: '#E9ECEF' },
   ruleDetailHeader: { flexDirection: 'row-reverse', alignItems: 'center', marginBottom: 12 },
-  badgeYellowBig: { backgroundColor: '#FFEB3B', paddingHorizontal: 12, paddingVertical: 4, borderRadius: 8, fontWeight: 'bold', fontSize: 18, marginLeft: 10, color: '#212529' },
-  ruleDetailTitle: { fontSize: 18, fontWeight: 'bold', color: '#212529' },
-  ruleExplanation: { fontSize: 15, color: '#495057', lineHeight: 24, textAlign: 'right', marginBottom: 20 },
-  examplesContainer: { backgroundColor: '#F8F9FA', borderRadius: 12, padding: 15 },
-  exampleRow: { flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#E9ECEF' },
-  exampleEnglish: { fontSize: 18, fontWeight: 'bold', color: '#0084FF', letterSpacing: 1 },
-  exampleTranslation: { fontSize: 14, color: '#6C757D', fontWeight: 'normal' },
-  smallSoundBtn: { backgroundColor: '#E3F2FD', padding: 8, borderRadius: 50 },
-  smallSoundIcon: { fontSize: 14 }
+  badgeYellowBig: { backgroundColor: '#FFEB3B', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, fontWeight: 'bold', fontSize: 16, marginLeft: 10, color: '#212529' },
+  ruleDetailTitle: { fontSize: 18, fontWeight: 'bold', color: '#212529', textAlign: 'right' },
+  ruleExplanation: { fontSize: 15, color: '#495057', lineHeight: 24, textAlign: 'right', marginBottom: 15 },
+  examplesContainer: { backgroundColor: '#F8F9FA', borderRadius: 12, padding: 12 },
+  exampleRow: { flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 4 },
+  exampleEnglish: { fontSize: 16, fontWeight: 'bold', color: '#0084FF', letterSpacing: 0.5, textAlign: 'right', width: '100%' }
 });
